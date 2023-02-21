@@ -1,17 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { HashRouter } from 'react-router-dom';
+
 import './index.css';
-import SignUp from './js/SignUp.js';
+import App from './App.js';
+
 import reportWebVitals from './reportWebVitals';
 import Globals from './js/Globals.js';
 
 export const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-  
-    <SignUp />
+  <HashRouter>
+    <App />
+	</HashRouter>
   </React.StrictMode>
 );
+
+if(window.localStorage.getItem( 'labelId')==null)
+	window.localStorage.setItem( 'labelId','1');
+
+if(window.localStorage.getItem( 'currentViewName')==null)
+	window.localStorage.setItem( 'currentViewName','Month');
 
 Globals();
 

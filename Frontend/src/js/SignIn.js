@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -36,9 +38,12 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
 export default function SignInSide() {
+	const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -49,11 +54,9 @@ export default function SignInSide() {
       email: userEmail,
       password: userPassword,
     });
- root.render(
-  <React.StrictMode>
-    <Home />
-  </React.StrictMode>
-);
+ 	navigate('/home',false);
+
+
   };
 
   return (

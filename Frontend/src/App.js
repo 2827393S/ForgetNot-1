@@ -1,7 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
+import Home from './js/Home.js';
+import SignIn from './js/SignIn.js';
+import SignUp from './js/SignUp.js';
+
+
+const App = () => {
+ return (
+    <>
+       <Routes>
+          <Route path="/" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/home" element={<Home />} />
+       </Routes>
+
+    </>
+ );
+};
+
+export default App;
+
+/*function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -12,7 +33,6 @@ function App() {
         <a
           className="App-link"
           href="https://reactjs.org"
-          target="_blank"
           rel="noopener noreferrer"
         >
           Learn React
@@ -22,4 +42,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;*/

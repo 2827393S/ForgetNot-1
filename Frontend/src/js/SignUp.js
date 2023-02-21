@@ -1,5 +1,8 @@
 import * as React from 'react';
 //import ReactDOM from 'react-dom/client';
+import { useNavigate } from 'react-router-dom';
+ 
+
 
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,6 +17,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
 
 import {root} from '../index.js';
 import SignIn from '../js/SignIn.js';
@@ -38,6 +43,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+	 const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,11 +52,10 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
-	root.render(
-  <React.StrictMode>
-    <SignIn />
-  </React.StrictMode>
-);
+	
+	navigate('/signin');
+  
+
   };
 
   return (

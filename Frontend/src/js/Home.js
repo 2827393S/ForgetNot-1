@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useNavigate } from "react-router-dom";
+
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,6 +17,18 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
+
+import CakeIcon from '@mui/icons-material/Cake';
+import GroupsIcon from '@mui/icons-material/Groups';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
+
+
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
@@ -25,6 +39,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import EmailIcon from '@mui/icons-material/Email';
 
+
 import { mainListItems } from './labelItems';
 
 import {appName} from './Globals.js';
@@ -32,6 +47,7 @@ import Schedule from './Schedule.js';
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
+var labelId=window.localStorage.getItem( 'labelId');
 
 function Copyright(props) {
   return (
@@ -95,6 +111,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+ const navigate = useNavigate();
+
   const [open, setOpen] = React.useState(true);
   
   const toggleDrawer = () => {
@@ -119,7 +137,15 @@ function DashboardContent() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  
+  
 
+const filterEvents = value => () => {
+	window.localStorage.setItem( 'labelId', value );
+	//alert("Clicked label: "+window.localStorage.getItem( 'labelId'));
+	navigate(0);
+
+  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -216,7 +242,39 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            {/* <--- Birthdays ---> */}
+			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId==1?"#ffa07a60":""}}>
+				<ListItemIcon>
+					<CakeIcon />
+				</ListItemIcon>
+				<ListItemText primary="Birthdays" />
+			</ListItemButton>
+			
+			  {/* <--- Meetings ---> */}
+			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId==2?"#90ee9060":"" }}>
+				<ListItemIcon>
+					<GroupsIcon />
+				</ListItemIcon>
+				<ListItemText primary="Meetings" />
+			</ListItemButton>
+			
+			  			
+			  {/* <--- Tasks ---> */}
+			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId==3?"#87ceeb60":"" }}>
+				<ListItemIcon>
+					<ListAltIcon />
+				</ListItemIcon>
+				<ListItemText primary="Tasks" />
+			</ListItemButton>
+			
+			  {/* <--- Travel ---> */}
+			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId==4?"#d1e18960":"" }}>
+				<ListItemIcon>
+					<ModeOfTravelIcon />
+				</ListItemIcon>
+				<ListItemText primary="Travel" />
+			</ListItemButton>
+			
            
           </List>
         </Drawer>

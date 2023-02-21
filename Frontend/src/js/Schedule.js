@@ -20,8 +20,10 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 //import { appointments } from './demo-data/month-appointments';
-import { owners } from './demo-data/tasks';
-import { resourcesData,appointments } from './demo-data/resources';
+//import { owners } from './demo-data/tasks';
+//import { appointments } from './demo-data/resources';
+import { eventLabels } from './Globals.js';
+import { birthdays, meetings, tasks,travel } from './demo-data/events';
 
 
 const ExternalViewSwitcher = ({
@@ -49,7 +51,40 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
+	
+	var labelId=window.localStorage.getItem( 'labelId');
+	//alert("labelId schedule: "+labelId);
+	var dataVal;
+
+		if(labelId=='1'){
+			dataVal=birthdays;
+		}else if(labelId=='2'){
+			dataVal=meetings;
+		}else if(labelId=='3'){
+			dataVal=tasks;
+		}else if(labelId=='4'){
+			dataVal=travel;
+		}else {
+			dataVal=birthdays;
+		}
+	
+
+
     this.state = {
+      data: dataVal,
+      currentViewName: window.localStorage.getItem( 'currentViewName'),
+	  currentDate: '2023-02-19',
+	  resources: [
+        {
+          fieldName: 'labelId',
+          title: 'Label',
+          instances: eventLabels,
+        },
+      ],
+    };
+	
+	
+	/*this.state = {
       data: appointments,
       currentViewName: 'Month',
 	  currentDate: '2023-02-19',
@@ -57,7 +92,7 @@ export default class Demo extends React.PureComponent {
         {
           fieldName: 'roomId',
           title: 'Room',
-          instances: resourcesData,
+          instances: eventLabels,
         },
         {
           fieldName: 'members',
@@ -66,10 +101,12 @@ export default class Demo extends React.PureComponent {
           allowMultiple: true,
         },
       ],
-    };
+    };*/
 
     this.currentViewNameChange = (e) => {
       this.setState({ currentViewName: e.target.value });
+	  window.localStorage.getItem( 'currentViewName', e.target.value);
+
     };
 	this.commitChanges = this.commitChanges.bind(this);
 	this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
@@ -159,7 +196,7 @@ export default class Demo extends React.PureComponent {
 		  
 		  <Resources
             data={resources}
-            mainResourceName="roomId"
+            mainResourceName="labelId"
           />
           </Scheduler>
         </Paper>
