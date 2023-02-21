@@ -7,6 +7,7 @@ import App from './App.js';
 
 import reportWebVitals from './reportWebVitals';
 import Globals from './js/Globals.js';
+import Landing from './js/Landing.js';
 
 export const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

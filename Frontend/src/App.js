@@ -5,13 +5,15 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './js/Home.js';
 import SignIn from './js/SignIn.js';
 import SignUp from './js/SignUp.js';
+import Landing from './js/Landing.js';
 
 
 const App = () => {
  return (
     <>
        <Routes>
-          <Route path="/" element={<SignUp />} />
+          <Route path="/" element={<Landing />} />
+		  <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/home" element={<Home />} />
        </Routes>
