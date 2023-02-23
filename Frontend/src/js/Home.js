@@ -48,6 +48,8 @@ import Schedule from './Schedule.js';
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
 var labelId=window.localStorage.getItem( 'labelId');
+var publicPath=process.env.PUBLIC_URL;
+var logoPath= '/assets/images/background.jpg';
 
 function Copyright(props) {
   return (
@@ -281,17 +283,24 @@ const filterEvents = value => () => {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
+            /*backgroundColor: (theme) =>
               theme.palette.mode === 'light'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',*/
+			backgroundImage: `url(${publicPath+logoPath})`,
+			backgroundRepeat: 'no-repeat',
+			backgroundPosition: 'center',
+			backgroundSize: 'cover',
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="100vh" maxHeight="100vh" sx={{ mt: 4, mb: 4 }}>
           
 			  {/* Schedule */}
               <Grid item xs={12}>

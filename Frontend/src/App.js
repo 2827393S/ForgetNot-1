@@ -1,22 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
+//import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
+
 
 import Home from './js/Home.js';
 import SignIn from './js/SignIn.js';
 import SignUp from './js/SignUp.js';
 import Landing from './js/Landing.js';
+import Contact from './js/Contact.js';
+
 
 
 const App = () => {
  return (
     <>
+	  <HashRouter>
+
        <Routes>
           <Route path="/" element={<Landing />} />
 		  <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/home" element={<Home />} />
+	<Route path="/contact" element={<Contact />} />
+	
        </Routes>
+	     </HashRouter>
+
 
     </>
  );
