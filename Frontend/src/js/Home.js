@@ -47,9 +47,9 @@ import Schedule from './Schedule.js';
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
-var labelId=window.localStorage.getItem( 'labelId');
-var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/background.jpg';
+const labelId = window.localStorage.getItem('labelId');
+const publicPath = process.env.PUBLIC_URL;
+const logoPath = '/assets/images/background.jpg';
 
 function Copyright(props) {
   return (
@@ -245,7 +245,7 @@ const filterEvents = value => () => {
           <Divider />
           <List component="nav">
             {/* <--- Birthdays ---> */}
-			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId==1?"#ffa07a60":""}}>
+			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId===1?"#ffa07a60":""}}>
 				<ListItemIcon>
 					<CakeIcon />
 				</ListItemIcon>
@@ -253,7 +253,7 @@ const filterEvents = value => () => {
 			</ListItemButton>
 			
 			  {/* <--- Meetings ---> */}
-			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId==2?"#90ee9060":"" }}>
+			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId===2?"#90ee9060":"" }}>
 				<ListItemIcon>
 					<GroupsIcon />
 				</ListItemIcon>
@@ -262,7 +262,7 @@ const filterEvents = value => () => {
 			
 			  			
 			  {/* <--- Tasks ---> */}
-			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId==3?"#87ceeb60":"" }}>
+			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId===3?"#87ceeb60":"" }}>
 				<ListItemIcon>
 					<ListAltIcon />
 				</ListItemIcon>
@@ -270,7 +270,7 @@ const filterEvents = value => () => {
 			</ListItemButton>
 			
 			  {/* <--- Travel ---> */}
-			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId==4?"#d1e18960":"" }}>
+			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId===4?"#d1e18960":"" }}>
 				<ListItemIcon>
 					<ModeOfTravelIcon />
 				</ListItemIcon>

@@ -10,7 +10,8 @@ import SignIn from './js/SignIn.js';
 import SignUp from './js/SignUp.js';
 import Landing from './js/Landing.js';
 import Contact from './js/Contact.js';
-
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:8000/"
 
 
 const App = () => {

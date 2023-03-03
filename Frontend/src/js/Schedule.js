@@ -22,8 +22,10 @@ import {
 //import { appointments } from './demo-data/month-appointments';
 //import { owners } from './demo-data/tasks';
 //import { appointments } from './demo-data/resources';
+import {get,post} from '../utils/requests'
 import { eventLabels } from './Globals.js';
 import { birthdays, meetings, tasks,travel } from './demo-data/events';
+import axios from "axios";
 
 
 const ExternalViewSwitcher = ({
@@ -51,23 +53,27 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
-	
-	var labelId=window.localStorage.getItem( 'labelId');
-	//alert("labelId schedule: "+labelId);
-	var dataVal;
 
-		if(labelId=='1'){
+    const labelId = window.localStorage.getItem('labelId');
+      //alert("labelId schedule: "+labelId);
+      let dataVal;
+
+      if(labelId==='1'){
 			dataVal=birthdays;
-		}else if(labelId=='2'){
+		}else if(labelId==='2'){
 			dataVal=meetings;
-		}else if(labelId=='3'){
+		}else if(labelId==='3'){
 			dataVal=tasks;
-		}else if(labelId=='4'){
+		}else if(labelId==='4'){
 			dataVal=travel;
 		}else {
 			dataVal=birthdays;
 		}
-	
+	//example get data
+      get("/user/event/get_list")
+          .then(function (res){
+              console.log(res)
+          })
 
 
     this.state = {

@@ -14,6 +14,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "axios"
+import {get,post} from '../utils/requests'
 
 import Home from '../js/Home.js';
 import {root} from '../index.js';
@@ -42,19 +44,53 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-	var userEmail=data.get('email');
-	var userPassword=data.get('password');
+    const userEmail = data.get('email');
+    const userPassword = data.get('password');
     //alert("Email: "+userEmail);
     console.log({
       email: userEmail,
       password: userPassword,
     });
- 	navigate('/home',false);
+    // axios({
+    //   method: "post",
+    //   url: "user/login/", // url
+    //   headers: {
+    //       "Content-Type": "application/json",
+    //   },
+    //   data: {
+    //       "email":userEmail,
+    //       "password":userPassword
+    //   }
+    // })
+    //   .then(function(res) {
+    //       const data = res.data
+    //       if(data.code === 200){
+    //           console.log(data)
+    //       }else{
+    //           console.log()
+    //       }
+    //   })
+      const requests_data = {
+          'email':userEmail,
+          'password':userPassword
+      }
+      post('user/login/', requests_data)
+          .then(function (res){
+              console.log(res)
+              navigate('/home',false)
+          })
+          .catch(function (res){
+              console.log(res)
+          })
+
+
+
+ 	 // navigate('/home',false);
 
 
   };
