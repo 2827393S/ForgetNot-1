@@ -45,17 +45,19 @@ import { mainListItems } from './labelItems';
 import {appName} from './Globals.js';
 import Schedule from './Schedule.js';
 
-const settings = ['Home','My profile', 'My groups', 'Logout'];
+const settings = ['Home', 'My Profile', 'Logout'];
 
-const labelId = window.localStorage.getItem('labelId');
-const publicPath = process.env.PUBLIC_URL;
-const logoPath = '/assets/images/background.jpg';
+const labelId=window.localStorage.getItem( 'labelId');
+const publicPath=process.env.PUBLIC_URL;
+const logoPath= '/assets/images/background.jpg';
+
 
 function Copyright(props) {
+const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" onClick={() => navigate('/contact', false)}>
 	  {appName}
       </Link>{' '}
       {new Date().getFullYear()}
@@ -220,7 +222,7 @@ const filterEvents = value => () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={setting === 'My Profile' ? () => navigate('/profile', false) : handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

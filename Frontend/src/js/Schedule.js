@@ -18,21 +18,50 @@ import {
   TodayButton,
   Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import Button from '@mui/material/Button';
 
 //import { appointments } from './demo-data/month-appointments';
 //import { owners } from './demo-data/tasks';
 //import { appointments } from './demo-data/resources';
+
+
 import {get,post} from '../utils/requests'
-import { eventLabels } from './Globals.js';
-import { birthdays, meetings, tasks,travel } from './demo-data/events';
 import axios from "axios";
 
+import { eventLabels } from './Globals.js';
+import { birthdays, meetings, tasks,travel } from './demo-data/events';
 
-const ExternalViewSwitcher = ({
-  currentViewName,
-  onChange,
-}) => (
-  <RadioGroup
+
+const TextEditor = (props) => {
+   return <AppointmentForm.TextEditor {...props} />;
+};
+
+const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
+  const onCustomFieldChange = (nextValue) => {
+    onFieldChange({ customField: nextValue });
+  };
+
+  return (
+    <AppointmentForm.BasicLayout
+      appointmentData={appointmentData}
+      onFieldChange={onFieldChange}
+      {...restProps}
+    >
+      <AppointmentForm.TextEditor
+	value={appointmentData.customField}
+        placeholder="Host"
+      />
+	<AppointmentForm.TextEditor
+        value={appointmentData.customField}
+        placeholder="Invitees"
+      />
+    </AppointmentForm.BasicLayout>
+  );
+};
+
+const ExternalViewSwitcher = ({currentViewName, onChange, }) => 
+	
+(<RadioGroup
     aria-label="Views"
     style={{ flexDirection: 'row' }}
     name="views"
@@ -45,6 +74,7 @@ const ExternalViewSwitcher = ({
     <FormControlLabel value="Day" control={<Radio />} label="Day" />
     <FormControlLabel value="Week" control={<Radio />} label="Week" />
     <FormControlLabel value="Month" control={<Radio />} label="Month" />
+
 	
   </RadioGroup>
 );
@@ -54,7 +84,7 @@ export default class Demo extends React.PureComponent {
     super(props);
 
 
-    const labelId = window.localStorage.getItem('labelId');
+	  const labelId = window.localStorage.getItem('labelId');
       //alert("labelId schedule: "+labelId);
       let dataVal;
 
@@ -75,12 +105,12 @@ export default class Demo extends React.PureComponent {
               console.log(res)
           })
 
-
-    this.state = {
+this.state = {
       data: dataVal,
       currentViewName: window.localStorage.getItem( 'currentViewName'),
 	  currentDate: '2023-02-19',
 	  resources: [
+/* <--- This displays the label field and drop down selection--->  */
         {
           fieldName: 'labelId',
           title: 'Label',
@@ -88,7 +118,6 @@ export default class Demo extends React.PureComponent {
         },
       ],
     };
-	
 	
 	/*this.state = {
       data: appointments,
@@ -137,22 +166,19 @@ export default class Demo extends React.PureComponent {
       }
       return { data };
     });
-	
-	
-
-	
   }
 
   render() {
+
     const { data, currentViewName, currentDate, resources } = this.state;
 
     return (
+
       <React.Fragment>
         <ExternalViewSwitcher
           currentViewName={currentViewName}
           onChange={this.currentViewNameChange}
         />
-
         <Paper>
           <Scheduler
             data={data}
@@ -164,7 +190,6 @@ export default class Demo extends React.PureComponent {
 			  currentDate={currentDate}
               onCurrentDateChange={this.currentDateChange}
           />
-			
 			{/* <--- Appointment editing --->  */}
 			
 			 <EditingState
@@ -188,22 +213,25 @@ export default class Demo extends React.PureComponent {
             <MonthView />
 
 			{/* <--- Appointment form popup for creation and edit --->  */}
-		 <ConfirmationDialog />
-		 
           <Appointments />
-          <AppointmentTooltip
+<AppointmentTooltip
             showOpenButton
             showDeleteButton
           />
-          <AppointmentForm />
-		   <Toolbar />
+ <ConfirmationDialog />
+
+		  <Toolbar />
           <DateNavigator />
           <TodayButton />
-		  
+		 <AppointmentForm
+            basicLayoutComponent={BasicLayout}
+            textEditorComponent={TextEditor}
+          />
 		  <Resources
             data={resources}
             mainResourceName="labelId"
           />
+
           </Scheduler>
         </Paper>
       </React.Fragment>
