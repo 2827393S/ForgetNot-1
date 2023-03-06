@@ -1,8 +1,9 @@
 import React from 'react'
 import axios from 'axios'
+import qs, {stringify} from 'qs'
 
 axios.defaults.withCredentials = true
-axios.defaults.headers.post["Content-Type"] = "application/json"
+axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8"
 axios.defaults.timeout = 100000
 axios.defaults.baseURL = "http://localhost:8000/"
 
@@ -28,9 +29,10 @@ export function get(url, params){
  * @param {String} url
  * @param {Object} params
  */
+
 export function post(url, params) {
     return new Promise((resolve, reject) => {
-        axios.post(url, params,{
+        axios.post(url, qs.stringify(params),{
             withCredentials:true
         })
             .then(res => {

@@ -79,10 +79,11 @@ export default function SignInSide() {
           'email':userEmail,
           'password':userPassword
       }
-      post('user/login/', requests_data)
+      post('api/login/', requests_data)
           .then(function (res){
-              console.log(res)
-              navigate('/home',false)
+              if(res.status === 200){
+                  navigate("/home",false)
+              }
           })
           .catch(function (res){
               console.log(res)
