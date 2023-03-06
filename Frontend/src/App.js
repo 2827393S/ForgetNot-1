@@ -10,6 +10,7 @@ import SignIn from './js/SignIn.js';
 import SignUp from './js/SignUp.js';
 import Landing from './js/Landing.js';
 import Contact from './js/Contact.js';
+import Profile from './js/Profile.js';
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8000/"
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/home" element={<Home />} />
 	<Route path="/contact" element={<Contact />} />
+	<Route path="/profile" element={<Profile />} />
 	
        </Routes>
 	     </HashRouter>

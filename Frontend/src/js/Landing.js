@@ -36,7 +36,7 @@ function ButtonGroup() {
 
   return (
     <>
-      <Button onClick={loadSignUp} 
+      <Button  
         variant="contained"
         sx={{ mr: 2, backgroundColor: 'black', '&:hover': { backgroundColor: 'transparent' } }}
       >

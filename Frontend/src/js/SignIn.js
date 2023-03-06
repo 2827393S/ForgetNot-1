@@ -28,10 +28,11 @@ var publicPath=process.env.PUBLIC_URL;
 var logoPath="/assets/images/logo.JPG";
 
 function Copyright(props) {
+	const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" onClick={() => navigate('/contact', false)}>
 	  {appName}
       </Link>{' '}
       {new Date().getFullYear()}
@@ -44,7 +45,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,7 +57,7 @@ export default function SignInSide() {
       email: userEmail,
       password: userPassword,
     });
-    // axios({
+ 	// axios({
     //   method: "post",
     //   url: "user/login/", // url
     //   headers: {
@@ -88,11 +89,7 @@ export default function SignInSide() {
               console.log(res)
           })
 
-
-
- 	 // navigate('/home',false);
-
-
+	 // navigate('/home',false);
   };
 
   return (
@@ -169,7 +166,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link onClick={() => navigate('/signup', false)} variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -17,6 +17,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {Input, InputAdornment} from '@mui/material';
+
 
 
 
@@ -28,10 +30,11 @@ import Schedule from '../js/Schedule.js';
 
 
 function Copyright(props) {
+const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" onClick={() => navigate('/contact', false)}>
 	  {appName}
       </Link>{' '}
       {new Date().getFullYear()}
@@ -39,6 +42,8 @@ function Copyright(props) {
     </Typography>
   );
 }
+
+
 
 const theme = createTheme();
 
@@ -99,6 +104,24 @@ export default function SignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
+	  <Grid item xs={12} sm={6}>
+  	<TextField
+   	 required
+   	 fullWidth
+   	 id="dob"
+   	 label="Date of Birth"
+    	name="dob"
+  		/>
+		</Grid>
+		<Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="sex"
+                  label="Sex"
+                  name="sex"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -135,9 +158,9 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justify Content="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link onClick={() => navigate('/signin', false)} variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
