@@ -33,10 +33,7 @@ import { birthdays, meetings, tasks,travel } from './demo-data/events';
 
 
 const TextEditor = (props) => {
-  // eslint-disable-next-line react/destructuring-assignment
-  if (props.type === 'multilineTextEditor') {
-    return null;
-  } return <AppointmentForm.TextEditor {...props} />;
+   return <AppointmentForm.TextEditor {...props} />;
 };
 
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
@@ -50,19 +47,12 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
       onFieldChange={onFieldChange}
       {...restProps}
     >
-	 <AppointmentForm.TextEditor
-        value={appointmentData.customField}
-        onValueChange={onCustomFieldChange}
-        placeholder="Description"
-      /> 
       <AppointmentForm.TextEditor
-        value={appointmentData.customField}
-        onValueChange={onCustomFieldChange}
+	value={appointmentData.customField}
         placeholder="Host"
       />
 	<AppointmentForm.TextEditor
         value={appointmentData.customField}
-        onValueChange={onCustomFieldChange}
         placeholder="Invitees"
       />
     </AppointmentForm.BasicLayout>
