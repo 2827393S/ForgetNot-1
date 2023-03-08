@@ -83,7 +83,6 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
-
 	  const labelId = window.localStorage.getItem('labelId');
       //alert("labelId schedule: "+labelId);
       let dataVal;
@@ -99,25 +98,21 @@ export default class Demo extends React.PureComponent {
 		}else {
 			dataVal=birthdays;
 		}
-	//example get data
-      get("/user/event/get_list")
-          .then(function (res){
-              console.log(res)
-          })
+      console.log(dataVal);
 
-this.state = {
-      data: dataVal,
-      currentViewName: window.localStorage.getItem( 'currentViewName'),
-	  currentDate: '2023-02-19',
-	  resources: [
-/* <--- This displays the label field and drop down selection--->  */
-        {
-          fieldName: 'labelId',
-          title: 'Label',
-          instances: eventLabels,
-        },
-      ],
-    };
+    this.state = {
+          data: dataVal,
+          currentViewName: window.localStorage.getItem( 'currentViewName'),
+          currentDate: '2023-02-19',
+          resources: [
+    /* <--- This displays the label field and drop down selection--->  */
+            {
+              fieldName: 'labelId',
+              title: 'Label',
+              instances: eventLabels,
+            },
+          ],
+        };
 	
 	/*this.state = {
       data: appointments,
@@ -147,6 +142,43 @@ this.state = {
 	this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
 
   }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.label_id !== prevProps.label_id) {
+
+            let label_id = this.props.label_id;
+            let dataVal;
+
+
+            if(label_id===1){
+                dataVal=birthdays;
+            }else if(label_id===2){
+                dataVal=meetings;
+            }else if(label_id===3){
+                dataVal=tasks;
+            }else if(label_id===4){
+                dataVal=travel;
+            }else {
+                dataVal = birthdays;
+            }
+
+            console.log(dataVal)
+
+            this.setState({data:dataVal})
+
+
+            // props change
+            // this.getEventList(this.props.label_id)
+        }
+    }
+
+    getEventList(label_id){
+      console.log(label_id)
+        get("/api/event/get_list",{"id":label_id})
+            .then(function (res){
+                console.log(res)
+            })
+    }
   
   	/* <--- Appointment editing and saving --->  */
 

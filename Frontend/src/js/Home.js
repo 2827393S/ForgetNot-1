@@ -38,12 +38,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import EmailIcon from '@mui/icons-material/Email';
-
+import {get,post} from '../utils/requests'
 
 import { mainListItems } from './labelItems';
 
 import {appName} from './Globals.js';
 import Schedule from './Schedule.js';
+import {useEffect} from "react";
 
 const settings = ['Home', 'My Profile', 'Logout'];
 
@@ -114,44 +115,64 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
+
+
 function DashboardContent() {
- const navigate = useNavigate();
-
-  const [open, setOpen] = React.useState(true);
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(true);
+    const [label_data,setLabelData] = React.useState([]);
+    const [now_label_id,setNowLabelId] = React.useState(0);
+    const toggleDrawer = () => {setOpen(!open);};
   
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-  
-  {/* <--- User icon on top right & corresponding listview ---> */}
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+    {/* <--- User icon on top right & corresponding listview ---> */}
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
- const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    useEffect(()=> {
+        window.localStorage.setItem( 'labelId', '2' );
+        get('api/label/get/',{})
+            .then(function (res){
+                setLabelData(res.data)
+                setNowLabelId(res.data[0].id)
+            })
+    },[])
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  
-  
+    const handleLabelData = (event) => {
+        setLabelData(event.currentTarget);
+    }
 
-const filterEvents = value => () => {
-	window.localStorage.setItem( 'labelId', value );
-	//alert("Clicked label: "+window.localStorage.getItem( 'labelId'));
-	navigate(0);
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
 
-  };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
 
-  return (
+    const handleCloseNavMenu = () => {
+        setAnchorElNav(null);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
+
+
+    function displayListItemButton(props){
+        return (
+            <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}>
+                <ListItemIcon>
+                    <ModeOfTravelIcon />
+                </ListItemIcon>
+                <ListItemText primary={props.name} />
+            </ListItemButton>
+        )
+    }
+
+
+    return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -180,26 +201,26 @@ const filterEvents = value => () => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-			{appName}
+            {appName}
             </Typography>
-			
-			  {/* <--- Notifications ---> */}
+
+              {/* <--- Notifications ---> */}
 
             <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
-              </Badge>	  
+              </Badge>
             </IconButton>
-			
-			{/* <--- Messages ---> */}
-			<IconButton color="inherit">
+
+            {/* <--- Messages ---> */}
+            <IconButton color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <EmailIcon />
-              </Badge>  
+              </Badge>
             </IconButton>
-			
-			{/* <--- Users logo and List view ---> */}
-			<Box sx={{ flexGrow: 0 }}>
+
+            {/* <--- Users logo and List view ---> */}
+            <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -228,7 +249,7 @@ const filterEvents = value => () => {
               ))}
             </Menu>
           </Box>
-			
+
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -246,40 +267,44 @@ const filterEvents = value => () => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {/* <--- Birthdays ---> */}
-			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId===1?"#ffa07a60":""}}>
-				<ListItemIcon>
-					<CakeIcon />
-				</ListItemIcon>
-				<ListItemText primary="Birthdays" />
-			</ListItemButton>
-			
-			  {/* <--- Meetings ---> */}
-			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId===2?"#90ee9060":"" }}>
-				<ListItemIcon>
-					<GroupsIcon />
-				</ListItemIcon>
-				<ListItemText primary="Meetings" />
-			</ListItemButton>
-			
-			  			
-			  {/* <--- Tasks ---> */}
-			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId===3?"#87ceeb60":"" }}>
-				<ListItemIcon>
-					<ListAltIcon />
-				</ListItemIcon>
-				<ListItemText primary="Tasks" />
-			</ListItemButton>
-			
-			  {/* <--- Travel ---> */}
-			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId===4?"#d1e18960":"" }}>
-				<ListItemIcon>
-					<ModeOfTravelIcon />
-				</ListItemIcon>
-				<ListItemText primary="Travel" />
-			</ListItemButton>
-			
-           
+             {/*<--- Birthdays ---> */}
+            <ListItemButton onClick={() => setNowLabelId(1)}  sx={{ backgroundColor: labelId===1?"#ffa07a60":""}}>
+                <ListItemIcon>
+                    <CakeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Birthdays" />
+            </ListItemButton>
+
+              {/* <--- Meetings ---> */}
+            <ListItemButton onClick={() => setNowLabelId(2)} sx={{ backgroundColor: labelId===2?"#90ee9060":"" }}>
+                <ListItemIcon>
+                    <GroupsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Meetings" />
+            </ListItemButton>
+
+
+              {/* <--- Tasks ---> */}
+            <ListItemButton onClick={() => setNowLabelId(3)} sx={{ backgroundColor: labelId===3?"#87ceeb60":"" }}>
+                <ListItemIcon>
+                    <ListAltIcon />
+                </ListItemIcon>
+                <ListItemText primary="Tasks" />
+            </ListItemButton>
+
+              {/* <--- Travel ---> */}
+            <ListItemButton onClick={() => setNowLabelId(4)} sx={{ backgroundColor: labelId===4?"#d1e18960":"" }}>
+                <ListItemIcon>
+                    <ModeOfTravelIcon />
+                </ListItemIcon>
+                <ListItemText primary="Travel" />
+            </ListItemButton>
+              {
+                  label_data.map((value) => {
+                      return displayListItemButton(value)
+                  })
+              }
+
           </List>
         </Drawer>
         <Box
@@ -292,10 +317,10 @@ const filterEvents = value => () => {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',*/
-			backgroundImage: `url(${publicPath+logoPath})`,
-			backgroundRepeat: 'no-repeat',
-			backgroundPosition: 'center',
-			backgroundSize: 'cover',
+            backgroundImage: `url(${publicPath+logoPath})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -303,21 +328,21 @@ const filterEvents = value => () => {
         >
           <Toolbar />
           <Container maxWidth="100vh" maxHeight="100vh" sx={{ mt: 4, mb: 4 }}>
-          
-			  {/* Schedule */}
+
+              {/* Schedule */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Schedule />
+                  <Schedule label_id={now_label_id} />
                 </Paper>
               </Grid>
-           			
+
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
-  );
-}
+    );
+    }
 
 export default function Dashboard() {
   return <DashboardContent />;
