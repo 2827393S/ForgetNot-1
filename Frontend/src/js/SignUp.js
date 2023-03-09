@@ -19,6 +19,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Input, InputAdornment} from '@mui/material';
 
+import axios from "axios"
+import {get,post} from '../utils/requests'
 
 
 
@@ -53,12 +55,44 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+	const userFname = data.get('firstName');
+	const userLname = data.get('lastName');
+	const userBday = data.get('birthday');
+	const userGender = data.get('gender');
+	const userEmail = data.get('email');
+    const userPassword = data.get('password');
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+	  firstName: userFname,
+	  lastName: userLname,
+      email: userEmail,
+      password: userPassword,
+	  birthday: userBday,
+	  gender: userGender,
+	  
     });
 	
-	navigate('/signin');
+	const requests_data = {
+		  'firstName':userFname,
+		  'lastName':userLname,
+		  'birthday':userBday,
+		  'gender':userGender,
+          'email':userEmail,
+          'password':userPassword
+      }
+      post('api/register/', requests_data)
+          .then(function (res){
+			 
+			 console.log("Response: "+res);
+
+              if(res.status === 200){
+                  navigate("/home",false)
+              }
+          })
+          .catch(function (res){
+              console.log("Error : "+res)
+          })
+	
+	//navigate('/signin');
   
 
   };
@@ -108,18 +142,18 @@ export default function SignUp() {
   	<TextField
    	 required
    	 fullWidth
-   	 id="dob"
+   	 id="birthday"
    	 label="Date of Birth"
-    	name="dob"
+    	name="birthday"
   		/>
 		</Grid>
 		<Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="sex"
+                  id="gender"
                   label="Sex"
-                  name="sex"
+                  name="gender"
                 />
               </Grid>
               <Grid item xs={12}>
