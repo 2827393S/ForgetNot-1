@@ -212,59 +212,41 @@ export default class Demo extends React.PureComponent {
           onChange={this.currentViewNameChange}
         />
         <Paper>
-          <Scheduler
-            data={data}
-            height={570}
-          >
+            <Scheduler data={data} height={570}>
             <ViewState
               defaultCurrentDate="2023-02-19"
               currentViewName={currentViewName}
-			  currentDate={currentDate}
+              currentDate={currentDate}
               onCurrentDateChange={this.currentDateChange}
-          />
-			{/* <--- Appointment editing --->  */}
-			
-			 <EditingState
-            onCommitChanges={this.commitChanges}
-				/>
-          <IntegratedEditing />
-
-		  {/* <--- Daily view --->  */}
-			 <DayView
-            startDayHour={0}
-            endDayHour={24}
-          />
-		  
-		  {/* <--- Weekly view --->  */}
-            <WeekView
-              startDayHour={0}
-              endDayHour={24}
             />
+			{/* <--- Appointment editing --->  */}
+            <EditingState onCommitChanges={this.commitChanges} />
+            <IntegratedEditing />
+
+            {/* <--- Daily view --->  */}
+            <DayView startDayHour={0} endDayHour={24}/>
+		  
+            {/* <--- Weekly view --->  */}
+            <WeekView startDayHour={0} endDayHour={24}/>
           		 
-		{/* <--- Monthly view --->  */}
+            {/* <--- Monthly view --->  */}
             <MonthView />
 
-			{/* <--- Appointment form popup for creation and edit --->  */}
-          <Appointments />
-<AppointmentTooltip
-            showOpenButton
-            showDeleteButton
-          />
- <ConfirmationDialog />
+            {/* <--- Appointment form popup for creation and edit --->  */}
+            <Appointments />
+            <AppointmentTooltip showOpenButton showDeleteButton/>
+            <ConfirmationDialog />
 
-		  <Toolbar />
-          <DateNavigator />
-          <TodayButton />
-		 <AppointmentForm
-            basicLayoutComponent={BasicLayout}
-            textEditorComponent={TextEditor}
-          />
-		  <Resources
-            data={resources}
-            mainResourceName="labelId"
-          />
+            <Toolbar />
+            <DateNavigator />
+            <TodayButton />
+            <AppointmentForm basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor}/>
+            <Resources
+                data={resources}
+                mainResourceName="labelId"
+            />
 
-          </Scheduler>
+            </Scheduler>
         </Paper>
       </React.Fragment>
     );
