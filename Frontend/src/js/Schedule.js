@@ -83,8 +83,12 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
+	 this.state = {
+       addNewEvent: false
+     };
+	
 	  const labelId = window.localStorage.getItem('labelId');
-      alert("labelId schedule: "+labelId);
+      //alert("labelId schedule: "+labelId);
       let dataVal;
 
       if(labelId==='1'){
@@ -140,13 +144,16 @@ export default class Demo extends React.PureComponent {
     };
 	this.commitChanges = this.commitChanges.bind(this);
 	this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
+	
+	
+  
 
   }
 
     componentDidUpdate(prevProps) {
         if (this.props.label_id !== prevProps.label_id) {
 
-			alert("prevProps.label_id: "+prevProps.label_id); //to test
+			//alert("prevProps.label_id: "+prevProps.label_id); //to test
 
             let label_id = this.props.label_id;
             let dataVal;
@@ -207,6 +214,15 @@ export default class Demo extends React.PureComponent {
 
     const { data, currentViewName, currentDate, resources } = this.state;
 
+	
+	const showAppointmentForm = (bool) => {
+   
+			alert("Inside add new event click : "+bool);
+      	      this.setState({addNewEvent: bool})
+
+
+  };
+
     return (
 
       <React.Fragment>
@@ -234,16 +250,26 @@ export default class Demo extends React.PureComponent {
           		 
             {/* <--- Monthly view --->  */}
             <MonthView />
+			
+			 <Button width="100vh" id="addNewEventBtn" color="primary" fullWidth onClick={showAppointmentForm.bind(null,true)} >
+			 Add new event
+			 </Button>
+
 
             {/* <--- Appointment form popup for creation and edit --->  */}
             <Appointments />
-            <AppointmentTooltip showOpenButton showDeleteButton/>
+            <AppointmentTooltip showOpenButton showDeleteButton onOpenButtonClick={showAppointmentForm.bind(null,true)} 
+			/>
             <ConfirmationDialog />
 
             <Toolbar />
             <DateNavigator />
             <TodayButton />
-            <AppointmentForm basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor}/>
+
+            <AppointmentForm visible={this.state.addNewEvent} 
+				//onCancelButtonClick={showAppointmentForm.bind(null,false)}
+				basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor}/>
+				
             <Resources
                 data={resources}
                 mainResourceName="labelId"

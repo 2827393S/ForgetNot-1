@@ -38,6 +38,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import EmailIcon from '@mui/icons-material/Email';
+import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
+
 import {get,post} from '../utils/requests'
 
 //import { mainListItems } from './labelItems';
@@ -119,7 +121,7 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const [label_data,setLabelData] = React.useState([]);
     const [now_label_id,setNowLabelId] = React.useState(0);
     const toggleDrawer = () => {setOpen(!open);};
@@ -205,6 +207,9 @@ function DashboardContent() {
             >
               <MenuIcon />
             </IconButton>
+			<IconButton  color="inherit">
+                <AccessAlarmsOutlinedIcon fontSize="large"/>
+			</IconButton>
             <Typography
               component="h1"
               variant="h6"
@@ -215,20 +220,7 @@ function DashboardContent() {
             {appName}
             </Typography>
 
-              {/* <--- Notifications ---> */}
-
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-
-            {/* <--- Messages ---> */}
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <EmailIcon />
-              </Badge>
-            </IconButton>
+            
 
             {/* <--- Users logo and List view ---> */}
             <Box sx={{ flexGrow: 0 }}>
