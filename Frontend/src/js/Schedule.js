@@ -79,6 +79,10 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
   </RadioGroup>
 );
 
+// const Appointment = ({ onClick, onDoubleClick, ...restProps }) => {
+  // return <Appointments.Appointment onDoubleClick={onDoubleClick} {...restProps} />;
+// };
+
 export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -118,24 +122,7 @@ export default class Demo extends React.PureComponent {
           ],
         };
 	
-	/*this.state = {
-      data: appointments,
-      currentViewName: 'Month',
-	  currentDate: '2023-02-19',
-	  resources: [
-        {
-          fieldName: 'roomId',
-          title: 'Room',
-          instances: eventLabels,
-        },
-        {
-          fieldName: 'members',
-          title: 'Members',
-          instances: owners,
-          allowMultiple: true,
-        },
-      ],
-    };*/
+
 
     this.currentViewNameChange = (e) => {
       this.setState({ currentViewName: e.target.value });
@@ -190,6 +177,8 @@ export default class Demo extends React.PureComponent {
             })
     }
   
+ 
+  
   	/* <--- Appointment editing and saving --->  */
 
    commitChanges({ added, changed, deleted }) {
@@ -206,9 +195,19 @@ export default class Demo extends React.PureComponent {
       if (deleted !== undefined) {
         data = data.filter(appointment => appointment.id !== deleted);
       }
+	  console.log("*********** DATA ****************");
+	  console.table(data);
+	  
+	 alert("Setting false : "+this.state.addNewEvent);
+	 
+	 
+	 this.setState({addNewEvent:false})
+
       return { data };
     });
   }
+  
+  
 
   render() {
 
@@ -222,6 +221,14 @@ export default class Demo extends React.PureComponent {
 
 
   };
+  
+  	const appointmentForm = () => {
+   
+      	    //  this.setState({addNewEvent: bool})
+
+
+  };
+  
 
     return (
 
@@ -257,8 +264,9 @@ export default class Demo extends React.PureComponent {
 
 
             {/* <--- Appointment form popup for creation and edit --->  */}
-            <Appointments />
-            <AppointmentTooltip showOpenButton showDeleteButton onOpenButtonClick={showAppointmentForm.bind(null,true)} 
+            <Appointments/>
+
+            <AppointmentTooltip showOpenButton showDeleteButton onOpenButtonClick={appointmentForm.bind(null)} 
 			/>
             <ConfirmationDialog />
 
@@ -267,8 +275,9 @@ export default class Demo extends React.PureComponent {
             <TodayButton />
 
             <AppointmentForm visible={this.state.addNewEvent} 
-				//onCancelButtonClick={showAppointmentForm.bind(null,false)}
-				basicLayoutComponent={BasicLayout} textEditorComponent={TextEditor}/>
+				//commandButtonComponent={this.commandButton}
+				basicLayoutComponent={BasicLayout} 
+				textEditorComponent={TextEditor}/>
 				
             <Resources
                 data={resources}
