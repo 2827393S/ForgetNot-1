@@ -159,20 +159,21 @@ function DashboardContent() {
     };
 
 
-  // const filterEvents = value => () => {
-	// alert("Clicked label: "+value);
-	// window.localStorage.setItem( 'labelId', value );
-	// navigate(0);
+  const filterEvents = value => () => {
+	alert("Clicked label: "+value);
+	window.localStorage.setItem( 'labelId', value );
+	navigate(0);
 
-  // };
+  };
 
 
     function displayListItemButton(props){
         return (
 		
-             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}> 
-                
+/*             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}> 
+ */               
 
+	<ListItemButton key={props.id} onClick={filterEvents(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}>
 
 				<ListItemIcon>
                     <ModeOfTravelIcon />
