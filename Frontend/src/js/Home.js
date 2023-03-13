@@ -40,7 +40,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import EmailIcon from '@mui/icons-material/Email';
 import {get,post} from '../utils/requests'
 
-import { mainListItems } from './labelItems';
+//import { mainListItems } from './labelItems';
 
 import {appName} from './Globals.js';
 import Schedule from './Schedule.js';
@@ -159,11 +159,22 @@ function DashboardContent() {
     };
 
 
+  // const filterEvents = value => () => {
+	// alert("Clicked label: "+value);
+	// window.localStorage.setItem( 'labelId', value );
+	// navigate(0);
+
+  // };
+
 
     function displayListItemButton(props){
         return (
-            <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}>
-                <ListItemIcon>
+		
+             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}> 
+                
+
+
+				<ListItemIcon>
                     <ModeOfTravelIcon />
                 </ListItemIcon>
                 <ListItemText primary={props.name} />
@@ -267,43 +278,47 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-             {/*<--- Birthdays ---> */}
+             {/*<--- Birthdays ---> 
             <ListItemButton onClick={() => setNowLabelId(1)}  sx={{ backgroundColor: labelId===1?"#ffa07a60":""}}>
                 <ListItemIcon>
                     <CakeIcon />
                 </ListItemIcon>
                 <ListItemText primary="Birthdays" />
-            </ListItemButton>
+            </ListItemButton>*/}
 
-              {/* <--- Meetings ---> */}
+              {/* <--- Meetings ---> 
             <ListItemButton onClick={() => setNowLabelId(2)} sx={{ backgroundColor: labelId===2?"#90ee9060":"" }}>
                 <ListItemIcon>
                     <GroupsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Meetings" />
-            </ListItemButton>
+            </ListItemButton>*/}
 
 
-              {/* <--- Tasks ---> */}
+              {/* <--- Tasks --->
             <ListItemButton onClick={() => setNowLabelId(3)} sx={{ backgroundColor: labelId===3?"#87ceeb60":"" }}>
                 <ListItemIcon>
                     <ListAltIcon />
                 </ListItemIcon>
                 <ListItemText primary="Tasks" />
-            </ListItemButton>
+            </ListItemButton> */}
 
-              {/* <--- Travel ---> */}
+              {/* <--- Travel ---> 
             <ListItemButton onClick={() => setNowLabelId(4)} sx={{ backgroundColor: labelId===4?"#d1e18960":"" }}>
                 <ListItemIcon>
                     <ModeOfTravelIcon />
                 </ListItemIcon>
                 <ListItemText primary="Travel" />
-            </ListItemButton>
-              {
+			  </ListItemButton> */}
+			  
+			  {/* Label update */}
+            
+			{
                   label_data.map((value) => {
+					  //alert("value: "+value.id);
                       return displayListItemButton(value)
                   })
-              }
+            }
 
           </List>
         </Drawer>

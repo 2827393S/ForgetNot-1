@@ -84,7 +84,7 @@ export default class Demo extends React.PureComponent {
     super(props);
 
 	  const labelId = window.localStorage.getItem('labelId');
-      //alert("labelId schedule: "+labelId);
+      alert("labelId schedule: "+labelId);
       let dataVal;
 
       if(labelId==='1'){
@@ -146,6 +146,8 @@ export default class Demo extends React.PureComponent {
     componentDidUpdate(prevProps) {
         if (this.props.label_id !== prevProps.label_id) {
 
+			alert("prevProps.label_id: "+prevProps.label_id); //to test
+
             let label_id = this.props.label_id;
             let dataVal;
 
@@ -165,10 +167,11 @@ export default class Demo extends React.PureComponent {
             console.log(dataVal)
 
             this.setState({data:dataVal})
+			
 
 
             // props change
-            // this.getEventList(this.props.label_id)
+             this.getEventList(this.props.label_id)
         }
     }
 
@@ -176,7 +179,7 @@ export default class Demo extends React.PureComponent {
       console.log(label_id)
         get("/api/event/get_list",{"id":label_id})
             .then(function (res){
-                console.log(res)
+                console.log("list:" +res)
             })
     }
   
