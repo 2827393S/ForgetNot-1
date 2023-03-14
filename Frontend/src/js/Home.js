@@ -270,46 +270,8 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-             {/*<--- Birthdays ---> 
-            <ListItemButton onClick={() => setNowLabelId(1)}  sx={{ backgroundColor: labelId===1?"#ffa07a60":""}}>
-                <ListItemIcon>
-                    <CakeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Birthdays" />
-            </ListItemButton>*/}
-
-              {/* <--- Meetings ---> 
-            <ListItemButton onClick={() => setNowLabelId(2)} sx={{ backgroundColor: labelId===2?"#90ee9060":"" }}>
-                <ListItemIcon>
-                    <GroupsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Meetings" />
-            </ListItemButton>*/}
-
-
-              {/* <--- Tasks --->
-            <ListItemButton onClick={() => setNowLabelId(3)} sx={{ backgroundColor: labelId===3?"#87ceeb60":"" }}>
-                <ListItemIcon>
-                    <ListAltIcon />
-                </ListItemIcon>
-                <ListItemText primary="Tasks" />
-            </ListItemButton> */}
-
-              {/* <--- Travel ---> 
-            <ListItemButton onClick={() => setNowLabelId(4)} sx={{ backgroundColor: labelId===4?"#d1e18960":"" }}>
-                <ListItemIcon>
-                    <ModeOfTravelIcon />
-                </ListItemIcon>
-                <ListItemText primary="Travel" />
-			  </ListItemButton> */}
-			  
-			  {/* Label update */}
-            
 			{
                   label_data.map((value) => {
-					  console.log("****** Label Data ******");
-					  console.table(label_data);
-					  //alert("value: "+value.id);
                       return displayListItemButton(value)
                   })
             }

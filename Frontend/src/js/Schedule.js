@@ -5,18 +5,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
 import {
-  Scheduler,
-  DayView,
-  WeekView,
-  MonthView,
-  Appointments,
-  AppointmentForm,
-  AppointmentTooltip,
-  ConfirmationDialog,
-  Toolbar,
-  DateNavigator,
-  TodayButton,
-  Resources,
+    Scheduler,
+    DayView,
+    WeekView,
+    MonthView,
+    Appointments,
+    AppointmentForm,
+    AppointmentTooltip,
+    ConfirmationDialog,
+    Toolbar,
+    DateNavigator,
+    TodayButton,
+    Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from '@mui/material/Button';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
@@ -87,45 +87,27 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
+      let dataVal=[];
 
 
 	/* State variable to keep track of appointment form visibility */
 	 this.state = {
-       addNewEvent: false
+
      };
-	
-	/* variable to keep track of active label and filtering events based on that*/
-
-	  const labelId = window.localStorage.getItem('labelId'); // Assign the last used labelid by default
-      //alert("labelId schedule: "+labelId);
-      let dataVal;
-
-      if(labelId==='1'){
-			dataVal=birthdays;
-		}else if(labelId==='2'){
-			dataVal=meetings;
-		}else if(labelId==='3'){
-			dataVal=tasks;
-		}else if(labelId==='4'){
-			dataVal=travel;
-		}else {
-			dataVal=birthdays;
-		}
-      console.log(dataVal);
 
     this.state = {
-          data: dataVal,
-          currentViewName: window.localStorage.getItem( 'currentViewName'),
-          currentDate: new Date(),
-          resources: [
-    /* <--- This displays the label field and drop down selection--->  */
+        data: dataVal,
+        addNewEvent: false,
+        currentViewName: window.localStorage.getItem( 'currentViewName'),
+        resources: [
+        /* <--- This displays the label field and drop down selection--->  */
             {
               fieldName: 'labelId',
               title: 'Label',
               instances: eventLabels,
             },
-          ],
-        };
+        ],
+    };
 	
 
 
@@ -144,44 +126,30 @@ export default class Demo extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         if (this.props.label_id !== prevProps.label_id) {
-
-			//alert("prevProps.label_id: "+prevProps.label_id); //to test
-
-            let label_id = this.props.label_id;
-            let dataVal;
-
-
-// <--------- Static events data below -------->
-            if(label_id===1){
-                dataVal=birthdays;
-            }else if(label_id===2){
-                dataVal=meetings;
-            }else if(label_id===3){
-                dataVal=tasks;
-            }else if(label_id===4){
-                dataVal=travel;
-            }else {
-                dataVal = birthdays;
-            }
-// <------------------------------------------->
-
-            console.log(dataVal)
-
-            this.setState({data:dataVal})
-			
-
-
-            // props change
-             this.getEventList(this.props.label_id)
+            let that = this
+            this.getEventList(this.props.label_id)
+                .then(function (res){
+                    that.setState({data:res})
+                })
         }
     }
 
-    getEventList(label_id){
-      console.log(label_id)
-        get("/api/event/get_list",{"id":label_id})
+    async getEventList(label_id){
+        let dataVal = [];
+        await get("/api/event/get_list",{"id":label_id})
             .then(function (res){
-                console.log("list:" +res)
+                let data = res.data
+                data.forEach(value=>{
+                    value['startDate'] = new Date(value['startTime'])
+                    value['endDate'] = new Date(value['endTime'])
+                    value['allDay'] = false
+                    value['rRule'] = ''
+                    delete value['startTime'];
+                    delete value['endTime'];
+                    dataVal.push(value)
+                })
             })
+        return dataVal
     }
   
  
@@ -191,13 +159,17 @@ export default class Demo extends React.PureComponent {
    commitChanges({ added, changed, deleted }) {
     this.setState((state) => {
       let { data } = state;
+
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
         data = [...data, { id: startingAddedId, ...added }];
       }
       if (changed) {
-        data = data.map(appointment => (
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment));
+          console.log("this is the change:",changed);
+          console.log("this is the data",data)
+        data = data.map((appointment) => (
+          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment)
+        );
       }
       if (deleted !== undefined) {
         data = data.filter(appointment => appointment.id !== deleted);
@@ -220,10 +192,15 @@ export default class Demo extends React.PureComponent {
 
 	/* Method to toggle appointment form visibility */
 	const showAppointmentForm = (bool) => {
+
          this.setState({addNewEvent: bool})
-  };
+    };
   
-  
+  	const appointmentForm = () => {
+   
+      	    //  this.setState({addNewEvent: bool})
+      };
+
   
 
     return (
@@ -238,7 +215,6 @@ export default class Demo extends React.PureComponent {
             <ViewState
               defaultCurrentDate={new Date()}
               currentViewName={currentViewName}
-              currentDate={currentDate}
               onCurrentDateChange={this.currentDateChange}
             />
 			{/* <--- Appointment editing --->  */}
