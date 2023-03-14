@@ -172,9 +172,9 @@ function DashboardContent() {
     function displayListItemButton(props){
         return (
 		
-             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===props.id?"#d1e18960":"" }}> 
-                
-
+		
+             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===now_label_id?"#87ceeb60":"" }}> 
+				
 
 				<ListItemIcon>
                     <ModeOfTravelIcon />
@@ -307,6 +307,8 @@ function DashboardContent() {
             
 			{
                   label_data.map((value) => {
+					  console.log("****** Label Data ******");
+					  console.table(label_data);
 					  //alert("value: "+value.id);
                       return displayListItemButton(value)
                   })

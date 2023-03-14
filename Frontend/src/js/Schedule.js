@@ -19,6 +19,7 @@ import {
   Resources,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from '@mui/material/Button';
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 
 //import { appointments } from './demo-data/month-appointments';
 //import { owners } from './demo-data/tasks';
@@ -87,11 +88,15 @@ export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
 
+
+	/* State variable to keep track of appointment form visibility */
 	 this.state = {
        addNewEvent: false
      };
 	
-	  const labelId = window.localStorage.getItem('labelId');
+	/* variable to keep track of active label and filtering events based on that*/
+
+	  const labelId = window.localStorage.getItem('labelId'); // Assign the last used labelid by default
       //alert("labelId schedule: "+labelId);
       let dataVal;
 
@@ -111,7 +116,7 @@ export default class Demo extends React.PureComponent {
     this.state = {
           data: dataVal,
           currentViewName: window.localStorage.getItem( 'currentViewName'),
-          currentDate: '2023-02-19',
+          currentDate: new Date(),
           resources: [
     /* <--- This displays the label field and drop down selection--->  */
             {
@@ -146,6 +151,7 @@ export default class Demo extends React.PureComponent {
             let dataVal;
 
 
+// <--------- Static events data below -------->
             if(label_id===1){
                 dataVal=birthdays;
             }else if(label_id===2){
@@ -157,6 +163,7 @@ export default class Demo extends React.PureComponent {
             }else {
                 dataVal = birthdays;
             }
+// <------------------------------------------->
 
             console.log(dataVal)
 
@@ -195,13 +202,11 @@ export default class Demo extends React.PureComponent {
       if (deleted !== undefined) {
         data = data.filter(appointment => appointment.id !== deleted);
       }
-	  console.log("*********** DATA ****************");
-	  console.table(data);
 	  
-	 alert("Setting false : "+this.state.addNewEvent);
-	 
-	 
-	 this.setState({addNewEvent:false})
+	  console.log("*********** COMMITTED DATA ****************");
+	  console.table(data);
+	  	 
+		this.setState({addNewEvent:false})
 
       return { data };
     });
@@ -213,21 +218,12 @@ export default class Demo extends React.PureComponent {
 
     const { data, currentViewName, currentDate, resources } = this.state;
 
-	
+	/* Method to toggle appointment form visibility */
 	const showAppointmentForm = (bool) => {
-   
-			alert("Inside add new event click : "+bool);
-      	      this.setState({addNewEvent: bool})
-
-
+         this.setState({addNewEvent: bool})
   };
   
-  	const appointmentForm = () => {
-   
-      	    //  this.setState({addNewEvent: bool})
-
-
-  };
+  
   
 
     return (
@@ -240,7 +236,7 @@ export default class Demo extends React.PureComponent {
         <Paper>
             <Scheduler data={data} height={570}>
             <ViewState
-              defaultCurrentDate="2023-02-19"
+              defaultCurrentDate={new Date()}
               currentViewName={currentViewName}
               currentDate={currentDate}
               onCurrentDateChange={this.currentDateChange}
@@ -258,7 +254,12 @@ export default class Demo extends React.PureComponent {
             {/* <--- Monthly view --->  */}
             <MonthView />
 			
-			 <Button width="100vh" id="addNewEventBtn" color="primary" fullWidth onClick={showAppointmentForm.bind(null,true)} >
+			 <Button 
+				variant="contained" 
+				sx={{maxWidth: '200px', maxHeight: '40px'}} 
+				color="primary" 
+				startIcon={<EventOutlinedIcon />}
+				onClick={showAppointmentForm.bind(null,true)} >
 			 Add new event
 			 </Button>
 
@@ -266,7 +267,7 @@ export default class Demo extends React.PureComponent {
             {/* <--- Appointment form popup for creation and edit --->  */}
             <Appointments/>
 
-            <AppointmentTooltip showOpenButton showDeleteButton onOpenButtonClick={appointmentForm.bind(null)} 
+            <AppointmentTooltip showOpenButton showDeleteButton  
 			/>
             <ConfirmationDialog />
 
@@ -275,7 +276,8 @@ export default class Demo extends React.PureComponent {
             <TodayButton />
 
             <AppointmentForm visible={this.state.addNewEvent} 
-				//commandButtonComponent={this.commandButton}
+				onVisibilityChange={showAppointmentForm.bind(null)}
+
 				basicLayoutComponent={BasicLayout} 
 				textEditorComponent={TextEditor}/>
 				
