@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useNavigate } from 'react-router-dom';
 
-//import background from '/assets/images/background.jpg';
+import '../css/landing.css';
 
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
@@ -36,17 +36,11 @@ function ButtonGroup() {
 
   return (
     <>
-      <Button  onClick={loadSignUp}
-        variant="contained"
-        sx={{ mr: 2, backgroundColor: 'black', '&:hover': { backgroundColor: 'transparent' } }}
-      >
+      <Button  onClick={loadSignUp} variant="contained" className="buttons">
         Sign Up
       </Button>
 
-      <Button onClick={loadSignIn} 
-        variant="contained"
-        sx={{ ml: 2, backgroundColor: 'black', '&:hover': { backgroundColor: 'transparent' } }}
-      >
+      <Button onClick={loadSignIn} variant="contained" className="buttons">
         Log In
       </Button>
     </>
@@ -67,32 +61,25 @@ function LandingPage() {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+       
         flexDirection: 'column',
         px: 4,
       }}>
         <Box sx={{ my: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography component="h1" variant="h2" align="center" fontFamily="Baskerville" sx={{ fontWeight: 700, mb: 2, fontSize: '5rem', color: 'cobalt', opacity: 0.8 }}>
+          <Typography component="h1" variant="h2"  fontFamily="Baskerville" className="title1">
             Welcome to ForgetNot
           </Typography>
 
-          <Typography component="h2" variant="h5" align="center" fontFamily="Baskerville" sx={{ fontWeight: 800, mb: 2, fontSize: '2rem', color: 'cobalt', opacity: 0.7, fontStyle: 'italic' }}>
+          <Typography component="h2" variant="h5" align="center" fontFamily="Baskerville" className="title2">
             The easy to use online planner
           </Typography>
 
           <Box sx={{ mt: 4 }}>
             <ButtonGroup />
           </Box>
-
-          <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" sx={{ fontWeight: 600, mt: 4, color: 'cobalt', opacity: 0.8,'&:hover': {
-      textDecoration: 'none',
-      cursor: 'pointer',} }}>
-  <Link onClick={() => navigate('/contact', false)}>Contact us</Link>
-</Typography>
-
-
+			
+			<Link className="link" onClick={() => navigate('/contact', false)}>Contact us</Link>
+      
         </Box>
       </Box>
     </ThemeProvider>

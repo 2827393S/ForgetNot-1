@@ -25,7 +25,7 @@ import {appName} from '../js/Globals.js';
 //import logoImage from '/assets/images/logo.JPG';
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath="/assets/images/logo.JPG";
+var logoPath="/assets/images/loginBg.JPG";
 
 function Copyright(props) {
 	const navigate = useNavigate();
