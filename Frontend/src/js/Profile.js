@@ -8,11 +8,15 @@ import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
-
-
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 import Box from '@mui/material/Box';
 import {appName} from './Globals.js';
+
+
+import axios from "axios"
+import {get,post} from '../utils/requests'
 
 import "../css/styles.css";
 
@@ -50,6 +54,13 @@ const theme = createTheme();
 
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
+  const [userGender, setGender] = useState('nil');
+
+	 
+	  const handleChange = (event: SelectChangeEvent) => {
+			setGender(event.target.value);
+  };
+  
 
 /* After DOM is loaded, hide cancel button */
 	React.useEffect(() => {
@@ -73,12 +84,12 @@ const theme = createTheme();
 
   const handleEdit = (event) => {
 	  
-	  // Toggle between edit and save
-	      setActive(!active);
-		  
+	 
 		  if(active===false){ // Enable edit
 		  	  alert("Enabling editing....!");
 				document.getElementById('cancel').style.visibility = 'visible';
+				// Toggle between edit and save
+				setActive(!active);
 		  }else{ // Save edits
 			 alert("Saving edits....!");
 			 
@@ -86,7 +97,6 @@ const theme = createTheme();
 	          const userFname =  document.getElementById('firstName').value;
 	          const userLname = document.getElementById('lastName').value;
 	          const userBday = document.getElementById('birthday').value;
-			  const userGender = document.getElementById('gender').value;
 			  const userEmail = document.getElementById('email').value;
 			  console.log({
 				firstName: userFname,
@@ -97,8 +107,43 @@ const theme = createTheme();
 	  
 				});
 			 
+			  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
+			  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender!='nil')
+				{
+						
+					const requests_data = {
+						  'firstName':userFname,
+						  'lastName':userLname,
+						  'birthday':userBday,
+						  'gender':userGender,
+					  }
+					  
+					  // post('api/myprofile/', requests_data) // POST data to webserver
+						  // .then(function (res){
+							 
+							// console.log("Response: "+res);
+	
+							//If the response code is 200, signup is successful. Proceed to SignIn page. Otherwise, display an alert to the user
+							  // if(res.status === 200){
+								  alert("Saved !");
+								  document.getElementById('cancel').style.visibility = 'hidden';
+								   // Toggle between edit and save
+									setActive(!active);
+	  
+							  // }else{
+								  // alert("Saving failed, please try again !");
+							  // }
+						  // })
+						  // .catch(function (res){
+							  // console.log("Error : "+res)
+							  // alert("Sign Up failed, please try again !");
+
+						  // })
+					
+				}else{
+					alert("Please fill all the fields !");
+				}
 			 
-			  document.getElementById('cancel').style.visibility = 'hidden';
 
 
 		  }
@@ -163,8 +208,12 @@ const theme = createTheme();
             </Grid>
            
             <Grid item xs={12} sm={6}>
-              <TextField fullWidth id="gender" label="Gender" defaultValue="Male" disabled={!active}/>
-               
+				<Select required fullWidth value={userGender} label="gender" onChange={handleChange} disabled={!active}>
+					  <MenuItem value={'nil'}>Gender</MenuItem>
+					  <MenuItem value={'male'}>Male</MenuItem>
+					  <MenuItem value={'female'}>Female</MenuItem>
+
+				</Select>               
             </Grid>
             <Grid item xs={12} sm={6}>
 				<TextField fullWidth id="birthday" label="Date of Birth" defaultValue="1990-01-01" disabled={!active}/>
