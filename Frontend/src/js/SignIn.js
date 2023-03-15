@@ -21,12 +21,11 @@ import Home from '../js/Home.js';
 import {root} from '../index.js';
 
 import {appName} from '../js/Globals.js';
-//import logoImage from './logo.JPG';
-//import logoImage from '/assets/images/logo.JPG';
 
 var publicPath=process.env.PUBLIC_URL;
 var logoPath="/assets/images/loginBg.JPG";
 
+/* Copyright label */
 function Copyright(props) {
 	const navigate = useNavigate();
   return (
@@ -47,50 +46,47 @@ const theme = createTheme();
 export default function SignInSide() {
   const navigate = useNavigate();
 
+/* Handle SignIn button click */
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userEmail = data.get('email');
     const userPassword = data.get('password');
-    //alert("Email: "+userEmail);
+	
     console.log({
       email: userEmail,
       password: userPassword,
     });
- 	// axios({
-    //   method: "post",
-    //   url: "user/login/", // url
-    //   headers: {
-    //       "Content-Type": "application/json",
-    //   },
-    //   data: {
-    //       "email":userEmail,
-    //       "password":userPassword
-    //   }
-    // })
-    //   .then(function(res) {
-    //       const data = res.data
-    //       if(data.code === 200){
-    //           console.log(data)
-    //       }else{
-    //           console.log()
-    //       }
-    //   })
+ 	
       const requests_data = {
           'email':userEmail,
           'password':userPassword
       }
-      post('api/login/', requests_data)
+	  
+	  // If the userEmail and userPassword field are not empty, call webservice. Otherwise display an alert to the user
+	  if(userEmail.length!=0 && userPassword.length!=0)
+	  {
+		   post('api/login/', requests_data)
           .then(function (res){
+			  
+			  // If the response code is 200 -> sign in successful, proceed to home page. Otherwise display relevant alert to the user
               if(res.status === 200){
                   navigate("/home",false)
-              }
+              }else if(res.status === 401){
+				  alert("User cannot be found, Please register and try again!");
+			  }else
+				  alert("SignIn failed,Please try again!");
           })
           .catch(function (res){
-              console.log(res)
-          })
-
-	 // navigate('/home',false);
+              console.log(res);
+				  alert("User cannot be found, Please register and try again!");
+			  
+          }) 
+		  
+	  }else
+		  alert("Please enter the registered Email address and password!");
+	  
+    
   };
 
   return (
@@ -148,10 +144,7 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-			  {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
+			 
               <Button
                 type="submit"
                 fullWidth
@@ -161,16 +154,7 @@ export default function SignInSide() {
                 Sign In
               </Button>
               <Grid container>
-			  {/*<Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-			  <Grid item>
-                  <Link onClick={() => navigate('/signup', false)} variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>*/}
+			  
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>

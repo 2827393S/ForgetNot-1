@@ -19,13 +19,14 @@
 .buttons{
 	font-family: 'Baskerville';
 	padding: 2px;
-	margin-top: 300px !important;
+	margin-top: 500px !important;
 	margin-left:20px !important;
 	margin-right:20px !important;
 	font-size: 14px;
 	text-align: center;
-	background-color: #000000 !important;
+	background-color: #00008B !important;
 	color: #fff;
+	
 	 
 }
 
@@ -40,7 +41,7 @@
 	font-family: 'Baskerville';
 	margin-top: 20px !important;
 	font-size: 1.3em;
-	color: black;
+	color: #000000;
 
 }
 .link:hover {
