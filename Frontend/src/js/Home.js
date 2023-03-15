@@ -36,9 +36,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import EmailIcon from '@mui/icons-material/Email';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
+
 
 import {get,post} from '../utils/requests'
 
@@ -184,6 +186,9 @@ function DashboardContent() {
         )
     }
 
+ const handleLogoutClick = () => {
+    // handle logging out the user
+  };
 
     return (
     <ThemeProvider theme={mdTheme}>
@@ -220,10 +225,20 @@ function DashboardContent() {
             {appName}
             </Typography>
 
+			{/* My profile icon */}
+			<IconButton color="inherit">
+				<AccountBoxIcon fontSize="large" onClick={() => navigate('/profile', false)}/>
+			</IconButton>
+			
+			{/* Logout icon */}
+
+			<IconButton color="inherit">
+				<LogoutOutlinedIcon fontSize="large" onClick={handleLogoutClick}/>
+			</IconButton>
             
 
             {/* <--- Users logo and List view ---> */}
-            <Box sx={{ flexGrow: 0 }}>
+				{/*<Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -251,7 +266,7 @@ function DashboardContent() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+				</Box>*/}
 
           </Toolbar>
         </AppBar>

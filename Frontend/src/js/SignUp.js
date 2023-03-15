@@ -18,6 +18,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Input, InputAdornment} from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+
 
 import axios from "axios"
 import {get,post} from '../utils/requests'
@@ -51,6 +55,16 @@ const theme = createTheme();
 
 export default function SignUp() {
 	 const navigate = useNavigate();
+	 
+	  const [userGender, setGender] = React.useState('nil');
+
+	 
+	  const handleChange = (event: SelectChangeEvent) => {
+			setGender(event.target.value);
+  };
+  
+  
+  
 
 /* Handle signup button click */
 
@@ -60,7 +74,7 @@ export default function SignUp() {
 	const userFname = data.get('firstName');
 	const userLname = data.get('lastName');
 	const userBday = data.get('birthday');
-	const userGender = data.get('gender');
+	//const userGender = data.get('gender');
 	const userEmail = data.get('email');
     const userPassword = data.get('password');
     console.log({
@@ -73,19 +87,21 @@ export default function SignUp() {
 	  
     });
 	
-		
-	const requests_data = {
-		  'firstName':userFname,
-		  'lastName':userLname,
-		  'birthday':userBday,
-		  'gender':userGender,
-          'email':userEmail,
-          'password':userPassword
-      }
-	  
+	
+
 	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
-	  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender.length!=0 && userEmail.length!=0 && userPassword!=0)
+	  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender!='nil' && userEmail.length!=0 && userPassword!=0)
 		{
+				
+			const requests_data = {
+				  'firstName':userFname,
+				  'lastName':userLname,
+				  'birthday':userBday,
+				  'gender':userGender,
+				  'email':userEmail,
+				  'password':userPassword
+			  }
+			  
 			  post('api/register/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
@@ -111,6 +127,8 @@ export default function SignUp() {
 
   };
 
+
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -169,13 +187,20 @@ export default function SignUp() {
 					</Grid>
 					
 			<Grid item xs={12} sm={6}>
-                <TextField
+				{/* <TextField
                   required
                   fullWidth
                   id="gender"
                   label="Sex"
                   name="gender"
-                />
+                /> */}
+				
+				<Select required fullWidth value={userGender} label="gender" onChange={handleChange}>
+					  <MenuItem value={'nil'}>Gender</MenuItem>
+					  <MenuItem value={'male'}>Male</MenuItem>
+					  <MenuItem value={'female'}>Female</MenuItem>
+
+				</Select>
               </Grid>
 			  
               <Grid item xs={12}>

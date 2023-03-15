@@ -91,9 +91,9 @@ function ContactUsPage() {
           </Box>
 
           <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" sx={{ fontWeight: 600, mt: 4, color: 'cobalt', opacity: 0.8,'&:hover': {
-      textDecoration: 'none',
-      cursor: 'pointer',} }}>
-            <Link onClick={() => navigate('/', false)}>Back to Home</Link>
+				textDecoration: 'none',
+				cursor: 'pointer',} }}>
+            <Link onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
           </Typography>
         </Box>
       </Box>
