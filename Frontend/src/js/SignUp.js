@@ -71,6 +71,8 @@ export default function SignUp() {
 	  
     });
 	
+	
+		
 	const requests_data = {
 		  'firstName':userFname,
 		  'lastName':userLname,
@@ -79,20 +81,30 @@ export default function SignUp() {
           'email':userEmail,
           'password':userPassword
       }
-      post('api/register/', requests_data)
-          .then(function (res){
-			 
-			 console.log("Response: "+res);
+	  
+	  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender.length!=0 && userEmail.length!=0 && userPassword!=0)
+		{
+			  post('api/register/', requests_data)
+				  .then(function (res){
+					 
+					 console.log("Response: "+res);
 
-              if(res.status === 200){
-                  navigate("/home",false)
-              }
-          })
-          .catch(function (res){
-              console.log("Error : "+res)
-          })
-	
-	//navigate('/signin');
+					  if(res.status === 200){
+						  navigate("/signin",false)
+					  }else{
+						  alert("Sign Up failed, please try again !");
+					  }
+				  })
+				  .catch(function (res){
+					  console.log("Error : "+res)
+					  alert("Sign Up failed, please try again !");
+
+				  })
+			
+			//navigate('/signin');
+		}else{
+			alert("Please fill all the fields !");
+		}
   
 
   };
