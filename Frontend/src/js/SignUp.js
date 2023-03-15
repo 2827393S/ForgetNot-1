@@ -30,7 +30,7 @@ import {appName} from '../js/Globals.js';
 
 import Schedule from '../js/Schedule.js';
 
-
+/* Copyright label */
 function Copyright(props) {
 const navigate = useNavigate();
   return (
@@ -52,6 +52,8 @@ const theme = createTheme();
 export default function SignUp() {
 	 const navigate = useNavigate();
 
+/* Handle signup button click */
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -71,7 +73,6 @@ export default function SignUp() {
 	  
     });
 	
-	
 		
 	const requests_data = {
 		  'firstName':userFname,
@@ -82,13 +83,15 @@ export default function SignUp() {
           'password':userPassword
       }
 	  
+	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
 	  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender.length!=0 && userEmail.length!=0 && userPassword!=0)
 		{
-			  post('api/register/', requests_data)
+			  post('api/register/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
-					 console.log("Response: "+res);
+					console.log("Response: "+res);
 
+					// If the response code is 200, signup is successful. Proceed to SignIn page. Otherwise, display an alert to the user
 					  if(res.status === 200){
 						  navigate("/signin",false)
 					  }else{
@@ -101,7 +104,6 @@ export default function SignUp() {
 
 				  })
 			
-			//navigate('/signin');
 		}else{
 			alert("Please fill all the fields !");
 		}
@@ -121,14 +123,18 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
+
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+		  
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+		  
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+			
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
@@ -140,6 +146,7 @@ export default function SignUp() {
                   autoFocus
                 />
               </Grid>
+			  
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
@@ -150,16 +157,18 @@ export default function SignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
-	  <Grid item xs={12} sm={6}>
-  	<TextField
-   	 required
-   	 fullWidth
-   	 id="birthday"
-   	 label="Date of Birth"
-    	name="birthday"
-  		/>
-		</Grid>
-		<Grid item xs={12} sm={6}>
+			  
+			 <Grid item xs={12} sm={6}>
+				<TextField
+				 required
+				 fullWidth
+				 id="birthday"
+				 label="Date of Birth"
+					name="birthday"
+					/>
+					</Grid>
+					
+			<Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -168,6 +177,7 @@ export default function SignUp() {
                   name="gender"
                 />
               </Grid>
+			  
               <Grid item xs={12}>
                 <TextField
                   required
@@ -178,6 +188,7 @@ export default function SignUp() {
                   autoComplete="email"
                 />
               </Grid>
+			  
               <Grid item xs={12}>
                 <TextField
                   required
@@ -191,6 +202,7 @@ export default function SignUp() {
               </Grid>
              
             </Grid>
+			
             <Button
               type="submit"
               fullWidth
@@ -199,6 +211,7 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+			
             <Grid container justify Content="flex-end">
               <Grid item>
                 <Link onClick={() => navigate('/signin', false)} variant="body2">
@@ -206,6 +219,7 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
+			
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
