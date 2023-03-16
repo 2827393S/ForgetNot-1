@@ -23,7 +23,11 @@ import {get,post} from '../utils/requests'
 import "../css/styles.css";
 import {useEffect} from "react";
 
-
+/*<---- disable back button of browser ---->*/
+window.history.pushState(null, null, window.location.href);
+window.onpopstate = function () {
+    window.history.go(1);
+};
 
 const theme = createTheme();
 
@@ -98,21 +102,24 @@ const MyProfile = () => {
         setActive(!active);
 
 		  if(active===false){ // Enable edit
-		  	  alert("Enabling editing....!");
                 setOldData(data);
 				setActive(!active);
 		  }else{ // Save edits
               if(data.lastName==="" || data.firstName === "" || data.birthday === "" || data.email === ""){
-                  alert("have empty");
+                  alert("Please fill all fields");
                   handleCancel();
-                  return
+                  return;
               }
               console.log(data)
               post('/api/user/update/',data)
                   .then(function (res){
-                      console.log("success")
-                  })
-              alert("Saving edits....!");
+                      console.log("success");
+					  alert("Saved!");
+                  })  .catch(function (res){
+					  console.log("Error : "+res)
+					  alert("Saving failed, please try again !");
+
+				  })
 		  }
 
    
@@ -123,7 +130,11 @@ const MyProfile = () => {
   };
 
   const handleLogoutClick = () => {
-    navigate('/SignIn')
+	  if (window.confirm('Are you sure you want to logout?')) 
+	  {
+		 navigate('/SignIn',true);
+	  } 
+   
   };
 
   const textOnchange = (event) =>{

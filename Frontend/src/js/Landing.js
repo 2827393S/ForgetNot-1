@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/landing.css';
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/landingBg.jpg';
+var logoPath= '/assets/images/landingBg.png';
 
 const theme = createTheme();
 

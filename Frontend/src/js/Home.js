@@ -53,6 +53,8 @@ var labelId=window.localStorage.getItem( 'labelId');
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
 
+
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -147,7 +149,7 @@ function DashboardContent() {
 const filterEvents = value => () => {
 	window.localStorage.setItem( 'labelId', value );
 	//alert("Clicked label: "+window.localStorage.getItem( 'labelId'));
-	navigate(0);
+	navigate(0,{ replace: true });
 
   };
 

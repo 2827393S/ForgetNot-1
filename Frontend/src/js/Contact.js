@@ -11,6 +11,11 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import {get,post} from '../utils/requests';
+
+import '../css/contact.css';
+
 
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
@@ -19,6 +24,61 @@ const theme = createTheme();
 
 function ContactUsPage() {
   const navigate = useNavigate();
+  
+  /* Handle send button click */
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+	const userName = data.get('userName');
+	const userEmail = data.get('userEmail');
+	const userMessage = data.get('userMessage');
+	
+    console.log({
+	  userName: userName,
+	  userEmail: userEmail,
+      userMessage: userMessage     
+	  
+    });
+	
+	
+
+	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
+	  if(userName.length!=0 && userEmail.length!=0 && userMessage.length!=0)
+		{
+				
+			const requests_data = {
+				  'userName':userName,
+				  'userEmail':userEmail,
+				  'userMessage':userMessage,
+				 
+			  }
+			  
+			  post('api/contact/', requests_data) // POST data to webserver
+				  .then(function (res){
+					 
+					console.log("Response: "+res);
+
+					// If the response code is 200, signup is successful. Proceed to SignIn page. Otherwise, display an alert to the user
+					  if(res.status === 200){
+						  alert("Message sent, we will be in touch with you shortly !");
+					  }else{
+						  alert("Message sending failed, please try again !");
+					  }
+				  })
+				  .catch(function (res){
+					  console.log("Error : "+res)
+					  alert("Message sending failed, please try again !");
+
+				  })
+			
+		}else{
+			alert("Please fill all the fields !");
+		}
+  
+
+  };
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -35,65 +95,56 @@ function ContactUsPage() {
         flexDirection: 'column',
         px: 4,
       }}>
-        <Box sx={{ my: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography component="h1" variant="h2" align="center" fontFamily="Baskerville" sx={{ fontWeight: 700, mb: 2, fontSize: '5rem', color: 'cobalt', opacity: 0.8 }}>
+        <Box >
+          <Typography component="h1" variant="h2" align="center" fontFamily="Baskerville" className="title1">
             Contact Us
           </Typography>
 
-          <Box sx={{ mt: 4 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 4 }}>
             <TextField
               required
-              id="name"
+              id="userName"
               label="Name"
+			  name="userName"
               variant="outlined"
               margin="normal"
               fullWidth
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'white',
-                }
-              }}
+              className="text"
+
             />
             <TextField
               required
-              id="email"
+              id="userEmail"
               label="Email"
+			  name="userEmail"
               variant="outlined"
               margin="normal"
               fullWidth
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'white',
-                }
-              }}
+              className="text"
             />
             <TextField
               required
-              id="message"
+              id="userMessage"
               label="Message"
+			  name="userMessage"
               variant="outlined"
               margin="normal"
               multiline
               rows={4}
               fullWidth
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'white',
-                }
-              }}
+              className="text"
             />
             <Button
               variant="contained"
-              sx={{ mt: 2, backgroundColor: 'black', '&:hover': { backgroundColor: 'transparent' } }}
+			  type="submit"
+              className="button"
             >
               Send
             </Button>
           </Box>
 
-          <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" sx={{ fontWeight: 600, mt: 4, color: 'cobalt', opacity: 0.8,'&:hover': {
-				textDecoration: 'none',
-				cursor: 'pointer',} }}>
-            <Link onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
+          <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" >
+            <Link className="link" onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
           </Typography>
         </Box>
       </Box>

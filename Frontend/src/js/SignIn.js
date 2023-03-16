@@ -22,8 +22,11 @@ import {root} from '../index.js';
 
 import {appName} from '../js/Globals.js';
 
+
 var publicPath=process.env.PUBLIC_URL;
 var logoPath="/assets/images/loginBg.JPG";
+
+
 
 /* Copyright label */
 function Copyright(props) {
@@ -45,6 +48,8 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const navigate = useNavigate();
+  
+  
 
 /* Handle SignIn button click */
   const handleSubmit = (event) => {
@@ -71,7 +76,7 @@ export default function SignInSide() {
 			  
 			  // If the response code is 200 -> sign in successful, proceed to home page. Otherwise display relevant alert to the user
               if(res.status === 200){
-                  navigate("/home",false)
+                  navigate("/home",{ replace: true })
               }else if(res.status === 401){
 				  alert("User cannot be found, Please register and try again!");
 			  }else
