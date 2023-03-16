@@ -64,9 +64,9 @@ export default function SignInSide() {
       }
 	  
 	  // If the userEmail and userPassword field are not empty, call webservice. Otherwise display an alert to the user
-	  if(userEmail.length!=0 && userPassword.length!=0)
+	  if(userEmail.length!==0 && userPassword.length!==0)
 	  {
-		   post('api/login/', requests_data)
+		   post('api/user/login/', requests_data)
           .then(function (res){
 			  
 			  // If the response code is 200 -> sign in successful, proceed to home page. Otherwise display relevant alert to the user
