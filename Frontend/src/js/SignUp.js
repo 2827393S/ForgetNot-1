@@ -101,7 +101,7 @@ export default function SignUp() {
 				  'password':userPassword
 			  }
 			  
-			  post('api/register/', requests_data) // POST data to webserver
+			  post('api/user/register/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
 					console.log("Response: "+res);
