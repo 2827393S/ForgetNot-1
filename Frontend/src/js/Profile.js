@@ -8,14 +8,16 @@ import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import parseISO from 'date-fns/parseISO'
+import {format} from "date-fns";
 
-import Box from '@mui/material/Box';
 import {appName} from './Globals.js';
 
-
-import axios from "axios"
 import {get,post} from '../utils/requests'
 
 import "../css/styles.css";
@@ -55,7 +57,6 @@ const MyProfile = () => {
 
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
-  const [userGender, setGender] = useState('nil');
 
   const [data,setData] = useState({
       "firstName":"",
@@ -126,6 +127,7 @@ const MyProfile = () => {
   };
 
   const textOnchange = (event) =>{
+      console.log(event)
       const name = event.target.name
       const value = event.target.value
       setData({...data,[name] : value})
@@ -183,10 +185,17 @@ const MyProfile = () => {
 					  <MenuItem value='female' >Female</MenuItem>
 				</Select>
             </Grid>
-            <Grid item xs={12} sm={6}>
-				<TextField fullWidth id="birthday" label="Date of Birth" name="birthday" value={data.birthday} onChange={textOnchange} disabled={!active}/>
-               
-            </Grid>
+          <Grid item xs={12} sm={6}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                      id="birthday"
+                      label="birthday"
+                      value={parseISO(data.birthday)}
+                      onChange={(newValue) => setData({...data,birthday: format(newValue,"yyyy-MM-dd")})}
+                      disabled={!active}
+                  />
+              </LocalizationProvider>
+          </Grid>
           </Grid>
 		   <Grid item xs={12} sm={6}>
               <TextField fullWidth id="email" label="Email" name="email" value={data.email} onChange={textOnchange} disabled={!active}/>
