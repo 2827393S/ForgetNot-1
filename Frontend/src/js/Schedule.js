@@ -125,9 +125,11 @@ export default class Demo extends React.PureComponent {
   }
 
     componentDidUpdate(prevProps) {
-        if (this.props.label_id !== prevProps.label_id) {
+
+      const {label_id} = this.props
+        if (label_id !== prevProps.label_id) {
             let that = this
-            this.getEventList(this.props.label_id)
+            this.getEventList(label_id)
                 .then(function (res){
                     that.setState({data:res})
                 })

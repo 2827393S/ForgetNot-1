@@ -193,7 +193,7 @@ const MyProfile = () => {
                       value={parseISO(data.birthday)}
                       onChange={(newValue) => setData({...data,birthday: format(newValue,"yyyy-MM-dd")})}
                       disabled={!active}
-                  />
+                   renderInput={(params) => <TextField {...params} />}/>
               </LocalizationProvider>
           </Grid>
           </Grid>
