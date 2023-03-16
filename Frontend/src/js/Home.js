@@ -36,33 +36,28 @@ import MenuItem from '@mui/material/MenuItem';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import EmailIcon from '@mui/icons-material/Email';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 
-
-import {get,post} from '../utils/requests'
-
-//import { mainListItems } from './labelItems';
+import { mainListItems } from './labelItems';
 
 import {appName} from './Globals.js';
 import Schedule from './Schedule.js';
-import {useEffect} from "react";
 
-const settings = ['Home', 'My Profile', 'Logout'];
+const settings = ['Home','My profile', 'My groups', 'Logout'];
 
-const labelId=window.localStorage.getItem( 'labelId');
-const publicPath=process.env.PUBLIC_URL;
-const logoPath= '/assets/images/background.jpg';
-
+var labelId=window.localStorage.getItem( 'labelId');
+var publicPath=process.env.PUBLIC_URL;
+var logoPath= '/assets/images/background.jpg';
 
 function Copyright(props) {
-const navigate = useNavigate();
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" onClick={() => navigate('/contact', false)}>
+      <Link color="inherit" href="https://mui.com/">
 	  {appName}
       </Link>{' '}
       {new Date().getFullYear()}
@@ -119,78 +114,48 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-
-
 function DashboardContent() {
-    const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
-    const [label_data,setLabelData] = React.useState([]);
-    const [now_label_id,setNowLabelId] = React.useState(0);
-    const toggleDrawer = () => {setOpen(!open);};
+ const navigate = useNavigate();
+
+  const [open, setOpen] = React.useState(false);
   
-    {/* <--- User icon on top right & corresponding listview ---> */}
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+  
+  {/* <--- User icon on top right & corresponding listview ---> */}
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    useEffect(()=> {
-        window.localStorage.setItem( 'labelId', '2' );
-        get('api/label/get/',{})
-            .then(function (res){
-                setLabelData(res.data)
-                setNowLabelId(res.data[0].id)
-            })
-    },[])
+ const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
-    const handleLabelData = (event) => {
-        setLabelData(event.currentTarget);
-    }
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+  
+  
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
+const filterEvents = value => () => {
+	window.localStorage.setItem( 'labelId', value );
+	//alert("Clicked label: "+window.localStorage.getItem( 'labelId'));
+	navigate(0);
 
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
-
-  // const filterEvents = value => () => {
-	// alert("Clicked label: "+value);
-	// window.localStorage.setItem( 'labelId', value );
-	// navigate(0);
-
-  // };
-
-
-    function displayListItemButton(props){
-        return (
-		
-		
-             <ListItemButton key={props.id} onClick={() => setNowLabelId(props.id)} sx={{ backgroundColor: labelId===now_label_id?"#87ceeb60":"" }}> 
-				
-
-				<ListItemIcon>
-                    <ModeOfTravelIcon />
-                </ListItemIcon>
-                <ListItemText primary={props.name} />
-            </ListItemButton>
-        )
-    }
+  };
 
  const handleLogoutClick = () => {
     // handle logging out the user
   };
-
-    return (
+  
+  return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
@@ -212,9 +177,6 @@ function DashboardContent() {
             >
               <MenuIcon />
             </IconButton>
-			<IconButton  color="inherit">
-                <AccessAlarmsOutlinedIcon fontSize="large"/>
-			</IconButton>
             <Typography
               component="h1"
               variant="h6"
@@ -222,10 +184,10 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            {appName}
+			{appName}
             </Typography>
-
-			{/* My profile icon */}
+			
+				{/* My profile icon */}
 			<IconButton color="inherit">
 				<AccountBoxIcon fontSize="large" onClick={() => navigate('/profile', false)}/>
 			</IconButton>
@@ -236,38 +198,6 @@ function DashboardContent() {
 				<LogoutOutlinedIcon fontSize="large" onClick={handleLogoutClick}/>
 			</IconButton>
             
-
-            {/* <--- Users logo and List view ---> */}
-				{/*<Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={setting === 'My Profile' ? () => navigate('/profile', false) : handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-				</Box>*/}
-
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -285,12 +215,40 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-			{
-                  label_data.map((value) => {
-                      return displayListItemButton(value)
-                  })
-            }
-
+            {/* <--- Birthdays ---> */}
+			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId==1?"#ffa07a60":""}}>
+				<ListItemIcon>
+					<CakeIcon />
+				</ListItemIcon>
+				<ListItemText primary="Birthdays" />
+			</ListItemButton>
+			
+			  {/* <--- Meetings ---> */}
+			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId==2?"#90ee9060":"" }}>
+				<ListItemIcon>
+					<GroupsIcon />
+				</ListItemIcon>
+				<ListItemText primary="Meetings" />
+			</ListItemButton>
+			
+			  			
+			  {/* <--- Tasks ---> */}
+			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId==3?"#87ceeb60":"" }}>
+				<ListItemIcon>
+					<ListAltIcon />
+				</ListItemIcon>
+				<ListItemText primary="Tasks" />
+			</ListItemButton>
+			
+			  {/* <--- Travel ---> */}
+			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId==4?"#d1e18960":"" }}>
+				<ListItemIcon>
+					<ModeOfTravelIcon />
+				</ListItemIcon>
+				<ListItemText primary="Travel" />
+			</ListItemButton>
+			
+           
           </List>
         </Drawer>
         <Box
@@ -303,10 +261,10 @@ function DashboardContent() {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',*/
-            backgroundImage: `url(${publicPath+logoPath})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
+			backgroundImage: `url(${publicPath+logoPath})`,
+			backgroundRepeat: 'no-repeat',
+			backgroundPosition: 'center',
+			backgroundSize: 'cover',
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
@@ -314,21 +272,21 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="100vh" maxHeight="100vh" sx={{ mt: 4, mb: 4 }}>
-
-              {/* Schedule */}
+          
+			  {/* Schedule */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Schedule label_id={now_label_id} />
+                  <Schedule />
                 </Paper>
               </Grid>
-
+           			
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
     </ThemeProvider>
-    );
-    }
+  );
+}
 
 export default function Dashboard() {
   return <DashboardContent />;

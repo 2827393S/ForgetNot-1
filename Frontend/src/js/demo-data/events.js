@@ -33,28 +33,28 @@ export const meetings = [
     title: 'Meeting with KLMN',
     labelId: 2,
     members: [1],
-    startDate: new Date(2023, 1, 22, 9, 30),
-    endDate: new Date(2023, 1, 22, 11),
+    startDate: new Date(2023, 2, 22, 9, 30),
+    endDate: new Date(2023, 2, 22, 11),
     rRule: '',
   },{
     id: 0,
     title: 'OPQR Meeting',
     labelId: 2,
     members: [1],
-    startDate: new Date(2023, 1, 25, 9, 30),
-    endDate: new Date(2023, 1, 25, 11),
+    startDate: new Date(2023, 3, 25, 9, 30),
+    endDate: new Date(2023, 3, 25, 11),
     rRule: '',
   },
 ];
 
-export const tasks = [
+export const study = [
   {
     id: 0,
-    title: 'Call STU',
+    title: 'Study STU',
     labelId: 3,
     members: [1],
-    startDate: new Date(2023, 1, 27, 9, 30),
-    endDate: new Date(2023, 1, 27, 10),
+    startDate: new Date(2023, 2, 27, 9, 30),
+    endDate: new Date(2023, 2, 27, 10),
     rRule: '',
   },{
     id: 0,

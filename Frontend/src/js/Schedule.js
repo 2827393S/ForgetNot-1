@@ -21,16 +21,13 @@ import {
 import Button from '@mui/material/Button';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 
-//import { appointments } from './demo-data/month-appointments';
-//import { owners } from './demo-data/tasks';
-//import { appointments } from './demo-data/resources';
 
 
 import {get,post} from '../utils/requests'
 import axios from "axios";
 
 import { eventLabels } from './Globals.js';
-import { birthdays, meetings, tasks,travel } from './demo-data/events';
+import { birthdays, meetings, study,travel } from './demo-data/events';
 
 
 const TextEditor = (props) => {
@@ -87,11 +84,30 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
-      let dataVal=[];
+	
+	
+	var labelId=window.localStorage.getItem( 'labelId');
+	//alert("labelId schedule: "+labelId);
+	var dataVal;
+
+		if(labelId=='1'){
+			dataVal=birthdays;
+		}else if(labelId=='2'){
+			dataVal=meetings;
+		}else if(labelId=='3'){
+			dataVal=study;
+		}else if(labelId=='4'){
+			dataVal=travel;
+		}else {
+			dataVal=birthdays;
+		}
+	
+     // let dataVal=[];
 
 
 	/* State variable to keep track of appointment form visibility */
 	 this.state = {
+       addNewEvent: false
 
      };
 
