@@ -1,7 +1,7 @@
 .background-image {
   background-repeat: no-repeat;
   background-position: left top;
-  background-size: cover;
+  background-size: 110% 100%;
   position: absolute;
   top: 0;
   left: 0;
