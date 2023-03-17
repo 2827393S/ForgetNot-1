@@ -3,31 +3,25 @@ import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { ViewState, EditingState, IntegratedEditing } from '@devexpress/dx-react-scheduler';
+import {EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
 import {
-    Scheduler,
-    DayView,
-    WeekView,
-    MonthView,
-    Appointments,
     AppointmentForm,
+    Appointments,
     AppointmentTooltip,
     ConfirmationDialog,
-    Toolbar,
     DateNavigator,
-    TodayButton,
+    DayView,
+    MonthView,
     Resources,
+    Scheduler,
+    TodayButton,
+    Toolbar,
+    WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import Button from '@mui/material/Button';
-import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 
 
-
-import {get,post} from '../utils/requests'
-import axios from "axios";
-
-import { eventLabels } from './Globals.js';
-import { birthdays, meetings, study,travel } from './demo-data/events';
+import {get, post} from '../utils/requests'
+import app from "../App";
 
 
 const TextEditor = (props) => {
@@ -84,142 +78,164 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 export default class Demo extends React.PureComponent {
   constructor(props) {
     super(props);
-	
-	
-	var labelId=window.localStorage.getItem( 'labelId');
-	//alert("labelId schedule: "+labelId);
-	var dataVal;
-
-		if(labelId=='1'){
-			dataVal=birthdays;
-		}else if(labelId=='2'){
-			dataVal=meetings;
-		}else if(labelId=='3'){
-			dataVal=study;
-		}else if(labelId=='4'){
-			dataVal=travel;
-		}else {
-			dataVal=birthdays;
-		}
-	
-     // let dataVal=[];
+    let that = this;
 
 
 	/* State variable to keep track of appointment form visibility */
-	 this.state = {
-       addNewEvent: false
-
-     };
 
     this.state = {
-        data: dataVal,
+        data: [],
+        realData : [],
         addNewEvent: false,
-        currentViewName: window.localStorage.getItem( 'currentViewName'),
+        mainResourceName: 'Label',
+        currentViewName: 'Month' ,
         resources: [
         /* <--- This displays the label field and drop down selection--->  */
             {
-              fieldName: 'labelId',
-              title: 'Label',
-              instances: eventLabels,
-            },
+                fieldName: "label_id",
+                title: "Label",
+                instances: [],
+            }
         ],
     };
-	
-
 
     this.currentViewNameChange = (e) => {
       this.setState({ currentViewName: e.target.value });
-	  window.localStorage.getItem( 'currentViewName', e.target.value);
 
     };
-	this.commitChanges = this.commitChanges.bind(this);
 	this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
-	
+    this.commitChanges = this.commitChanges.bind(this);
+
+
 	
   
 
   }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps,prevStates) {
 
-      const {label_id} = this.props
+      const {label_id,label_data} = this.props
+        const {data} = this.state
+
+        if(data !== prevStates.data){
+            let newData = []
+            data.forEach(value=>{
+                if(value['label_id']===label_id){
+                    newData.push(value)
+                }
+            })
+            this.setState({realData: newData})
+        }
+
+
         if (label_id !== prevProps.label_id) {
             let that = this
             this.getEventList(label_id)
                 .then(function (res){
+                    console.log(res)
                     that.setState({data:res})
                 })
         }
+
+        // format and add label_data for user choosing
+        if(label_data !== prevProps.label_data){
+            let {resources} = this.state
+            let label = resources[0];
+            label.instances = [];
+            label_data.forEach(value=>{
+                value['text'] = value['name']
+                value['color'] = "#90ee90"
+                delete value['name']
+                delete value['owner']
+                label.instances.push(value)
+            })
+            this.setState({resources:[label]})
+        }
+
     }
 
-    async getEventList(label_id){
+    async getEventList(label_id) {
         let dataVal = [];
-        await get("/api/event/get_list",{"id":label_id})
-            .then(function (res){
+        await get("/api/event/get_list", {"id": label_id})
+            .then(function (res) {
                 let data = res.data
-                data.forEach(value=>{
-                    value['startDate'] = new Date(value['startTime'])
+                data.forEach(value => {
+                    value['startDate'] = new Date((value['startTime']))
                     value['endDate'] = new Date(value['endTime'])
-                    value['allDay'] = false
-                    value['rRule'] = ''
+                    value['label_id'] = value['labelId']
                     delete value['startTime'];
                     delete value['endTime'];
+                    delete value['labelId']
                     dataVal.push(value)
                 })
             })
         return dataVal
     }
-  
- 
-  
+
+    eventLegal(event){
+      if(event['title'] === ""|| event['title'] === undefined || event['label_id'] === "" || event['']){
+          alert("have importance thing has no finish")
+          return false
+      }else{
+          return true
+      }
+    }
   	/* <--- Appointment editing and saving --->  */
 
-   commitChanges({ added, changed, deleted }) {
-    this.setState((state) => {
-      let { data } = state;
+    commitChanges({ added, changed, deleted }) {
+        let {data} = this.state;
+        let {label_id} = this.props;
+        let oldData = data;
+        console.log("added",added)
+        console.log("changed",changed)
+        console.log("deleted",deleted)
+        if(added){
+            let that = this
+            data = [...data, { ...added }];
+            let pos = data.length;
+            added['startDate'] = Date.parse(added['startDate']);
+            added['endDate'] = Date.parse(added['endDate']);
+            post("/api/event/create/",added).then(
+                function (res){
+                    let {data} = that.state
+                    data[pos-1].id = res.data
+                    that.setState({data:data})
+                }
+            )
+        }
+        if(changed){
+            let newData =[]
+            data.forEach(appointment=>{
+                if(changed[appointment.id]){
+                    let c = { ...appointment, ...changed[appointment.id] }
+                    console.log(c)
+                    c['startDate'] = Date.parse(c['startDate']);
+                    c['endDate'] = Date.parse(c['endDate']);
+                    post("/api/event/update/",c)
+                        .then(function (res){
+                            console.log(res)
+                        })
+                    newData.push({ ...appointment, ...changed[appointment.id] })
+                }else{
+                    newData.push(appointment)
+                }
+            })
+            data = newData
+        }
+        if(deleted){
+            data = data.filter(appointment => appointment.id !== deleted);
+            post("/api/event/delete/", {"event_id": deleted}).then(res=>{console.log(res)})
+        }
 
-      if (added) {
-        const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
-        data = [...data, { id: startingAddedId, ...added }];
-      }
-      if (changed) {
-          console.log("this is the change:",changed);
-          console.log("this is the data",data)
-        data = data.map((appointment) => (
-          changed[appointment.id] ? { ...appointment, ...changed[appointment.id] } : appointment)
-        );
-      }
-      if (deleted !== undefined) {
-        data = data.filter(appointment => appointment.id !== deleted);
-      }
-	  
-	  console.log("*********** COMMITTED DATA ****************");
-	  console.table(data);
-	  	 
-		this.setState({addNewEvent:false})
 
-      return { data };
-    });
-  }
+        this.setState({data:data})
+    }
   
   
 
   render() {
 
-    const { data, currentViewName, currentDate, resources } = this.state;
-
-	/* Method to toggle appointment form visibility */
-	const showAppointmentForm = (bool) => {
-
-         this.setState({addNewEvent: bool})
-    };
-  
-  	const appointmentForm = () => {
-   
-      	    //  this.setState({addNewEvent: bool})
-      };
-
-  
+    const { realData, data, currentViewName, currentDate, resources , addNewEvent } = this.state;
 
     return (
 
@@ -229,7 +245,7 @@ export default class Demo extends React.PureComponent {
           onChange={this.currentViewNameChange}
         />
         <Paper>
-            <Scheduler data={data} height={570}>
+            <Scheduler data={realData} height={570}>
             <ViewState
               defaultCurrentDate={new Date()}
               currentViewName={currentViewName}
@@ -248,36 +264,35 @@ export default class Demo extends React.PureComponent {
             {/* <--- Monthly view --->  */}
             <MonthView />
 			
-			 <Button 
-				variant="contained" 
-				sx={{maxWidth: '200px', maxHeight: '40px'}} 
-				color="primary" 
-				startIcon={<EventOutlinedIcon />}
-				onClick={showAppointmentForm.bind(null,true)} >
-			 Add new event
-			 </Button>
+			 {/*<Button*/}
+				{/*variant="contained"*/}
+				{/*sx={{maxWidth: '200px', maxHeight: '40px'}}*/}
+				{/*color="primary"*/}
+				{/*startIcon={<EventOutlinedIcon />}*/}
+				{/*onClick={showAppointmentForm.bind(null,true)} >*/}
+			 {/*Add new event*/}
+			 {/*</Button>*/}
 
 
             {/* <--- Appointment form popup for creation and edit --->  */}
             <Appointments/>
 
-            <AppointmentTooltip showOpenButton showDeleteButton  
-			/>
+            <AppointmentTooltip showOpenButton showDeleteButton/>
             <ConfirmationDialog />
 
             <Toolbar />
             <DateNavigator />
             <TodayButton />
 
-            <AppointmentForm visible={this.state.addNewEvent} 
-				onVisibilityChange={showAppointmentForm.bind(null)}
+            <AppointmentForm/>
+			{/*	onVisibilityChange={showAppointmentForm.bind(null)}*/}
 
-				basicLayoutComponent={BasicLayout} 
-				textEditorComponent={TextEditor}/>
-				
+			{/*	basicLayoutComponent={BasicLayout} */}
+			{/*	textEditorComponent={TextEditor}/>*/}
+			{/*	*/}
             <Resources
                 data={resources}
-                mainResourceName="labelId"
+                mainResourceName="label_id"
             />
 
             </Scheduler>

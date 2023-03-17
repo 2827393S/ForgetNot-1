@@ -43,9 +43,10 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 
 import { mainListItems } from './labelItems';
-
+import {get,post} from '../utils/requests'
 import {appName} from './Globals.js';
 import Schedule from './Schedule.js';
+import {useEffect} from "react";
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
@@ -117,46 +118,40 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
- const navigate = useNavigate();
-
-  const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate();
+    const [label_data,setLabelData] = React.useState([]);
+    const [now_label_id,setNowLabelId] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
   
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+    const toggleDrawer = () => {
+        setOpen(!open);
+    };
   
-  {/* <--- User icon on top right & corresponding listview ---> */}
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+    {/* <--- User icon on top right & corresponding listview ---> */}
+    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
 
- const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    const handleOpenNavMenu = (event) => {
+        setAnchorElNav(event.currentTarget);
+    };
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    const handleLogoutClick = () => {
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  
-  
+    }
 
-const filterEvents = value => () => {
-	window.localStorage.setItem( 'labelId', value );
-	//alert("Clicked label: "+window.localStorage.getItem( 'labelId'));
-	navigate(0,{ replace: true });
+    // init
+    useEffect(()=> {
+        get('api/label/get/',{})
+            .then(function (res){
+                console.log(res)
+                setLabelData(res.data)
+                setNowLabelId(res.data[0].id)
+            })
+    },[])
 
-  };
-
- const handleLogoutClick = () => {
-    // handle logging out the user
-  };
-  
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -190,14 +185,14 @@ const filterEvents = value => () => {
             </Typography>
 			
 				{/* My profile icon */}
-			<IconButton color="inherit">
-				<AccountBoxIcon fontSize="large" onClick={() => navigate('/profile', false)}/>
+			<IconButton color="inherit" onClick={() => navigate('/profile', false)}>
+				<AccountBoxIcon fontSize="large"/>
 			</IconButton>
 			
 			{/* Logout icon */}
 
-			<IconButton color="inherit">
-				<LogoutOutlinedIcon fontSize="large" onClick={handleLogoutClick}/>
+			<IconButton color="inherit" onClick={handleLogoutClick}>
+				<LogoutOutlinedIcon fontSize="large" />
 			</IconButton>
             
           </Toolbar>
@@ -217,40 +212,14 @@ const filterEvents = value => () => {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {/* <--- Birthdays ---> */}
-			<ListItemButton onClick={filterEvents('1')}  sx={{ backgroundColor: labelId==1?"#ffa07a60":""}}>
-				<ListItemIcon>
-					<CakeIcon />
-				</ListItemIcon>
-				<ListItemText primary="Birthdays" />
-			</ListItemButton>
-			
-			  {/* <--- Meetings ---> */}
-			<ListItemButton onClick={filterEvents('2')} sx={{ backgroundColor: labelId==2?"#90ee9060":"" }}>
-				<ListItemIcon>
-					<GroupsIcon />
-				</ListItemIcon>
-				<ListItemText primary="Meetings" />
-			</ListItemButton>
-			
-			  			
-			  {/* <--- Tasks ---> */}
-			<ListItemButton onClick={filterEvents('3')} sx={{ backgroundColor: labelId==3?"#87ceeb60":"" }}>
-				<ListItemIcon>
-					<ListAltIcon />
-				</ListItemIcon>
-				<ListItemText primary="Tasks" />
-			</ListItemButton>
-			
-			  {/* <--- Travel ---> */}
-			<ListItemButton onClick={filterEvents('4')} sx={{ backgroundColor: labelId==4?"#d1e18960":"" }}>
-				<ListItemIcon>
-					<ModeOfTravelIcon />
-				</ListItemIcon>
-				<ListItemText primary="Travel" />
-			</ListItemButton>
-			
-           
+              {label_data.map((value) => (
+                  <ListItemButton key={value.id} onClick={() => setNowLabelId(value.id)} sx={{ backgroundColor: "#d1e18960" }}>
+                      <ListItemIcon>
+                          <ModeOfTravelIcon/>
+                      </ListItemIcon>
+                      <ListItemText primary={value.text} />
+                  </ListItemButton>
+              ))}
           </List>
         </Drawer>
         <Box
@@ -273,12 +242,16 @@ const filterEvents = value => () => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="100vh" maxHeight="100vh" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="100vh" maxheight="100vh" sx={{ mt: 4, mb: 4 }}>
           
 			  {/* Schedule */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Schedule />
+                  {/*<Schedule />*/}
+                  <Schedule
+                      label_id={now_label_id}
+                      label_data={label_data}
+                  />
                 </Paper>
               </Grid>
            			

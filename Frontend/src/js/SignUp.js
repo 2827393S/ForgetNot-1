@@ -89,7 +89,7 @@ export default function SignUp() {
 	
 
 	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
-	  if(userFname.length!=0 && userLname.length!=0 && userBday.length!=0 && userGender!='nil' && userEmail.length!=0 && userPassword!=0)
+	  if(userFname.length!==0 && userLname.length!==0 && userBday.length!==0 && userGender!=='nil' && userEmail.length!==0 && userPassword!==0)
 		{
 				
 			const requests_data = {
@@ -101,7 +101,7 @@ export default function SignUp() {
 				  'password':userPassword
 			  }
 			  
-			  post('api/register/', requests_data) // POST data to webserver
+			  post('api/user/register/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
 					console.log("Response: "+res);
