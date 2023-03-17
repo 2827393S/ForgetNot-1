@@ -21,14 +21,17 @@ import {
 import Button from '@mui/material/Button';
 import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 
-
-
 import {get,post} from '../utils/requests'
 import axios from "axios";
 
 import { eventLabels } from './Globals.js';
 import { birthdays, meetings, study,travel } from './demo-data/events';
 
+const CustomButton = ({ onExecute }) => (
+  <Button variant="contained" color="primary" onClick={onExecute}>
+    Invite +
+  </Button>
+);
 
 const TextEditor = (props) => {
    return <AppointmentForm.TextEditor {...props} />;
@@ -39,23 +42,26 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     onFieldChange({ customField: nextValue });
   };
 
-  return (
-    <AppointmentForm.BasicLayout
-      appointmentData={appointmentData}
-      onFieldChange={onFieldChange}
-      {...restProps}
-    >
-      <AppointmentForm.TextEditor
-	value={appointmentData.customField}
-        placeholder="Host"
-      />
-	<AppointmentForm.TextEditor
-        value={appointmentData.customField}
-        placeholder="Invitees"
-      />
-    </AppointmentForm.BasicLayout>
-  );
+ return (
+  <AppointmentForm.BasicLayout
+    appointmentData={appointmentData}
+    onFieldChange={onFieldChange}
+    {...restProps}
+	>
+    <AppointmentForm.TextEditor
+      value={appointmentData.customField}
+      placeholder="Host"
+    />
+    <AppointmentForm.TextEditor
+      value={appointmentData.customField}
+      placeholder="Invitees"
+    />
+<AppointmentForm.CommandButton command="Invite +" />
+      <CustomButton command="customAction" onExecute={() => alert('Invite Button Clicked!')} />
+  </AppointmentForm.BasicLayout>
+);
 };
+
 
 const ExternalViewSwitcher = ({currentViewName, onChange, }) => 
 	
@@ -256,7 +262,7 @@ export default class Demo extends React.PureComponent {
 				onClick={showAppointmentForm.bind(null,true)} >
 			 Add new event
 			 </Button>
-
+		
 
             {/* <--- Appointment form popup for creation and edit --->  */}
             <Appointments/>
@@ -273,7 +279,8 @@ export default class Demo extends React.PureComponent {
 				onVisibilityChange={showAppointmentForm.bind(null)}
 
 				basicLayoutComponent={BasicLayout} 
-				textEditorComponent={TextEditor}/>
+				textEditorComponent={TextEditor}
+				/>
 				
             <Resources
                 data={resources}
