@@ -20,9 +20,19 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 
-import {get, post} from '../utils/requests'
-import app from "../App";
+import {get,post} from '../utils/requests'
+import axios from "axios";
 
+import { eventLabels } from './Globals.js';
+import { birthdays, meetings, study,travel } from './demo-data/events';
+import Button from "@mui/material/Button";
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+
+const CustomButton = ({ onExecute }) => (
+  <Button variant="contained" color="primary" onClick={onExecute}>
+    Invite +
+  </Button>
+);
 
 const TextEditor = (props) => {
    return <AppointmentForm.TextEditor {...props} />;
@@ -33,23 +43,26 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     onFieldChange({ customField: nextValue });
   };
 
-  return (
-    <AppointmentForm.BasicLayout
-      appointmentData={appointmentData}
-      onFieldChange={onFieldChange}
-      {...restProps}
-    >
-      <AppointmentForm.TextEditor
-	value={appointmentData.customField}
-        placeholder="Host"
-      />
-	<AppointmentForm.TextEditor
-        value={appointmentData.customField}
-        placeholder="Invitees"
-      />
-    </AppointmentForm.BasicLayout>
-  );
+ return (
+  <AppointmentForm.BasicLayout
+    appointmentData={appointmentData}
+    onFieldChange={onFieldChange}
+    {...restProps}
+	>
+    <AppointmentForm.TextEditor
+      value={appointmentData.customField}
+      placeholder="Host"
+    />
+    <AppointmentForm.TextEditor
+      value={appointmentData.customField}
+      placeholder="Invitees"
+    />
+<AppointmentForm.CommandButton command="Invite +" />
+      <CustomButton command="customAction" onExecute={() => alert('Invite Button Clicked!')} />
+  </AppointmentForm.BasicLayout>
+);
 };
+
 
 const ExternalViewSwitcher = ({currentViewName, onChange, }) => 
 	
@@ -74,6 +87,7 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 // const Appointment = ({ onClick, onDoubleClick, ...restProps }) => {
   // return <Appointments.Appointment onDoubleClick={onDoubleClick} {...restProps} />;
 // };
+
 
 export default class Demo extends React.PureComponent {
   constructor(props) {
@@ -181,6 +195,10 @@ export default class Demo extends React.PureComponent {
       }
     }
   	/* <--- Appointment editing and saving --->  */
+    showAppointmentForm(){
+        let {addNewEvent} = this.state
+        this.setState({addNewEvent:!addNewEvent})
+    }
 
     commitChanges({ added, changed, deleted }) {
         let {data} = this.state;
@@ -263,15 +281,15 @@ export default class Demo extends React.PureComponent {
           		 
             {/* <--- Monthly view --->  */}
             <MonthView />
-			
-			 {/*<Button*/}
-				{/*variant="contained"*/}
-				{/*sx={{maxWidth: '200px', maxHeight: '40px'}}*/}
-				{/*color="primary"*/}
-				{/*startIcon={<EventOutlinedIcon />}*/}
-				{/*onClick={showAppointmentForm.bind(null,true)} >*/}
-			 {/*Add new event*/}
-			 {/*</Button>*/}
+
+			 <Button 
+				variant="contained" 
+				sx={{maxWidth: '200px', maxHeight: '40px'}} 
+				color="primary" 
+				startIcon={<EventAvailableOutlinedIcon />}
+				onClick={this.showAppointmentForm.bind(null,true)} >
+			 Add new event
+			 </Button>
 
 
             {/* <--- Appointment form popup for creation and edit --->  */}
@@ -285,11 +303,11 @@ export default class Demo extends React.PureComponent {
             <TodayButton />
 
             <AppointmentForm/>
-			{/*	onVisibilityChange={showAppointmentForm.bind(null)}*/}
 
-			{/*	basicLayoutComponent={BasicLayout} */}
-			{/*	textEditorComponent={TextEditor}/>*/}
-			{/*	*/}
+				{/*basicLayoutComponent={BasicLayout} */}
+				{/*textEditorComponent={TextEditor}*/}
+				{/*/>*/}
+
             <Resources
                 data={resources}
                 mainResourceName="label_id"
