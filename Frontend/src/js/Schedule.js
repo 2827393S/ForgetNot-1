@@ -120,11 +120,17 @@ export default class Demo extends React.PureComponent {
 	this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
     this.commitChanges = this.commitChanges.bind(this);
 
+	/* Method to toggle appointment form visibility */
+
+    this.showAppointmentForm = (bool) => {
+         this.setState({addNewEvent: bool})
+    };
 
 	
   
 
   }
+  
 
     componentDidUpdate(prevProps,prevStates) {
 
@@ -195,10 +201,7 @@ export default class Demo extends React.PureComponent {
       }
     }
   	/* <--- Appointment editing and saving --->  */
-    showAppointmentForm(){
-        let {addNewEvent} = this.state
-        this.setState({addNewEvent:!addNewEvent})
-    }
+   
 
     commitChanges({ added, changed, deleted }) {
         let {data} = this.state;
@@ -247,13 +250,16 @@ export default class Demo extends React.PureComponent {
 
 
         this.setState({data:data})
+		this.setState({addNewEvent:false})
+
     }
   
   
 
   render() {
 
-    const { realData, data, currentViewName, currentDate, resources , addNewEvent } = this.state;
+    const { realData, data, currentViewName, currentDate, resources } = this.state;
+	
 
     return (
 
@@ -302,7 +308,8 @@ export default class Demo extends React.PureComponent {
             <DateNavigator />
             <TodayButton />
 
-            <AppointmentForm/>
+            <AppointmentForm visible={this.state.addNewEvent} 
+				onVisibilityChange={this.showAppointmentForm.bind(null)}/>
 
 				{/*basicLayoutComponent={BasicLayout} */}
 				{/*textEditorComponent={TextEditor}*/}
