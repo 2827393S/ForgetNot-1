@@ -134,7 +134,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="sm">
         <CssBaseline />
         <Box className="signupbox">
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
