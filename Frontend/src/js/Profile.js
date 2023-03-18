@@ -10,6 +10,7 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -174,7 +175,8 @@ const MyProfile = () => {
 </AppBar>
       <ProfileContainer maxWidth="sm" sx={{ textAlign: 'center' }}>
 		
-        <ProfileAvatar src="/path/to/user/photo.jpg" alt="User's profile photo" />
+		{/* <ProfileAvatar src="/path/to/user/photo.jpg" alt="User's profile photo" />*/}
+		<AccountCircleOutlinedIcon fontSize="large"/>
         <Typography variant="h4" gutterBottom fontFamily="Arial" sx={{ fontWeight: 600, mb: 2, fontSize: '2rem', color: 'cobalt'}}>
           My Profile
         </Typography>
@@ -201,6 +203,7 @@ const MyProfile = () => {
                   <DatePicker
                       id="birthday"
                       label="birthday"
+					  maxDate={new Date()}
                       value={parseISO(data.birthday)}
                       onChange={(newValue) => setData({...data,birthday: format(newValue,"yyyy-MM-dd")})}
                       disabled={!active}
