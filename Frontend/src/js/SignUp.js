@@ -24,17 +24,15 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import axios from "axios"
 import {get,post} from '../utils/requests'
-
-
-
 import {root} from '../index.js';
 import SignIn from '../js/SignIn.js';
 import {appName} from '../js/Globals.js';
-
 import Schedule from '../js/Schedule.js';
+import './../css/signup.css';
+
+
 
 /* Copyright label */
 function Copyright(props) {
@@ -131,20 +129,14 @@ export default function SignUp() {
   };
 
 
-  
+  document.body.style.backgroundColor = "rgb(41, 118, 219)";
+
+
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-
+        <Box className="signupbox">
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -182,7 +174,7 @@ export default function SignUp() {
 			 <Grid item xs={12} sm={6}>
 				 <LocalizationProvider dateAdapter={AdapterDayjs}>
 					<DatePicker format="DD-MM-YYYY"
-					  label="userBday"
+					  label="Date of Birth"
 					  id="userBday"
 					  maxDate={new Date()}
 					  value={userBday}
