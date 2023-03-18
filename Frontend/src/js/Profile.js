@@ -8,7 +8,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
-import Select from '@mui/material/Select';
+
+import Select,{ SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -23,6 +24,7 @@ import {get,post} from '../utils/requests'
 
 import "../css/styles.css";
 import {useEffect} from "react";
+
 
 /*<---- disable back button of browser ---->*/
 window.history.pushState(null, null, window.location.href);
@@ -62,6 +64,14 @@ const MyProfile = () => {
 
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
+  const [labelsData, setlabelsData] = useState([
+							   {  id: 0, value: "Add new" },
+								{ id: 1, value: "Study" },
+								{ id: 2, value: "Meetings" }
+  ]);
+    const [selectedLabel, setSelectedLabel] = useState('Add new');
+    const [selectedLabelID, setSelectedLabelID] = useState('0');
+
 
   const [data,setData] = useState({
       "firstName":"",
@@ -86,6 +96,12 @@ const MyProfile = () => {
             })
     }, []);
   
+ 
+ const handleLabelListChange = (event: SelectChangeEvent) => {
+	 alert("label: "+event.target.value);
+    setSelectedLabel(event.target.value);
+  };
+ 
  
 
   const handleCancel = () => {
@@ -137,11 +153,35 @@ const MyProfile = () => {
 	  } 
    
   };
+  
+  /* Label update button click */
+  const handleUpdate = (event) => {
+
+		 
+   
+  };
+  
+  /* Label delete button click */
+  const handleDelete = (event) => {
+	  
+	  console.log(labelsData);
+	  console.log(selectedLabelID);
+
+	 setlabelsData(labelsData.filter((item) => item.id !== {selectedLabelID})); // Not working
+
+ 	  console.log(labelsData);
+
+		 
+   
+  };
+  
+  
+  
 
   const textOnchange = (event) =>{
       console.log(event)
-      const name = event.target.name
-      const value = event.target.value
+      const name = event.target.name;
+      const value = event.target.value;
       setData({...data,[name] : value})
   }
 
@@ -177,7 +217,7 @@ const MyProfile = () => {
 		
 		{/* <ProfileAvatar src="/path/to/user/photo.jpg" alt="User's profile photo" />*/}
 		<AccountCircleOutlinedIcon fontSize="large"/>
-        <Typography variant="h4" gutterBottom fontFamily="Arial" sx={{ fontWeight: 600, mb: 2, fontSize: '2rem', color: 'cobalt'}}>
+        <Typography variant="h4" gutterBottom fontFamily="Baskerville" sx={{ fontWeight: 600, mb: 2, fontSize: '2rem', color: 'cobalt'}}>
           My Profile
         </Typography>
 		
@@ -225,8 +265,44 @@ const MyProfile = () => {
   	 	 Cancel
   		</Button>
 
-	</div>
+		</div>
+	
+		<div>
+		-------------------------------------------------------------------------------------
+			 <Typography variant="h6" gutterBottom fontFamily="Baskerville" sx={{ fontWeight: 400, mb: 2, fontSize: '2rem', color: 'cobalt'}}>
+				Labels
+			</Typography>
+			
+			   <Select sx={{ m: 1, width: 300 }}
+				labelId="demo-multiple-name-label"
+				id="demo-multiple-name"
+				value={selectedLabel}
+				onChange={handleLabelListChange}
+				
+			>
+					{labelsData.map((label) => (
+						<MenuItem
+						key={label.id}
+						value={label.value}
+						 onClick={() => setSelectedLabelID(label.id)}
+						>
+							{label.value}
+						</MenuItem>
+					))}
+			  </Select> 
+			<TextField sx={{ m: 1, width: 300 }} id="labelUpdate" label={selectedLabel} variant="outlined" />
+			 <br/><Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleUpdate} >
+				Update
+			</Button>
+			 <Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleDelete} >
+				Delete
+			</Button>
+			<br/>
+		</div>
+	
+		<br/>
         </ProfileForm>
+		
       </ProfileContainer>
     </ThemeProvider>
   );
