@@ -20,7 +20,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Input, InputAdornment} from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import axios from "axios"
 import {get,post} from '../utils/requests'
@@ -56,6 +59,7 @@ export default function SignUp() {
 	 const navigate = useNavigate();
 	 
 	  const [userGender, setGender] = React.useState('nil');
+	  const [userBday, setBday] = React.useState(new Date());
 
 	 
 	  const handleChange = (event: SelectChangeEvent) => {
@@ -72,7 +76,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
 	const userFname = data.get('firstName');
 	const userLname = data.get('lastName');
-	const userBday = data.get('birthday');
+	//const userBday = data.get('birthday');
 	//const userGender = data.get('gender');
 	const userEmail = data.get('email');
     const userPassword = data.get('password');
@@ -176,13 +180,16 @@ export default function SignUp() {
               </Grid>
 			  
 			 <Grid item xs={12} sm={6}>
-				<TextField
-				 required
-				 fullWidth
-				 id="birthday"
-				 label="Date of Birth"
-					name="birthday"
+				 <LocalizationProvider dateAdapter={AdapterDayjs}>
+					<DatePicker format="DD-MM-YYYY"
+					  label="userBday"
+					  id="userBday"
+					  maxDate={new Date()}
+					  value={userBday}
+					  onChange={(userBday) => setBday(userBday.format("YYYY-MM-DD"))}
+					 renderInput={(params) => <TextField {...params} />}
 					/>
+				</LocalizationProvider>
 					</Grid>
 					
 			<Grid item xs={12} sm={6}>
