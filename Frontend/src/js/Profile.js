@@ -27,10 +27,10 @@ import {useEffect} from "react";
 
 
 /*<---- disable back button of browser ---->*/
-window.history.pushState(null, null, window.location.href);
-window.onpopstate = function () {
-    window.history.go(1);
-};
+// window.history.pushState(null, null, window.location.href);
+// window.onpopstate = function () {
+    // window.history.go(1);
+// };
 
 const theme = createTheme();
 

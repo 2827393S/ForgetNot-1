@@ -50,9 +50,12 @@ import {useEffect} from "react";
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
+window.localStorage.getItem( 'isGuest',0);
 var labelId=window.localStorage.getItem( 'labelId');
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
+var isGuest=window.localStorage.getItem( 'isGuest'); // To enable or disbale guest mode
+var guestEventID=window.localStorage.getItem( 'guestEventID'); // The guest eventID
 
 
 
@@ -123,10 +126,23 @@ function DashboardContent() {
     const [now_label_id,setNowLabelId] = React.useState(0);
     const [open, setOpen] = React.useState(false);
   
+
     const toggleDrawer = () => {
-        setOpen(!open);
+		if(isGuest!=1) // Not guest mode
+		{
+			   setOpen(!open);
+
+		}
     };
   
+
+//To test
+
+if(isGuest==0)
+	console.log("USER mode is active!");
+else
+	console.log("GUEST mode is active!");
+
     {/* <--- User icon on top right & corresponding listview ---> */}
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -139,21 +155,40 @@ function DashboardContent() {
     };
 
     const handleLogoutClick = () => {
+	if(isGuest!=1) // Not guest mode
+	{
 	  if (window.confirm('Are you sure you want to logout?')) 
 	  {
-		 navigate('/SignIn',true);
+		 navigate('/forgetNot',true);
 	  } 
+	}
+   
+  };
+  
+   const handleProfileClick = () => {
+	
+	if(isGuest!=1) // Not guest mode
+	{
+
+		 navigate('/profile',true);
+	 
+	}
    
   };
 
+	
     // init
     useEffect(()=> {
+		
+		if(isGuest!=1) // Not guest mode
+		{
         get('api/label/get/',{})
             .then(function (res){
                 console.log(res)
                 setLabelData(res.data)
                 setNowLabelId(res.data[0].id)
             })
+		}
     },[])
 
   return (
@@ -189,7 +224,7 @@ function DashboardContent() {
             </Typography>
 			
 				{/* My profile icon */}
-			<IconButton color="inherit" onClick={() => navigate('/profile', false)}>
+			<IconButton color="inherit" onClick={handleProfileClick}>
 				<AccountBoxIcon fontSize="large"/>
 			</IconButton>
 			

@@ -28,6 +28,11 @@ import { birthdays, meetings, study,travel } from './demo-data/events';
 import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
+
+var isGuest=window.localStorage.getItem( 'isGuest'); // To enable or disbale guest mode
+var guestEventID=window.localStorage.getItem( 'guestEventID'); // The guest eventID
+
+
 const CustomButton = ({ onExecute }) => (
   <Button variant="contained" color="primary" onClick={onExecute}>
     Invite +
@@ -113,6 +118,8 @@ export default class Demo extends React.PureComponent {
         ],
     };
 
+
+	
     this.currentViewNameChange = (e) => {
       this.setState({ currentViewName: e.target.value });
 
@@ -123,10 +130,19 @@ export default class Demo extends React.PureComponent {
 	/* Method to toggle appointment form visibility */
 
     this.showAppointmentForm = (bool) => {
+	
+	if(isGuest!=1)
          this.setState({addNewEvent: bool})
+	 else
+		 this.setState({addNewEvent: true})
     };
 
-	
+
+	if(isGuest==1)
+	{
+	this.state = {addNewEvent: true};
+
+	}
   
 
   }
@@ -204,53 +220,57 @@ export default class Demo extends React.PureComponent {
    
 
     commitChanges({ added, changed, deleted }) {
-        let {data} = this.state;
-        let {label_id} = this.props;
-        let oldData = data;
-        console.log("added",added)
-        console.log("changed",changed)
-        console.log("deleted",deleted)
-        if(added){
-            let that = this
-            data = [...data, { ...added }];
-            let pos = data.length;
-            added['startDate'] = Date.parse(added['startDate']);
-            added['endDate'] = Date.parse(added['endDate']);
-            post("/api/event/create/",added).then(
-                function (res){
-                    let {data} = that.state
-                    data[pos-1].id = res.data
-                    that.setState({data:data})
-                }
-            )
-        }
-        if(changed){
-            let newData =[]
-            data.forEach(appointment=>{
-                if(changed[appointment.id]){
-                    let c = { ...appointment, ...changed[appointment.id] }
-                    console.log(c)
-                    c['startDate'] = Date.parse(c['startDate']);
-                    c['endDate'] = Date.parse(c['endDate']);
-                    post("/api/event/update/",c)
-                        .then(function (res){
-                            console.log(res)
-                        })
-                    newData.push({ ...appointment, ...changed[appointment.id] })
-                }else{
-                    newData.push(appointment)
-                }
-            })
-            data = newData
-        }
-        if(deleted){
-            data = data.filter(appointment => appointment.id !== deleted);
-            post("/api/event/delete/", {"event_id": deleted}).then(res=>{console.log(res)})
-        }
+		if(isGuest!=1)
+		{
+			let {data} = this.state;
+			let {label_id} = this.props;
+			let oldData = data;
+			console.log("added",added)
+			console.log("changed",changed)
+			console.log("deleted",deleted)
+			if(added){
+				let that = this
+				data = [...data, { ...added }];
+				let pos = data.length;
+				added['startDate'] = Date.parse(added['startDate']);
+				added['endDate'] = Date.parse(added['endDate']);
+				post("/api/event/create/",added).then(
+					function (res){
+						let {data} = that.state
+						data[pos-1].id = res.data
+						that.setState({data:data})
+					}
+				)
+			}
+			if(changed){
+				let newData =[]
+				data.forEach(appointment=>{
+					if(changed[appointment.id]){
+						let c = { ...appointment, ...changed[appointment.id] }
+						console.log(c)
+						c['startDate'] = Date.parse(c['startDate']);
+						c['endDate'] = Date.parse(c['endDate']);
+						post("/api/event/update/",c)
+							.then(function (res){
+								console.log(res)
+							})
+						newData.push({ ...appointment, ...changed[appointment.id] })
+					}else{
+						newData.push(appointment)
+					}
+				})
+				data = newData
+			}
+			if(deleted){
+				data = data.filter(appointment => appointment.id !== deleted);
+				post("/api/event/delete/", {"event_id": deleted}).then(res=>{console.log(res)})
+			}
 
 
-        this.setState({data:data})
-		this.setState({addNewEvent:false})
+			this.setState({data:data})
+			this.setState({addNewEvent:false})
+
+		}
 
     }
   

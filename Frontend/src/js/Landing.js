@@ -1,21 +1,47 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { useNavigate } from 'react-router-dom';
-
+import {get,post} from '../utils/requests'
+import Home from '../js/Home.js';
+import {root} from '../index.js';
+import {appName} from '../js/Globals.js';
 import '../css/landing.css';
 
+
 var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/landingBg.png';
+var logoPath="/assets/images/loginBg.JPG";
+
+
+
+/* Copyright label */
+function Copyright(props) {
+	const navigate = useNavigate();
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" onClick={() => navigate('/contact', false)}>
+	  {appName}
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 
 const theme = createTheme();
 
@@ -33,40 +59,60 @@ function ButtonGroup() {
   const loadSignIn = () => {
     navigate('/signin', false);
   };
+  
+  
 
   return (
     <>
-      <Button  onClick={loadSignUp} variant="contained" className="buttons">
+      <Button  onClick={loadSignUp} variant="contained" fullWidth className="buttons">
         Sign Up
       </Button>
 
-      <Button onClick={loadSignIn} variant="contained" className="buttons">
+     <br/> <Button onClick={loadSignIn} variant="contained" fullWidth className="buttons">
         Log In
       </Button>
     </>
   );
 };
 
+export default function Landing() {
+  const navigate = useNavigate();
 
-function LandingPage() {
+/* Handle eventID button click */
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const eventID = data.get('eventID');
 
-	const navigate = useNavigate();
+    // Proceed if all the fields are entered. Otherwise, display an alert to the user
+    if (eventID.length !== 0) {
 
-  return (
-    <ThemeProvider theme={theme}>
+     // Setting local storage variable true
+	 window.localStorage.setItem( 'isGuest',1);
+	 
+	 //Setting requested eventId in localStorage
+	 window.localStorage.setItem( 'guestEventID',eventID);
+
+     navigate("/home",{ replace: true })
+
+
+    } else {
+      alert("Please enter an event ID !");
+    }
+  };
+
+return (
+  <ThemeProvider theme={theme} className="main">
+    <Grid container component="main" className="main">
       <CssBaseline />
-      <Box sx={{
-        height: '100vh',
-        backgroundImage: `url(${publicPath+logoPath})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-       
-        flexDirection: 'column',
-        px: 4,
-      }}>
-        <Box sx={{ my: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Typography component="h1" variant="h2"  fontFamily="Baskerville" className="title1">
+      <Grid item xs={12} sm={4} md={7} 
+	className="background-image"
+        style={{backgroundImage: `url(${publicPath+logoPath})`,  position: 'relative'}}>
+      </Grid>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box className="main">
+         <Box >
+          <Typography component="h1" variant="h2" align="center" fontFamily="Baskerville" className="title1">
             Welcome to ForgetNot
           </Typography>
 
@@ -74,18 +120,66 @@ function LandingPage() {
             The easy to use online planner
           </Typography>
 
-          <Box sx={{ mt: 4 }}>
-            <ButtonGroup />
+          <Box  align="center" sx={{ mt: 4, width: 400}}>
+            <ButtonGroup  />
+			<Box className="guestbox" component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} align="center">
+			 <Grid container spacing={2}>
+			  <Grid item xs={14}>
+				<TextField
+				  name="eventID"
+				  required
+				  fontFamily="Baskerville"
+				  label="Got an event ID? Enter here"
+				  autoFocus
+				  fullWidth
+				/>
+			  </Grid>
+			  <Grid item xs={14}>
+				<Button 
+				  type="submit"
+				  fullWidth
+				  variant="contained"
+				  sx={{ mt: 3, mb: 2 }}
+				>
+				  Submit
+				</Button>
+			  </Grid>
+			</Grid>
           </Box>
+		  </Box>
+		  {/*  <Box className="">
+         
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+			  <Grid item xs={14}>
+				<TextField
+				  name="eventID"
+				  required
+				  label="Event ID"
+				  autoFocus
+				  fullWidth
+				/>
+			  </Grid>
+			  <Grid item xs={14}>
+				<Button
+				  type="submit"
+				  fullWidth
+				  variant="contained"
+				  sx={{ mt: 3, mb: 2 }}
+				>
+				  Submit
+				</Button>
+			  </Grid>
+			</Grid>
+          </Box>
+		  </Box> */}
 			
-			<Link className="link" onClick={() => navigate('/contact', false)}>Contact us</Link>
+			<Link className="link"  onClick={() => navigate('/contact', false)} >Contact us</Link>
       
         </Box>
-      </Box>
-    </ThemeProvider>
-  );
+        </Box>
+      </Grid>
+    </Grid>
+  </ThemeProvider>
+);
 }
-
-
-export default LandingPage;
-
