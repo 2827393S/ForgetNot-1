@@ -50,12 +50,9 @@ import {useEffect} from "react";
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
-window.localStorage.setItem( 'isGuest',0);
 var labelId=window.localStorage.getItem( 'labelId');
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
-var isGuest=window.localStorage.getItem( 'isGuest'); // To enable or disbale guest mode
-var guestEventID=window.localStorage.getItem( 'guestEventID'); // The guest eventID
 
 
 
@@ -128,20 +125,11 @@ function DashboardContent() {
   
 
     const toggleDrawer = () => {
-		if(isGuest!=1) // Not guest mode
-		{
-			   setOpen(!open);
+	   setOpen(!open);
 
-		}
     };
   
 
-//To test
-
-if(isGuest==0)
-	console.log("USER mode is active!");
-else
-	console.log("GUEST mode is active!");
 
     {/* <--- User icon on top right & corresponding listview ---> */}
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -155,40 +143,32 @@ else
     };
 
     const handleLogoutClick = () => {
-	if(isGuest!=1) // Not guest mode
-	{
+	
 	  if (window.confirm('Are you sure you want to logout?')) 
 	  {
+		 	window.history.replaceState(null, null, "/"); //clear history
+
 		 navigate('/forgetNot',true);
 	  } 
-	}
-   
+	
   };
   
    const handleProfileClick = () => {
+	window.history.replaceState(null, null, "/"); //clear history
+	navigate('/profile',true);
 	
-	if(isGuest!=1) // Not guest mode
-	{
-
-		 navigate('/profile',true);
-	 
-	}
-   
   };
 
 	
     // init
     useEffect(()=> {
-		
-		if(isGuest!=1) // Not guest mode
-		{
+
         get('api/label/get/',{})
             .then(function (res){
                 console.log(res)
                 setLabelData(res.data)
                 setNowLabelId(res.data[0].id)
             })
-		}
     },[])
 
   return (

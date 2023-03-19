@@ -29,8 +29,6 @@ import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 
-var isGuest=window.localStorage.getItem( 'isGuest'); // To enable or disbale guest mode
-var guestEventID=window.localStorage.getItem( 'guestEventID'); // The guest eventID
 
 
 const CustomButton = ({ onExecute }) => (
@@ -131,19 +129,10 @@ export default class Demo extends React.PureComponent {
 
     this.showAppointmentForm = (bool) => {
 	
-	if(isGuest!=1)
          this.setState({addNewEvent: bool})
-	 else
-		 this.setState({addNewEvent: true})
+	
     };
 
-
-	if(isGuest==1)
-	{
-	this.state = {addNewEvent: true};
-
-	}
-  
 
   }
   
@@ -220,8 +209,7 @@ export default class Demo extends React.PureComponent {
    
 
     commitChanges({ added, changed, deleted }) {
-		if(isGuest!=1)
-		{
+	
 			let {data} = this.state;
 			let {label_id} = this.props;
 			let oldData = data;
@@ -269,8 +257,6 @@ export default class Demo extends React.PureComponent {
 
 			this.setState({data:data})
 			this.setState({addNewEvent:false})
-
-		}
 
     }
   

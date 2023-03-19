@@ -31,6 +31,7 @@ var logoPath="/assets/images/loginBg.JPG";
 
 
 
+
 /* Copyright label */
 function Copyright(props) {
 	const navigate = useNavigate();
@@ -79,11 +80,7 @@ export default function SignInSide() {
 			  
 			  // If the response code is 200 -> sign in successful, proceed to home page. Otherwise display relevant alert to the user
               if(res.status === 200){
-				  // Setting local storage guest variable false
-					window.localStorage.setItem( 'isGuest',0);
-	 
-					//clearing guest eventId in localStorage
-				window.localStorage.setItem( 'guestEventID',"");
+				 
                   navigate("/home",{ replace: true })
               }else if(res.status === 401){
 				  alert("User cannot be found, Please register and try again!");
@@ -150,14 +147,8 @@ return (
             <Grid container>
             </Grid>
             <Box sx={{ mt: 5 }}>
-              <Typography variant="body2" color="text.secondary" align="center">
-                {'© '}
-                <Link color="inherit" href="https://www.example.com/">
-                  Your Website
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-              </Typography>
+                     <Copyright sx={{ mt: 5 }} />
+
             </Box>
           </Box>
         </Box>

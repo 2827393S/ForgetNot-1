@@ -8,6 +8,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import AccessAlarmsOutlinedIcon from '@mui/icons-material/AccessAlarmsOutlined';
+import Box from '@mui/material/Box';
 
 import Select,{ SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -25,12 +26,14 @@ import {get,post} from '../utils/requests'
 import "../css/styles.css";
 import {useEffect} from "react";
 
+var publicPath=process.env.PUBLIC_URL;
+var logoPath= '/assets/images/guestBg.jpg';
 
 /*<---- disable back button of browser ---->*/
-window.history.pushState(null, null, window.location.href);
-window.onpopstate = function () {
-    window.history.go(1);
-};
+// window.history.pushState(null, null, window.location.href);
+// window.onpopstate = function () {
+    // window.history.go(1);
+// };
 
 const theme = createTheme();
 
@@ -101,16 +104,17 @@ const MyProfile = () => {
 
   
   const handleHomeClick = () => {
-    navigate('/home');
+	window.history.replaceState(null, null, "/"); //Clear history
+    navigate('/forgetNot');
   };
 
-  const handleLogoutClick = () => {
-	  if (window.confirm('Are you sure you want to logout?')) 
-	  {
-		 navigate('/SignIn',true);
-	  } 
+  // const handleLogoutClick = () => {
+	  // if (window.confirm('Are you sure you want to logout?')) 
+	  // {
+		 // navigate('/SignIn',true);
+	  // } 
    
-  };
+  // };
   
  
   
@@ -126,7 +130,27 @@ const MyProfile = () => {
 
   return (
     <ThemeProvider theme={theme}>
+	  <Box
+          component="main"
+          sx={{
+            /*backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',*/
+			backgroundImage: `url(${publicPath+logoPath})`,
+			backgroundRepeat: 'no-repeat',
+			backgroundPosition: 'center',
+			backgroundSize: 'cover',
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
  <AppBar position="static">
+ 
   <Toolbar>
 		<IconButton  color="inherit">
                 <AccessAlarmsOutlinedIcon fontSize="large"/>
@@ -146,13 +170,13 @@ const MyProfile = () => {
             <HomeIcon fontSize="large"/>
         </IconButton>
 			
-		<IconButton color="inherit" onClick={handleLogoutClick}>
-           <LogoutOutlinedIcon fontSize="large"/>
-        </IconButton>
+			{/*<IconButton color="inherit" onClick={handleLogoutClick}>
+			<LogoutOutlinedIcon fontSize="large"/>
+        </IconButton>*/}
 			
   </Toolbar>
 </AppBar>
-      <ProfileContainer maxWidth="sm" sx={{ textAlign: 'center' }}>
+      <ProfileContainer maxWidth="sm" sx={{ textAlign: 'center', backgroundColor: 'white', opacity: '1' }}>
 		
 		{/* <ProfileAvatar src="/path/to/user/photo.jpg" alt="User's profile photo" />*/}
 		<AccountCircleOutlinedIcon fontSize="large"/>
@@ -163,40 +187,41 @@ const MyProfile = () => {
         <ProfileForm >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-			<TextField fullWidth id="firstName" label="Firstname" name="firstName" value={data.firstName} 
+			<TextField fullWidth id="title" label="Title" name="firstName" value={data.firstName} 
 			onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
 		/>
 			
             </Grid>
+			
 			 <br/><Grid item xs={12} sm={6}>
-              <TextField fullWidth id="lastName" label="Lastname" name="lastName" value={data.lastName} onChange={textOnchange} disabled={!active}/>
+              <TextField fullWidth id="startDate" label="Start Date" name="lastName" value={data.lastName} onChange={textOnchange} 
+			  InputProps={{readOnly: true}} />
+			
+            </Grid>
+			<Grid item xs={12} sm={6}>
+              <TextField fullWidth id="endDate" label="End Date" name="lastName" value={data.lastName} onChange={textOnchange} 
+			  InputProps={{readOnly: true}} />
 			
             </Grid>
            
-            <Grid item xs={12} sm={6}>
-				<Select required fullWidth defaultValue='male' value={data.gender} name="gender" onChange={textOnchange} label="gender" disabled={!active}>
-					  <MenuItem value='male' >Male</MenuItem>
-					  <MenuItem value='female' >Female</MenuItem>
-				</Select>
-            </Grid>
-          <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker
-                      id="birthday"
-                      label="birthday"
-					  maxDate={new Date()}
-                      value={parseISO(data.birthday)}
-                      onChange={(newValue) => setData({...data,birthday: format(newValue,"yyyy-MM-dd")})}
-                      disabled={!active}
-                   renderInput={(params) => <TextField {...params} />}/>
-              </LocalizationProvider>
-          </Grid>
+          
+         
           </Grid>
 		   <Grid item xs={12} sm={6}>
-              <TextField fullWidth id="email" label="Email" name="email" value={data.email} onChange={textOnchange} disabled={!active}/>
+              <TextField fullWidth id="info" label="More Information" name="email" value={data.email} 
+			  onChange={textOnchange} InputProps={{readOnly: true}} 
+			  sx={{width: { sm: 200, md: 550 }, "& .MuiInputBase-root": {height: 150}}} multiline = {true} />
               
             </Grid>
 			<br/>
+		   <Grid item xs={12} sm={6}>
+			 <Button id="edit" variant="contained" color="primary"  >
+				CONFIRM
+ 		 </Button>
+		 {/* <Button id="edit" sx={{ m: 2 }} variant="contained" color="primary"  >
+				CANCEL
+ 		 </Button> */}
+		  </Grid>
          <div>
 		 
  		
@@ -208,6 +233,7 @@ const MyProfile = () => {
         </ProfileForm>
 		
       </ProfileContainer>
+	  </Box>
     </ThemeProvider>
   );
 

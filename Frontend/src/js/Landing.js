@@ -52,12 +52,12 @@ function ButtonGroup() {
   /* <--- Load signUP page ---> */
   const loadSignUp = () => {
 	  
-    navigate('/signup', false);
+    navigate('/signup');
   };
 
   /* <--- Load signIn page ---> */
   const loadSignIn = () => {
-    navigate('/signin', false);
+    navigate('/signin');
   };
   
   
@@ -87,13 +87,7 @@ export default function Landing() {
     // Proceed if all the fields are entered. Otherwise, display an alert to the user
     if (eventID.length !== 0) {
 
-     // Setting local storage variable true
-	 window.localStorage.setItem( 'isGuest',1);
-	 
-	 //Setting requested eventId in localStorage
-	 window.localStorage.setItem( 'guestEventID',eventID);
-
-     navigate("/home",{ replace: true })
+     navigate("/guest",{ replace: true })
 
 
     } else {
@@ -174,7 +168,7 @@ return (
           </Box>
 		  </Box> */}
 			
-			<Link className="link"  onClick={() => navigate('/contact', false)} >Contact us</Link>
+			<Link className="landinglink"  onClick={() => navigate('/contact', false)} >Contact us</Link>
       
         </Box>
         </Box>
