@@ -296,7 +296,7 @@ export default class Demo extends React.PureComponent {
 
 			 <Button 
 				variant="contained" 
-				sx={{maxWidth: '200px', maxHeight: '40px'}} 
+				sx={{maxWidth: '200px', maxHeight: '40px', float:'right'}} 
 				color="primary" 
 				startIcon={<EventAvailableOutlinedIcon />}
 				onClick={this.showAppointmentForm.bind(null,true)} >
