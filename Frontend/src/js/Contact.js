@@ -96,7 +96,7 @@ function ContactUsPage() {
         px: 4,
       }}>
         <Box >
-          <Typography component="h1" variant="h2" align="center" fontFamily="Baskerville" className="title1">
+          <Typography component="h2" variant="h2" fontFamily="Baskerville" className="contacttitle">
             Contact Us
           </Typography>
 
@@ -144,7 +144,7 @@ function ContactUsPage() {
           </Box>
 
           <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" >
-            <Link className="link" onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
+            <Link className="contactlink" onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
           </Typography>
         </Box>
       </Box>

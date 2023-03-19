@@ -40,19 +40,19 @@
 
 
 
-.link {
+.landinglink {
 	font-weight: bold !important;
 	font-family: 'Baskerville';
 	font-size: 1.5em;
 	text-align: center !important;
 	margin-left:35vh !important;
 	text-decoration: none !important;
-    color: #B613AA !important;
+    color: #336AF1 !important;
 
 }
-.link:hover {
-   color: #B613AA !important;
-   font-size:100%;
+.landinglink:hover {
+   color: #336AF1 !important;
+   font-size:150%;
    
    }
 

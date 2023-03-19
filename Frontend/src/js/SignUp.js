@@ -20,11 +20,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Input, InputAdornment} from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from "axios"
+
 import {get,post} from '../utils/requests'
 import {root} from '../index.js';
 import SignIn from '../js/SignIn.js';
@@ -33,6 +35,8 @@ import Schedule from '../js/Schedule.js';
 import './../css/signup.css';
 
 
+var publicPath=process.env.PUBLIC_URL;
+var logoPath="/assets/images/appName.png";
 
 /* Copyright label */
 function Copyright(props) {
@@ -129,10 +133,13 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="sm">
+    <ThemeProvider theme={theme} >
+      <Container component="main" maxWidth="sm" >
         <CssBaseline />
+		
         <Box className="signupbox">
+		<img src={publicPath+logoPath} />
+
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>

@@ -1,10 +1,12 @@
 
-.title1{
+.contacttitle{
 	font-weight: bold !important;
 	font-size: 3em !important;
 	font-family: 'Baskerville';
-	color: 'cobalt';
+	color: 'cobalt' !important;
 	opacity: 0.8;
+	  text-align: center;
+
 }
 
 .title2{
@@ -36,17 +38,20 @@
 	background-color: white !important;
 }
 
-.link {
+.contactlink {
 	font-weight: bold !important;
 	font-family: 'Baskerville';
-	margin-top: 10px !important;
 	font-size: 1.3em;
-	color: #000000;
+	color: #000000 !important;
+	text-align: center;
+
 
 }
-.link:hover {
+.contactlink:hover {
    color: #000000;
    font-size:150%;
+   text-align: center;
+
    }
 
 
