@@ -149,7 +149,8 @@ const MyProfile = () => {
   const handleLogoutClick = () => {
 	  if (window.confirm('Are you sure you want to logout?')) 
 	  {
-		 navigate('/SignIn',true);
+		  window.history.replaceState(null, null, "/"); //Clear history
+		 navigate('/forgetNot',true);
 	  } 
    
   };
