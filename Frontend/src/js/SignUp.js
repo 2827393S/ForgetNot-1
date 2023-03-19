@@ -128,10 +128,6 @@ export default function SignUp() {
 
   };
 
-
-  document.body.style.backgroundColor = "rgb(41, 118, 219)";
-
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="sm">
