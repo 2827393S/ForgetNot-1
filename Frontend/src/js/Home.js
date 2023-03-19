@@ -50,7 +50,7 @@ import {useEffect} from "react";
 
 const settings = ['Home','My profile', 'My groups', 'Logout'];
 
-window.localStorage.getItem( 'isGuest',0);
+window.localStorage.setItem( 'isGuest',0);
 var labelId=window.localStorage.getItem( 'labelId');
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/background.jpg';
