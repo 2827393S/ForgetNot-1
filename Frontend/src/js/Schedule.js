@@ -29,8 +29,6 @@ import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
 
-
-
 const CustomButton = ({ onExecute }) => (
   <Button variant="contained" color="primary" onClick={onExecute}>
     Invite +
@@ -52,14 +50,6 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     onFieldChange={onFieldChange}
     {...restProps}
 	>
-    <AppointmentForm.TextEditor
-      value={appointmentData.customField}
-      placeholder="Host"
-    />
-    <AppointmentForm.TextEditor
-      value={appointmentData.customField}
-      placeholder="Invitees"
-    />
 <AppointmentForm.CommandButton command="Invite +" />
       <CustomButton command="customAction" onExecute={() => alert('Invite Button Clicked!')} />
   </AppointmentForm.BasicLayout>
@@ -311,13 +301,9 @@ export default class Demo extends React.PureComponent {
             <DateNavigator />
             <TodayButton />
 
-            <AppointmentForm visible={this.state.addNewEvent} 
-				onVisibilityChange={this.showAppointmentForm.bind(null)}/>
-
-				{/*basicLayoutComponent={BasicLayout} */}
-				{/*textEditorComponent={TextEditor}*/}
-				{/*/>*/}
-
+     <AppointmentForm visible={this.state.addNewEvent} 
+				onVisibilityChange={this.showAppointmentForm.bind(null)}
+				basicLayoutComponent={BasicLayout} />
             <Resources
                 data={resources}
                 mainResourceName="label_id"
