@@ -66,11 +66,14 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const [labelsData, setlabelsData] = useState([
 							   {  id: 0, value: "Add new" },
-								{ id: 1, value: "Study" },
-								{ id: 2, value: "Meetings" }
+							   { id: 1, value: "Default" },
+								{ id: 2, value: "Study" },
+								{ id: 3, value: "Meetings" }
   ]);
     const [selectedLabel, setSelectedLabel] = useState('Add new');
     const [selectedLabelID, setSelectedLabelID] = useState('0');
+    const [labelTextVal, setLabelTextVal] = useState('');
+
 
 
   const [data,setData] = useState({
@@ -98,8 +101,9 @@ const MyProfile = () => {
   
  
  const handleLabelListChange = (event: SelectChangeEvent) => {
-	 alert("label: "+event.target.value);
     setSelectedLabel(event.target.value);
+	setLabelTextVal(event.target.value);
+
   };
  
  
@@ -155,28 +159,75 @@ const MyProfile = () => {
    
   };
   
+  /* update changed label value to state variable */
+  const updateSelectedLabel = (event) => {
+		 
+       setLabelTextVal(event.target.value);
+
+  };
+  
   /* Label update button click */
   const handleUpdate = (event) => {
 
+	alert("update: "+ labelTextVal);
+	if(selectedLabelID!=1) // To restrict modifying "Default"
+	{
+		if(selectedLabelID==0) //Add new
+		{
+			// Call webservice to add new label
+			
+			
+			// If success, update local array
+			
+			
+			
+		}else { // Update existing label
+			
+			// Call webservice to update existing label name
+			
+			
+			// If success, update local array			
+			// setlabelsData([
+			  // ...labelsData,
+			  // { id: selectedLabelID, value: labelTextVal }
+			// ]);
+		}
+		
+		
+		
+	
+		
+		
+	}else	
+		alert("You cannot modify this label!");
+
 		 
    
   };
   
-  /* Label delete button click */
-  const handleDelete = (event) => {
+   
+  const handleDelete = (e) => {
 	  
-	  console.log(labelsData);
-	  console.log(selectedLabelID);
+	  if(selectedLabelID>1) // To restrict deleting "Add new" and "Default"
+	  {
+		  if (window.confirm('Deleting a label will delete related events also.  Are you sure you want to delete this label?')) 
+		  {
+			 // Call webservice to delete the label
+			 
+		// If web server update success, do below 
+		  setlabelsData(
+		  labelsData.filter(
+			(item) => item.id !== selectedLabelID));
+		  console.log(labelsData);
+		   setSelectedLabel("Add New");
+		   setSelectedLabelID('0');
 
-	 setlabelsData(labelsData.filter((item) => item.id !== {selectedLabelID})); // Not working
-
- 	  console.log(labelsData);
-
-		 
-   
+		  }
+	  }else
+		  alert("You cannot delete this label");
+	  
+    
   };
-  
-  
   
 
   const textOnchange = (event) =>{
@@ -275,8 +326,6 @@ const MyProfile = () => {
 			</Typography>
 			
 			   <Select sx={{ m: 1, width: 300 }}
-				labelId="demo-multiple-name-label"
-				id="demo-multiple-name"
 				value={selectedLabel}
 				onChange={handleLabelListChange}
 				
@@ -291,7 +340,7 @@ const MyProfile = () => {
 						</MenuItem>
 					))}
 			  </Select> 
-			<TextField sx={{ m: 1, width: 300 }} id="labelUpdate" label={selectedLabel} variant="outlined" />
+			<TextField sx={{ m: 1, width: 300 }} id="labelUpdate" value={labelTextVal} onChange={updateSelectedLabel} variant="outlined" />
 			 <br/><Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleUpdate} >
 				Update
 			</Button>
