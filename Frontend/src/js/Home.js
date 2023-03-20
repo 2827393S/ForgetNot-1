@@ -232,7 +232,7 @@ function DashboardContent() {
           <Divider />
           <List component="nav">
               {label_data.map((value) => (
-                  <ListItemButton key={value.id} onClick={() => setNowLabelId(value.id)} sx={{ backgroundColor: "#d1e18960" }}>
+                  <ListItemButton key={value.id} onClick={() => setNowLabelId(value.id)} sx={{ backgroundColor: "#3F83E590" }}>
                       <ListItemIcon>
                           <ModeOfTravelIcon/>
                       </ListItemIcon>

@@ -108,14 +108,19 @@ const MyProfile = () => {
     navigate('/forgetNot');
   };
 
-  // const handleLogoutClick = () => {
-	  // if (window.confirm('Are you sure you want to logout?')) 
-	  // {
-		 // navigate('/SignIn',true);
-	  // } 
+  const handleConfirmClick = () => {
+	 alert("Taking you to signup page....");
+     navigate('/signup',true);
+
+  };
+  const handleCancelClick = () => {
+	  if (window.confirm('Are you sure you do not want to attend this event?')) 
+	  {
+		window.history.replaceState(null, null, "/"); //Clear history
+     	 navigate('/forgetNot',true);
+	  } 
    
-  // };
-  
+  };
  
   
   
@@ -186,6 +191,12 @@ const MyProfile = () => {
 		
         <ProfileForm >
           <Grid container spacing={2}>
+		   <Grid item xs={12} sm={12}>
+			<TextField fullWidth id="host" label="Hosted by" name="host" value={data.firstName+" " +data.lastName} 
+			onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
+		/>
+			
+            </Grid>
             <Grid item xs={12} sm={12}>
 			<TextField fullWidth id="title" label="Title" name="firstName" value={data.firstName} 
 			onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
@@ -215,12 +226,12 @@ const MyProfile = () => {
             </Grid>
 			<br/>
 		   <Grid item xs={12} sm={6}>
-			 <Button id="edit" variant="contained" color="primary"  >
+			 <Button id="edit" variant="contained" color="primary" onClick={handleConfirmClick} >
 				CONFIRM
  		 </Button>
-		 {/* <Button id="edit" sx={{ m: 2 }} variant="contained" color="primary"  >
+		  <Button id="edit" sx={{ m: 2 }} variant="contained" color="primary" onClick={handleCancelClick} >
 				CANCEL
- 		 </Button> */}
+ 		 </Button> 
 		  </Grid>
          <div>
 		 

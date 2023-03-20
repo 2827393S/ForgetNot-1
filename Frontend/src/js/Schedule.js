@@ -87,9 +87,6 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
   </RadioGroup>
 );
 
-// const Appointment = ({ onClick, onDoubleClick, ...restProps }) => {
-  // return <Appointments.Appointment onDoubleClick={onDoubleClick} {...restProps} />;
-// };
 
 
 export default class Demo extends React.PureComponent {
