@@ -35,10 +35,6 @@ const CustomButton = ({ onExecute }) => (
   </Button>
 );
 
-const TextEditor = (props) => {
-   return <AppointmentForm.TextEditor {...props} />;
-};
-
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
   const onCustomFieldChange = (nextValue) => {
     onFieldChange({ customField: nextValue });
