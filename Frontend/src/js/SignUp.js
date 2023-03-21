@@ -20,6 +20,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Input, InputAdornment} from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import EmailVerification from './EmailVerification';
+
 
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -62,6 +64,8 @@ export default function SignUp() {
 	 
 	  const [userGender, setGender] = React.useState('nil');
 	  const [userBday, setBday] = React.useState(new Date());
+      const [email, setEmail] = React.useState('');
+      const [code,setCode] = React.useState('');
 
 	 
 	  const handleChange = (event: SelectChangeEvent) => {
@@ -89,13 +93,13 @@ export default function SignUp() {
       password: userPassword,
 	  birthday: userBday,
 	  gender: userGender,
-	  
+        verify_code:code
     });
 	
 	
 
 	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
-	  if(userFname.length!==0 && userLname.length!==0 && userBday.length!==0 && userGender!=='nil' && userEmail.length!==0 && userPassword!==0)
+	  if(userFname.length!==0 && userLname.length!==0 && userBday.length!==0 && userGender!=='nil' && userEmail.length!==0 && userPassword!==0 && code !== "")
 		{
 				
 			const requests_data = {
@@ -104,7 +108,8 @@ export default function SignUp() {
 				  'birthday':userBday,
 				  'gender':userGender,
 				  'email':userEmail,
-				  'password':userPassword
+				  'password':userPassword,
+                  'verify_code':code
 			  }
 			  
 			  post('api/user/register/', requests_data) // POST data to webserver
@@ -148,7 +153,7 @@ export default function SignUp() {
             Sign up
           </Typography>
 		  
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <form noValidate onSubmit={handleSubmit} >
             <Grid container spacing={2}>
 			
               <Grid item xs={12} sm={6}>
@@ -212,8 +217,15 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
+
+                <Grid item xs={12}>
+                    <EmailVerification email={email}
+                                       onCodeChange={(code)=>setCode(code)}/>
+                </Grid>
 			  
               <Grid item xs={12}>
                 <TextField
@@ -238,7 +250,7 @@ export default function SignUp() {
               Sign Up
             </Button>
 			
-            <Grid container justify Content="flex-end">
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link onClick={() => navigate('/signin', false)} variant="body2">
                   Already have an account? Sign in
@@ -246,7 +258,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
 			
-          </Box>
+          </form>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
