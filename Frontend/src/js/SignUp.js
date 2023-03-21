@@ -222,7 +222,7 @@ export default function SignUp() {
                 />
               </Grid>
 
-                <Grid item xs={12}>
+                <Grid item xs={14}>
                     <EmailVerification email={email}
                                        onCodeChange={(code)=>setCode(code)}/>
                 </Grid>

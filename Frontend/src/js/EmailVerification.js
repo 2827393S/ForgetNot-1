@@ -64,6 +64,7 @@ const EmailVerification = ({email,onCodeChange}) => {
                 width: '100%',
                 maxWidth: '100%', // Add this line to set the max width to 100%
             }}
+			fullWidth
         >
             <TextField
                 label="6-Digit Verification Code"
@@ -72,8 +73,9 @@ const EmailVerification = ({email,onCodeChange}) => {
                 onChange={(e) => onCodeChange(e.target.value)}
                 inputProps={{ maxLength: 6 }}
                 required
+				fullWidth
             />
-            <Button type="submit" variant="contained" color="primary" disabled={buttonDisabled}
+            <Button fullWidth type="submit" variant="contained" color="primary" disabled={buttonDisabled} style={{textTransform: 'none'}}
                     onClick={handleClick} // Use handleClick instead of handleSubmit
             >
                 {buttonDisabled ? `${timeRemaining} s` : 'Send Verification Code'}
