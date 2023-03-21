@@ -152,7 +152,7 @@ export default class Demo extends React.PureComponent {
             label.instances = [];
             label_data.forEach(value=>{
                 value['text'] = value['name']
-                value['color'] = "#90ee90"
+                value['color'] = "#3F83E590"
                 delete value['name']
                 delete value['owner']
                 label.instances.push(value)
@@ -199,12 +199,27 @@ export default class Demo extends React.PureComponent {
 			console.log("added",added)
 			console.log("changed",changed)
 			console.log("deleted",deleted)
+			
+			if(added['label_id']== undefined)
+			{
+				alert("Please select a label !");
+				return;
+			}
+			
+			if(added['title'] == undefined)
+			{
+				alert("Please fill title !");
+				return;
+			}
+
 			if(added){
 				let that = this
 				data = [...data, { ...added }];
 				let pos = data.length;
 				added['startDate'] = Date.parse(added['startDate']);
 				added['endDate'] = Date.parse(added['endDate']);
+				
+
 				post("/api/event/create/",added).then(
 					function (res){
 						let {data} = that.state
@@ -297,7 +312,7 @@ export default class Demo extends React.PureComponent {
             <DateNavigator />
             <TodayButton />
 
-     <AppointmentForm visible={this.state.addNewEvent} 
+			<AppointmentForm visible={this.state.addNewEvent} 
 				onVisibilityChange={this.showAppointmentForm.bind(null)}
 				basicLayoutComponent={BasicLayout} />
             <Resources
