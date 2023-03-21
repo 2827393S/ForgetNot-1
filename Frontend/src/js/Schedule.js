@@ -35,6 +35,10 @@ const CustomButton = ({ onExecute }) => (
   </Button>
 );
 
+const TextEditor = (props) => {
+	return <AppointmentForm.TestEditor {...props} />;
+};
+
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
   const onCustomFieldChange = (nextValue) => {
     onFieldChange({ customField: nextValue });
@@ -46,6 +50,12 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     onFieldChange={onFieldChange}
     {...restProps}
 	>
+<AppointmentForm.TextEditor
+        value={appointmentData.customField}
+        onValueChange={onCustomFieldChange}
+        placeholder="Enter an email address"
+      />
+
 <AppointmentForm.CommandButton command="Invite +" />
       <CustomButton command="customAction" onExecute={() => alert('Invite Button Clicked!')} />
   </AppointmentForm.BasicLayout>
