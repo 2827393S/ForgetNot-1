@@ -117,7 +117,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function Home() {
     const navigate = useNavigate();
     const [label_data,setLabelData] = React.useState([]);
     const [now_label_id,setNowLabelId] = React.useState(0);
@@ -283,5 +283,5 @@ function DashboardContent() {
 }
 
 export default function Dashboard() {
-  return <DashboardContent />;
+  return <Home />;
 }

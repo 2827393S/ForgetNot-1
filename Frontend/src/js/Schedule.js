@@ -24,7 +24,6 @@ import {get,post} from '../utils/requests'
 import axios from "axios";
 
 import { eventLabels } from './Globals.js';
-import { birthdays, meetings, study,travel } from './demo-data/events';
 import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 
@@ -37,7 +36,7 @@ const CustomButton = ({ onExecute }) => (
 
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
   const onCustomFieldChange = (nextValue) => {
-    onFieldChange({ customField: nextValue });
+    onFieldChange({ emailField: nextValue });
   };
 
  return (
@@ -47,13 +46,13 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     {...restProps}
 	>
 <AppointmentForm.TextEditor
-        value={appointmentData.customField}
+        value={appointmentData.emailField}
         onValueChange={onCustomFieldChange}
         placeholder="Enter an email address"
       />
 
 <AppointmentForm.CommandButton command="Invite +" />
-      <CustomButton command="customAction" onExecute={() => alert('Invite Button Clicked!')} />
+      <CustomButton command="customAction" onExecute={() => alert('Sending invite to: '+appointmentData.emailField)} />
   </AppointmentForm.BasicLayout>
 );
 };
@@ -81,7 +80,7 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 
 
 
-export default class Demo extends React.PureComponent {
+export default class Schedule extends React.PureComponent {
   constructor(props) {
     super(props);
     let that = this;
@@ -206,19 +205,21 @@ export default class Demo extends React.PureComponent {
 			console.log("changed",changed)
 			console.log("deleted",deleted)
 			
-			if(added['label_id']== undefined)
-			{
-				alert("Please select a label !");
-				return;
-			}
 			
-			if(added['title'] == undefined)
-			{
-				alert("Please fill title !");
-				return;
-			}
 
 			if(added){
+				if(added['label_id']== undefined)
+				{
+					alert("Please select a label !");
+					return;
+				}
+				
+				if(added['title'] == undefined)
+				{
+					alert("Please fill title !");
+					return;
+				}
+				
 				let that = this
 				data = [...data, { ...added }];
 				let pos = data.length;

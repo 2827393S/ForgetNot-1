@@ -26,7 +26,6 @@ var publicPath=process.env.PUBLIC_URL;
 var logoPath="/assets/images/loginBg.JPG";
 
 
-
 /* Copyright label */
 function Copyright(props) {
 	const navigate = useNavigate();
@@ -96,11 +95,11 @@ export default function Landing() {
   };
 
 return (
-  <ThemeProvider theme={theme} className="main">
+  <ThemeProvider theme={theme} >
     <Grid container component="main" className="main">
       <CssBaseline />
       <Grid item xs={12} sm={4} md={7} 
-	className="background-image"
+		className="background-image"
         style={{backgroundImage: `url(${publicPath+logoPath})`,  position: 'relative'}}>
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -140,36 +139,8 @@ return (
 			  </Grid>
 			</Grid>
           </Box>
-		  </Box>
-		  {/*  <Box className="">
-         
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-			  <Grid item xs={14}>
-				<TextField
-				  name="eventID"
-				  required
-				  label="Event ID"
-				  autoFocus
-				  fullWidth
-				/>
-			  </Grid>
-			  <Grid item xs={14}>
-				<Button
-				  type="submit"
-				  fullWidth
-				  variant="contained"
-				  sx={{ mt: 3, mb: 2 }}
-				>
-				  Submit
-				</Button>
-			  </Grid>
-			</Grid>
-          </Box>
-		  </Box> */}
-			
+		  </Box>			
 			<Link className="landinglink"  onClick={() => navigate('/contact', false)} >Contact us</Link>
-      
         </Box>
         </Box>
       </Grid>

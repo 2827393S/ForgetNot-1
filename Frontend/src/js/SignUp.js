@@ -67,7 +67,7 @@ export default function SignUp() {
       const [email, setEmail] = React.useState('');
       const [code,setCode] = React.useState('');
 
-	 
+	 /* Gender dropdown updation */
 	  const handleChange = (event: SelectChangeEvent) => {
 			setGender(event.target.value);
   };
@@ -190,17 +190,9 @@ export default function SignUp() {
 					 renderInput={(params) => <TextField {...params} />}
 					/>
 				</LocalizationProvider>
-					</Grid>
+			</Grid>
 					
-			<Grid item xs={12} sm={6}>
-				{/* <TextField
-                  required
-                  fullWidth
-                  id="gender"
-                  label="Sex"
-                  name="gender"
-                /> */}
-				
+			<Grid item xs={12} sm={6}>						
 				<Select required fullWidth value={userGender} label="gender" onChange={handleChange}>
 					  <MenuItem value={'nil'}>Gender</MenuItem>
 					  <MenuItem value={'male'}>Male</MenuItem>
@@ -224,7 +216,7 @@ export default function SignUp() {
 
                 <Grid item xs={14}>
                     <EmailVerification email={email}
-                                       onCodeChange={(code)=>setCode(code)}/>
+                      onCodeChange={(code)=>setCode(code)}/>
                 </Grid>
 			  
               <Grid item xs={12}>

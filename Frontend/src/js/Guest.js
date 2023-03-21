@@ -29,11 +29,7 @@ import {useEffect} from "react";
 var publicPath=process.env.PUBLIC_URL;
 var logoPath= '/assets/images/guestBg.jpg';
 
-/*<---- disable back button of browser ---->*/
-// window.history.pushState(null, null, window.location.href);
-// window.onpopstate = function () {
-    // window.history.go(1);
-// };
+
 
 const theme = createTheme();
 
@@ -63,7 +59,7 @@ const ProfileForm = styled('form')({
 
 
   
-const MyProfile = () => {
+const Guest = () => {
 
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
@@ -250,5 +246,5 @@ const MyProfile = () => {
 
 
 }
-export default MyProfile;
+export default Guest;
 
