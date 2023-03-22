@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { Delete } from '@mui/icons-material';
 import {EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
 import {
     AppointmentForm,
@@ -21,23 +22,37 @@ import {
 
 
 import {get,post} from '../utils/requests'
-import axios from "axios";
+
 
 import { eventLabels } from './Globals.js';
+
 import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+import CustomAppointmentForm from "./CustomAppointmentForm";
 
 
-const CustomButton = ({ onExecute }) => (
-  <Button variant="contained" color="primary" onClick={onExecute}>
-    Invite +
-  </Button>
-);
+const CustomButton = ({invite_email,event_id}) => {
+    const onExecute = () => {
+        if(invite_email===""||invite_email===null){
+            alert("input_email")
+        }else{
+            const param = {email:invite_email,event_id:event_id}
+            post("/api/event/get_vistor_list/",param)
+                .then(function (res){
+                    console.log(res)
+                    alert("invite success")
+                })
+        }
+    }
+    return (
+        <Button variant="contained" color="primary" onClick={onExecute}>Invite</Button>
+    );
+};
 
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
-  const onCustomFieldChange = (nextValue) => {
-    onFieldChange({ emailField: nextValue });
-  };
+
+  const [invite_email,setInviteEmail] = React.useState("");
+
 
  return (
   <AppointmentForm.BasicLayout
@@ -45,15 +60,22 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
     onFieldChange={onFieldChange}
     {...restProps}
 	>
-<AppointmentForm.TextEditor
-        value={appointmentData.emailField}
-        onValueChange={onCustomFieldChange}
-        placeholder="Enter an email address"
-      />
 
-<AppointmentForm.CommandButton command="Invite +" />
-      <CustomButton command="customAction" onExecute={() => alert('Sending invite to: '+appointmentData.emailField)} />
-  </AppointmentForm.BasicLayout>
+      {appointmentData.id?
+          (<div style={{ display: 'flex', alignItems: 'center' }}>
+                  <AppointmentForm.TextEditor
+                      value={invite_email}
+                      onValueChange={(value)=>setInviteEmail(value)}
+                      placeholder="Enter an email address"
+                      readOnly={false}
+                      style={{ marginRight: '16px' }} // add some margin between the editor and button
+                        type={"email"}/>
+                  <AppointmentForm.CommandButton command="Invite +" />
+                  <CustomButton command="customAction" invite_email={invite_email} event_id={appointmentData.id}/>
+              </div>):(<div></div>)}
+      {appointmentData.id?
+          (<CustomAppointmentForm/>):(<div></div>)}
+    </AppointmentForm.BasicLayout>
 );
 };
 
@@ -83,7 +105,6 @@ const ExternalViewSwitcher = ({currentViewName, onChange, }) =>
 export default class Schedule extends React.PureComponent {
   constructor(props) {
     super(props);
-    let that = this;
 
 
 	/* State variable to keep track of appointment form visibility */
@@ -145,7 +166,6 @@ export default class Schedule extends React.PureComponent {
             let that = this
             this.getEventList(label_id)
                 .then(function (res){
-                    console.log(res)
                     that.setState({data:res})
                 })
         }
@@ -157,11 +177,11 @@ export default class Schedule extends React.PureComponent {
             label.instances = [];
             label_data.forEach(value=>{
                 value['text'] = value['name']
-                value['color'] = "#3F83E590"
                 delete value['name']
                 delete value['owner']
                 label.instances.push(value)
             })
+            console.log(label)
             this.setState({resources:[label]})
         }
 
@@ -184,15 +204,7 @@ export default class Schedule extends React.PureComponent {
             })
         return dataVal
     }
-
-    eventLegal(event){
-      if(event['title'] === ""|| event['title'] === undefined || event['label_id'] === "" || event['']){
-          alert("have importance thing has no finish")
-          return false
-      }else{
-          return true
-      }
-    }
+    
   	/* <--- Appointment editing and saving --->  */
    
 
@@ -204,8 +216,17 @@ export default class Schedule extends React.PureComponent {
 			console.log("added",added)
 			console.log("changed",changed)
 			console.log("deleted",deleted)
+			if(added['label_id']=== undefined)
+			{
+				alert("Please select a label !");
+				return;
+			}
 			
-			
+			if(added['title'] === undefined)
+			{
+				alert("Please fill title !");
+				return;
+			}
 
 			if(added){
 				if(added['label_id']== undefined)

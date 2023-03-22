@@ -121,6 +121,7 @@ function Home() {
     const navigate = useNavigate();
     const [label_data,setLabelData] = React.useState([]);
     const [now_label_id,setNowLabelId] = React.useState(0);
+    const [label_color,setLabelColor] = React.useState("");
     const [open, setOpen] = React.useState(false);
   
 
@@ -162,12 +163,13 @@ function Home() {
 	
     // init
     useEffect(()=> {
-
-        get('api/label/get/',{})
+        get('api/label/get/',)
             .then(function (res){
-                console.log(res)
-                setLabelData(res.data)
-                setNowLabelId(res.data[0].id)
+                const data = res.data
+                setLabelData(data)
+                setNowLabelId(data[0].id)
+                //setLabelColor(data[0].color)
+                console.log(data)
             })
     },[])
 
@@ -232,7 +234,7 @@ function Home() {
           <Divider />
           <List component="nav">
               {label_data.map((value) => (
-                  <ListItemButton key={value.id} onClick={() => setNowLabelId(value.id)} sx={{ backgroundColor: "#3F83E590" }}>
+                  <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);console.log(value.color)}} >
                       <ListItemIcon>
                           <ModeOfTravelIcon/>
                       </ListItemIcon>
@@ -244,13 +246,6 @@ function Home() {
         <Box
           component="main"
           sx={{
-            /*backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',*/
 			backgroundImage: `url(${publicPath+logoPath})`,
 			backgroundRepeat: 'no-repeat',
 			backgroundPosition: 'center',
@@ -270,6 +265,7 @@ function Home() {
                   <Schedule
                       label_id={now_label_id}
                       label_data={label_data}
+                      label_color={label_color}
                   />
                 </Paper>
               </Grid>

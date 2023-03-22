@@ -15,6 +15,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import ColorPicker from "./ColorPicker"
 import parseISO from 'date-fns/parseISO'
 import {format} from "date-fns";
 
@@ -64,16 +65,20 @@ const MyProfile = () => {
 
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
-  const [labelsData, setlabelsData] = useState([
-							   {  id: 0, value: "Add new" },
-							   { id: 1, value: "Default" },
-								{ id: 2, value: "Study" },
-								{ id: 3, value: "Meetings" }
-  ]);
+    const [labelsData, setLabelsData] = useState([
+							   {  id: 0, name: "Add new" , color:"#51e54f"}]);
     const [selectedLabel, setSelectedLabel] = useState('Add new');
-    const [selectedLabelID, setSelectedLabelID] = useState('0');
+    const [selectedLabelID, setSelectedLabelID] = useState(0);
     const [labelTextVal, setLabelTextVal] = useState('');
+    const [color,setColor] = useState("#51e54f");
 
+
+    useEffect(()=>{
+        get('api/label/get/',{})
+            .then(function (res){
+                setLabelsData([...labelsData, ...res.data])
+            })
+    },[navigate])
 
 
   const [data,setData] = useState({
@@ -168,65 +173,66 @@ const MyProfile = () => {
   
   /* Label update button click */
   const handleUpdate = (event) => {
-
-	alert("update: "+ labelTextVal);
-	if(selectedLabelID!=1) // To restrict modifying "Default"
+	if(selectedLabelID!==1) // To restrict modifying "Default"
 	{
-		if(selectedLabelID==0) //Add new
+        console.log("labelText",labelTextVal)
+        console.log("id",selectedLabelID)
+        console.log("color:",color)
+        console.log("id===add?",selectedLabelID===0)
+		if(selectedLabelID===0) //Add new
 		{
-			// Call webservice to add new label
-			
-			
-			// If success, update local array
-			
-			
-			
+            const param = {name:labelTextVal,color:color}
+            post("/api/label/create/",param)
+                .then(function (res){
+                    setLabelsData([...labelsData, res.data ])
+                    alert("add label success")
+                    const data = res.data
+                    setSelectedLabel(data.name)
+                    setLabelTextVal(data.name)
+                    setSelectedLabelID(data.id)
+                    setColor(data.color)
+                })
 		}else { // Update existing label
-			
-			// Call webservice to update existing label name
-			
-			
-			// If success, update local array			
-			// setlabelsData([
-			  // ...labelsData,
-			  // { id: selectedLabelID, value: labelTextVal }
-			// ]);
-		}
-		
-		
-		
-	
-		
-		
+            const param = {label_id:selectedLabelID,name:labelTextVal,color:color}
+            post("/api/label/update/",param)
+                .then(function (res){
+                    const data = labelsData.map(value => (
+                        value.id === res.data.id ? res.data : value
+                    ))
+                    setSelectedLabel(res.data.name)
+                    setLabelsData(data)
+                })
+        }
 	}else	
 		alert("You cannot modify this label!");
-
-		 
-   
-  };
+    };
   
    
   const handleDelete = (e) => {
 	  
 	  if(selectedLabelID>1) // To restrict deleting "Add new" and "Default"
 	  {
-		  if (window.confirm('Deleting a label will delete related events also.  Are you sure you want to delete this label?')) 
-		  {
-			 // Call webservice to delete the label
-			 
-		// If web server update success, do below 
-		  setlabelsData(
-		  labelsData.filter(
-			(item) => item.id !== selectedLabelID));
-		  console.log(labelsData);
-		   setSelectedLabel("Add New");
-		   setSelectedLabelID('0');
 
-		  }
-	  }else
-		  alert("You cannot delete this label");
-	  
-    
+		  if (window.confirm('Deleting a label will delete related events also.  Are you sure you want to delete this label?')) {
+              const param ={label_id:selectedLabelID}
+              post("/api/label/delete/",param)
+                  .then(function (res){
+                      let data = []
+                      labelsData.forEach(value => {
+                          if(value.id !== selectedLabelID){
+                              data.push(value)
+                          }
+                      })
+                      setLabelsData(data);
+                      setSelectedLabel("Add new")
+                      setLabelTextVal("")
+                      setSelectedLabelID(0)
+                      setColor("#51e54f")
+                      alert("delete success")
+                  })
+          }
+	  }else alert("You cannot delete this label");
+
   };
   
 
@@ -328,20 +334,22 @@ const MyProfile = () => {
 			   <Select sx={{ m: 1, width: 300 }}
 				value={selectedLabel}
 				onChange={handleLabelListChange}
-				
-			>
+               >
 					{labelsData.map((label) => (
 						<MenuItem
 						key={label.id}
-						value={label.value}
-						 onClick={() => setSelectedLabelID(label.id)}
+						value={label.name}
+                        onClick={() => {setSelectedLabelID(label.id);setColor(label.color)}}
 						>
-							{label.value}
+                            {label.name}
 						</MenuItem>
 					))}
 			  </Select> 
 			<TextField sx={{ m: 1, width: 300 }} id="labelUpdate" value={labelTextVal} onChange={updateSelectedLabel} variant="outlined" />
-			 <br/><Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleUpdate} >
+			 <br/>
+                <ColorPicker color={color} onColorChange={(newColor)=>{setColor(newColor);console.log(color)}} />
+            <br/>
+            <Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleUpdate} >
 				Update
 			</Button>
 			 <Button sx={{ m: 1, width: 150 }} variant="contained" color="primary" onClick={handleDelete} >
