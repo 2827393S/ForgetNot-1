@@ -1,3 +1,3 @@
 # ForgetNot
 
-Front end deployed link: https://2827393s.github.io/
+This is the front end developed for the forgetNot application
