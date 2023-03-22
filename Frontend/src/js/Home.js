@@ -168,7 +168,6 @@ function Home() {
                 setLabelData(data)
                 setNowLabelId(data[0].id)
                 //setLabelColor(data[0].color)
-                console.log(data)
             })
     },[])
 
@@ -233,7 +232,7 @@ function Home() {
           <Divider />
           <List component="nav">
               {label_data.map((value) => (
-                  <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);console.log(value.color)}} sx={{backgroundColor:value.color}} >
+                  <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);}} sx={{backgroundColor:value.color+'50'}} >
                       <ListItemIcon>
                           <EventIcon />
                       </ListItemIcon>

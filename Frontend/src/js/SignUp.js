@@ -86,15 +86,7 @@ export default function SignUp() {
 	//const userGender = data.get('gender');
 	const userEmail = data.get('email');
     const userPassword = data.get('password');
-    console.log({
-	  firstName: userFname,
-	  lastName: userLname,
-      email: userEmail,
-      password: userPassword,
-	  birthday: userBday,
-	  gender: userGender,
-        verify_code:code
-    });
+    
 	
 	
 
@@ -115,8 +107,6 @@ export default function SignUp() {
 			  post('api/user/register/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
-					console.log("Response: "+res);
-
 					// If the response code is 200, signup is successful. Proceed to SignIn page. Otherwise, display an alert to the user
 					  if(res.status === 200){
 						  navigate("/signin",false)
@@ -125,7 +115,6 @@ export default function SignUp() {
 					  }
 				  })
 				  .catch(function (res){
-					  console.log("Error : "+res)
 					  alert("Sign Up failed, please try again !");
 
 				  })

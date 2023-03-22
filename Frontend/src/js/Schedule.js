@@ -43,10 +43,18 @@ const CustomButton = ({invite_email,event_id,onClick}) => {
             const param = {email:invite_email,event_id:event_id}
             post("/api/event/invite/",param)
                 .then(function (res){
-                    console.log(res)
-                    alert("invite success")
-                    onClick()
-                })
+					if(res.status === 200){
+						alert("Invitation sent successfully!");
+						onClick()
+					}else if(res.status === 401){
+						alert("Guest is already invited!");
+                    }else{
+						alert("Invitation failed to send, plese check the email address!");
+					}
+                }).catch(function (res){
+					  alert("Invitation failed to send, plese try another email address!");
+
+				  })
         }
     }
     return (
@@ -186,7 +194,6 @@ export default class Schedule extends React.PureComponent {
                 delete value['owner']
                 label.instances.push(value)
             })
-            console.log(label)
             this.setState({resources:[label]})
         }
 
@@ -218,9 +225,7 @@ export default class Schedule extends React.PureComponent {
 			let {data} = this.state;
 			let {label_id} = this.props;
 			let oldData = data;
-			console.log("added",added)
-			console.log("changed",changed)
-			console.log("deleted",deleted)
+			
 			
 
 			if(added){
@@ -242,7 +247,19 @@ export default class Schedule extends React.PureComponent {
 				added['startDate'] = Date.parse(added['startDate']);
 				added['endDate'] = Date.parse(added['endDate']);
 				
-
+				/*if(added['allDay']===true)
+					{
+						var startDatee= new Date(added['startDate']);
+						startDatee.setHours('08','00','00');
+						added['startDate']=Date.parse(startDatee);
+						
+						var endDatee= new Date(added['endDate']);
+						endDatee.setHours('18','00','00');
+						added['endDate']=Date.parse(endDatee);
+						added['allDay']=false;
+						
+					}*/
+				
 				post("/api/event/create/",added).then(
 					function (res){
 						let {data} = that.state
@@ -256,9 +273,22 @@ export default class Schedule extends React.PureComponent {
 				data.forEach(appointment=>{
 					if(changed[appointment.id]){
 						let c = { ...appointment, ...changed[appointment.id] }
-						console.log(c)
 						c['startDate'] = Date.parse(c['startDate']);
 						c['endDate'] = Date.parse(c['endDate']);
+						
+						/*if(c['allDay']===true)
+						{
+							var startDatee= new Date(c['startDate']);
+							startDatee.setHours('08','00','00');
+							c['startDate']=Date.parse(startDatee);
+							
+							var endDatee= new Date(c['endDate']);
+							endDatee.setHours('18','00','00');
+							c['endDate']=Date.parse(endDatee);
+							c['allDay']=false;
+							
+						}*/
+						
 						post("/api/event/update/",c)
 							.then(function (res){
 								console.log(res)

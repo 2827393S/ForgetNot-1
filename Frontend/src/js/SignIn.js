@@ -62,11 +62,7 @@ export default function SignInSide() {
     const userEmail = data.get('email');
     const userPassword = data.get('password');
 	
-    console.log({
-      email: userEmail,
-      password: userPassword,
-    });
- 	
+    	
       const requests_data = {
           'email':userEmail,
           'password':userPassword

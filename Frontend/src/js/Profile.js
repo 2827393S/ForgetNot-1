@@ -27,11 +27,6 @@ import "../css/styles.css";
 import {useEffect} from "react";
 
 
-/*<---- disable back button of browser ---->*/
-// window.history.pushState(null, null, window.location.href);
-// window.onpopstate = function () {
-    // window.history.go(1);
-// };
 
 const theme = createTheme();
 
@@ -173,7 +168,7 @@ const MyProfile = () => {
   
   /* Label update button click */
   const handleUpdate = (event) => {
-	if(selectedLabelID!==1) // To restrict modifying "Default" & check if not empty
+	if(selectedLabel!=='Default' && selectedLabel!=='All') // To restrict modifying "Default" & check if not empty
 	{
         console.log("labelText",labelTextVal)
         console.log("id",selectedLabelID)
@@ -187,7 +182,6 @@ const MyProfile = () => {
 				post("/api/label/create/",param)
 					.then(function (res){
 						setLabelsData([...labelsData, res.data ])
-						alert("add label success")
 						const data = res.data
 						setSelectedLabel(data.name)
 						setLabelTextVal(data.name)
@@ -203,6 +197,8 @@ const MyProfile = () => {
 						))
 						setSelectedLabel(res.data.name)
 						setLabelsData(data)
+						alert("Label updated!");
+
 					})
 			}
 		}else	{
@@ -215,7 +211,7 @@ const MyProfile = () => {
    
   const handleDelete = (e) => {
 	  
-	  if(selectedLabelID>1) // To restrict deleting "Add new" and "Default"
+	  if(selectedLabelID>1 && selectedLabel!=='Default' && selectedLabel!=='All') // To restrict deleting "Add new" and "Default"
 	  {
 
 		  if (window.confirm('Deleting a label will delete related events also.  Are you sure you want to delete this label?')) {
@@ -233,7 +229,7 @@ const MyProfile = () => {
                       setLabelTextVal("")
                       setSelectedLabelID(0)
                       setColor("#51e54f")
-                      alert("delete success")
+                      alert("Label and events deleted!");
                   })
           }
 	  }else alert("You cannot delete this label");
@@ -242,7 +238,6 @@ const MyProfile = () => {
   
 
   const textOnchange = (event) =>{
-      console.log(event)
       const name = event.target.name;
       const value = event.target.value;
       setData({...data,[name] : value})
