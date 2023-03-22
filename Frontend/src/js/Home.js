@@ -164,7 +164,7 @@ function Home() {
     useEffect(()=> {
         get('api/label/get/',)
             .then(function (res){
-                console.log(res.data)
+                console.log(res)
                 const data = res.data
                 setLabelData(data)
                 setNowLabelId(data[0].id)
