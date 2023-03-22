@@ -21,6 +21,7 @@ function CustomAppointmentForm({event_id,signal}) {
     useEffect(()=>{
         if(signal){
             handleSetInviteData()
+            signal = !signal
         }
     },[signal])
 
