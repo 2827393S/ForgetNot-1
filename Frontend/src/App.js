@@ -10,7 +10,6 @@ import Landing from './js/Landing.js';
 import Contact from './js/Contact.js';
 import Profile from './js/Profile.js';
 import Guest from './js/Guest.js';
-import axios from "axios";
 
 
 const App = () => {

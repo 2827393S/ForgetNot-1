@@ -164,10 +164,10 @@ function Home() {
     useEffect(()=> {
         get('api/label/get/',)
             .then(function (res){
+                console.log(res.data)
                 const data = res.data
                 setLabelData(data)
                 setNowLabelId(data[0].id)
-                //setLabelColor(data[0].color)
             })
     },[])
 
