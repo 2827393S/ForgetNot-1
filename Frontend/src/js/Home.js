@@ -51,7 +51,7 @@ const settings = ['Home','My profile', 'My groups', 'Logout'];
 
 var labelId=window.localStorage.getItem( 'labelId');
 var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/background.jpg';
+var logoPath= 'assets/images/background.jpg';
 
 
 

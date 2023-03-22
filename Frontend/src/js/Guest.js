@@ -27,7 +27,7 @@ import "../css/styles.css";
 import {useEffect} from "react";
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/guestBg.jpg';
+var logoPath= 'assets/images/guestBg.jpg';
 
 
 

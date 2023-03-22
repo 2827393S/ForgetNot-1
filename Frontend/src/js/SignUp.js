@@ -38,7 +38,7 @@ import './../css/signup.css';
 
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath="/assets/images/appName.png";
+var logoPath="assets/images/appName.png";
 
 /* Copyright label */
 function Copyright(props) {

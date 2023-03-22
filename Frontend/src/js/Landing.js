@@ -23,7 +23,7 @@ import '../css/landing.css';
 
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath="/assets/images/loginBg.JPG";
+var logoPath="assets/images/loginBg.JPG";
 
 
 /* Copyright label */
