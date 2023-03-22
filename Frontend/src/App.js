@@ -22,6 +22,7 @@ const App = () => {
 	  <HashRouter>
 
        <Routes>
+	      <Route path="/" element={<Landing />} />
 
 	      <Route path="/forgetNot" element={<Landing />} />
 		  <Route path="/signup" element={<SignUp />} />

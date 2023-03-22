@@ -173,36 +173,41 @@ const MyProfile = () => {
   
   /* Label update button click */
   const handleUpdate = (event) => {
-	if(selectedLabelID!==1) // To restrict modifying "Default"
+	if(selectedLabelID!==1) // To restrict modifying "Default" & check if not empty
 	{
         console.log("labelText",labelTextVal)
         console.log("id",selectedLabelID)
         console.log("color:",color)
         console.log("id===add?",selectedLabelID===0)
-		if(selectedLabelID===0) //Add new
+		if(labelTextVal.length!==0)
 		{
-            const param = {name:labelTextVal,color:color}
-            post("/api/label/create/",param)
-                .then(function (res){
-                    setLabelsData([...labelsData, res.data ])
-                    alert("add label success")
-                    const data = res.data
-                    setSelectedLabel(data.name)
-                    setLabelTextVal(data.name)
-                    setSelectedLabelID(data.id)
-                    setColor(data.color)
-                })
-		}else { // Update existing label
-            const param = {label_id:selectedLabelID,name:labelTextVal,color:color}
-            post("/api/label/update/",param)
-                .then(function (res){
-                    const data = labelsData.map(value => (
-                        value.id === res.data.id ? res.data : value
-                    ))
-                    setSelectedLabel(res.data.name)
-                    setLabelsData(data)
-                })
-        }
+			if(selectedLabelID===0 ) //Add new
+			{
+				const param = {name:labelTextVal,color:color}
+				post("/api/label/create/",param)
+					.then(function (res){
+						setLabelsData([...labelsData, res.data ])
+						alert("add label success")
+						const data = res.data
+						setSelectedLabel(data.name)
+						setLabelTextVal(data.name)
+						setSelectedLabelID(data.id)
+						setColor(data.color)
+					})
+			}else { // Update existing label
+				const param = {label_id:selectedLabelID,name:labelTextVal,color:color}
+				post("/api/label/update/",param)
+					.then(function (res){
+						const data = labelsData.map(value => (
+							value.id === res.data.id ? res.data : value
+						))
+						setSelectedLabel(res.data.name)
+						setLabelsData(data)
+					})
+			}
+		}else	{
+		alert("Please enter a label name!");
+    }
 	}else	
 		alert("You cannot modify this label!");
     };

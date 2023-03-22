@@ -216,17 +216,7 @@ export default class Schedule extends React.PureComponent {
 			console.log("added",added)
 			console.log("changed",changed)
 			console.log("deleted",deleted)
-			if(added['label_id']=== undefined)
-			{
-				alert("Please select a label !");
-				return;
-			}
 			
-			if(added['title'] === undefined)
-			{
-				alert("Please fill title !");
-				return;
-			}
 
 			if(added){
 				if(added['label_id']== undefined)

@@ -26,8 +26,7 @@ import CakeIcon from '@mui/icons-material/Cake';
 import GroupsIcon from '@mui/icons-material/Groups';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
-
+import EventIcon from '@mui/icons-material/Event';
 
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
@@ -236,7 +235,7 @@ function Home() {
               {label_data.map((value) => (
                   <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);console.log(value.color)}} >
                       <ListItemIcon>
-                          <ModeOfTravelIcon/>
+                          <EventIcon />
                       </ListItemIcon>
                       <ListItemText primary={value.text} />
                   </ListItemButton>
