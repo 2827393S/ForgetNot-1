@@ -233,7 +233,7 @@ function Home() {
           <Divider />
           <List component="nav">
               {label_data.map((value) => (
-                  <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);console.log(value.color)}} >
+                  <ListItemButton key={value.id} onClick={() => {setNowLabelId(value.id);console.log(value.color)}} sx={{backgroundColor:value.color}} >
                       <ListItemIcon>
                           <EventIcon />
                       </ListItemIcon>
