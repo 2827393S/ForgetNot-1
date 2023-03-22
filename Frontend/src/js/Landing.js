@@ -90,7 +90,7 @@ export default function Landing() {
 
 
     } else {
-      alert("Please enter an event ID !");
+      alert("Please enter a reference ID !");
     }
   };
 
@@ -122,7 +122,7 @@ return (
 				  name="ref_id"
 				  required
 				  fontFamily="Baskerville"
-				  label="Got an Reference ID? Enter here"
+				  label="Got a reference ID? Enter here"
 				  autoFocus
 				  fullWidth
 				/>
