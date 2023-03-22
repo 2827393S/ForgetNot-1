@@ -81,12 +81,12 @@ export default function Landing() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const eventID = data.get('eventID');
+    const ref_id = data.get('ref_id');
 
     // Proceed if all the fields are entered. Otherwise, display an alert to the user
-    if (eventID.length !== 0) {
+    if (ref_id.length !== 0) {
 
-     navigate("/guest",{ replace: true })
+     navigate('/guest?ref_id='+ref_id,{ replace: true })
 
 
     } else {
@@ -119,10 +119,10 @@ return (
 			 <Grid container spacing={2}>
 			  <Grid item xs={14}>
 				<TextField
-				  name="eventID"
+				  name="ref_id"
 				  required
 				  fontFamily="Baskerville"
-				  label="Got an event ID? Enter here"
+				  label="Got an Reference ID? Enter here"
 				  autoFocus
 				  fullWidth
 				/>

@@ -1,7 +1,7 @@
 import React, { useState }  from 'react';
 
 
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Avatar, Button, Container, Grid, TextField, Typography, AppBar, Toolbar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
@@ -59,8 +59,9 @@ const ProfileForm = styled('form')({
 
 
   
-const Guest = () => {
-
+const Guest = (props) => {
+    const location = useLocation();
+    const ref_id = new URLSearchParams(location.search).get("ref_id");
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
   const [labelsData, setlabelsData] = useState([
@@ -70,33 +71,36 @@ const Guest = () => {
   ]);
     const [selectedLabel, setSelectedLabel] = useState('Add new');
     const [selectedLabelID, setSelectedLabelID] = useState('0');
-
+    const [changePage,setChangePage] = useState(false);
 
   const [data,setData] = useState({
       "firstName":"",
       "lastName":"",
-      "gender":"male",
-      "birthday":"",
-      "email":""
+      "notes":"",
+      "startDate":"",
+      "endDate":"",
+      "title":"",
+      "status":"0",
   })
-  const [oldData,setOldData] = useState({
-      "firstName":"",
-      "lastName":"",
-      "gender":"",
-      "birthday":"",
-      "email":""})
 
 /* After DOM is loaded, hide cancel button */
 	useEffect(() => {
-        get("/api/user/get/",{})
+        const param = {ref_id:ref_id}
+        get("/api/event/get/",param)
             .then(function (res){
-                let data = res.data
-                setData(data)
+                const data = res.data
+                let newData = {}
+                newData['firstName'] = data.user.firstName
+                newData['lastName'] = data.user.lastName
+                newData['startDate'] = data.event.startDate
+                newData['endDate'] = data.event.endDate
+                newData['title'] = data.event.title
+                newData['notes'] = data.event.notes
+                newData['status'] = data.status
+                setData(newData)
             })
-    }, []);
+    }, [changePage]);
   
- 
-
 
   
   const handleHomeClick = () => {
@@ -105,17 +109,12 @@ const Guest = () => {
   };
 
   const handleConfirmClick = () => {
-	 alert("Taking you to signup page....");
-     navigate('/signup',true);
-
+      const param = {ref_id:ref_id}
+      get('/api/invite/accept/',param).then(function (res){setChangePage(!changePage)})
   };
   const handleCancelClick = () => {
-	  if (window.confirm('Are you sure you do not want to attend this event?')) 
-	  {
-		window.history.replaceState(null, null, "/"); //Clear history
-     	 navigate('/forgetNot',true);
-	  } 
-   
+      const param = {ref_id:ref_id}
+      get('/api/invite/reject/',param).then(function (res){setChangePage(!changePage)})
   };
  
   
@@ -127,6 +126,26 @@ const Guest = () => {
       const name = event.target.name;
       const value = event.target.value;
       setData({...data,[name] : value})
+  }
+
+  const AfterChoose = () =>{
+      if(data.status === 1){
+          return (
+              <Grid item xs={12} sm={6}>
+                  <Typography variant="body1" sx={{ color: "green" }}>
+                      You have confirmed it.
+                  </Typography>
+              </Grid>
+          )
+      }else{
+          return (
+              <Grid item xs={12} sm={6}>
+                  <Typography variant="body1" sx={{ color: "red" }}>
+                      You have rejected it.
+                  </Typography>
+              </Grid>
+          )
+      }
   }
 
   return (
@@ -189,24 +208,24 @@ const Guest = () => {
           <Grid container spacing={2}>
 		   <Grid item xs={12} sm={12}>
 			<TextField fullWidth id="host" label="Hosted by" name="host" value={data.firstName+" " +data.lastName} 
-			onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
-		/>
+			onChange={textOnchange} InputProps={{readOnly: true}}
+            />
 			
             </Grid>
             <Grid item xs={12} sm={12}>
-			<TextField fullWidth id="title" label="Title" name="firstName" value={data.firstName} 
-			onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
+			<TextField id="title" label="Title" name="firstName" value={data.title}
+                       onChange={textOnchange} InputProps={{readOnly: true}} fullWidth
 		/>
 			
             </Grid>
 			
 			 <br/><Grid item xs={12} sm={6}>
-              <TextField fullWidth id="startDate" label="Start Date" name="lastName" value={data.lastName} onChange={textOnchange} 
+              <TextField fullWidth id="startDate" label="Start Date" name="lastName" value={data.startDate} onChange={textOnchange}
 			  InputProps={{readOnly: true}} />
 			
             </Grid>
 			<Grid item xs={12} sm={6}>
-              <TextField fullWidth id="endDate" label="End Date" name="lastName" value={data.lastName} onChange={textOnchange} 
+              <TextField fullWidth id="endDate" label="End Date" name="lastName" value={data.endDate} onChange={textOnchange}
 			  InputProps={{readOnly: true}} />
 			
             </Grid>
@@ -215,20 +234,27 @@ const Guest = () => {
          
           </Grid>
 		   <Grid item xs={12} sm={6}>
-              <TextField fullWidth id="info" label="More Information" name="email" value={data.email} 
+              <TextField fullWidth id="info" label="More Information" name="email" value={data.notes}
 			  onChange={textOnchange} InputProps={{readOnly: true}} 
 			  sx={{width: { sm: 200, md: 550 }, "& .MuiInputBase-root": {height: 150}}} multiline = {true} />
               
             </Grid>
 			<br/>
-		   <Grid item xs={12} sm={6}>
-			 <Button id="edit" variant="contained" color="primary" onClick={handleConfirmClick} >
-				CONFIRM
- 		 </Button>
-		  <Button id="edit" sx={{ m: 2 }} variant="contained" color="primary" onClick={handleCancelClick} >
-				CANCEL
- 		 </Button> 
-		  </Grid>
+            {data.status === 0?
+                (
+                    <Grid item xs={12} sm={6}>
+                        <Button id="edit" variant="contained" color="primary" onClick={handleConfirmClick} >
+                            CONFIRM
+                        </Button>
+                        <Button id="edit" sx={{ m: 2 }} variant="contained" color="primary" onClick={handleCancelClick} >
+                            REJECT
+                        </Button>
+                    </Grid>
+                ):
+                (
+                    <AfterChoose/>
+                )
+            }
          <div>
 		 
  		

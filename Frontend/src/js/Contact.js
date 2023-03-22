@@ -42,17 +42,17 @@ function ContactUsPage() {
 	
 
 	  // Proceed if all the fields are entered. Otherwise, display an alert to the user */
-	  if(userName.length!=0 && userEmail.length!=0 && userMessage.length!=0)
+	  if(userName.length!==0 && userEmail.length!==0 && userMessage.length!==0)
 		{
 				
 			const requests_data = {
-				  'userName':userName,
-				  'userEmail':userEmail,
-				  'userMessage':userMessage,
+				  'name':userName,
+				  'email':userEmail,
+				  'message':userMessage,
 				 
 			  }
 			  
-			  post('api/contact/', requests_data) // POST data to webserver
+			  post('/api/general/contact/', requests_data) // POST data to webserver
 				  .then(function (res){
 					 
 					console.log("Response: "+res);
