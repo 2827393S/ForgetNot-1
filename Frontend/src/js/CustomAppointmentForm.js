@@ -4,34 +4,59 @@ import { AppointmentForm } from '@devexpress/dx-react-scheduler-material-ui';
 import Button from "@mui/material/Button";
 import * as React from "react";
 import {Delete} from "@mui/icons-material";
+import {IconButton} from "@mui/material";
+import {Refresh} from "@mui/icons-material";
 import {get,post} from "../utils/requests"
 
 
 
-function CustomAppointmentForm(props) {
+function CustomAppointmentForm({event_id,signal}) {
     const [loading, setLoading] = useState(true);
-    const [roomData, setRoomData] = useState([]);
+    const [invitedata,setInviteData] = useState({});
 
     useEffect(() => {
-
+        handleSetInviteData()
     }, []);
 
-    const handleRoomDelete = (roomName) => {
-        setRoomData((prevData) => prevData.filter((room) => room.name !== roomName));
-    };
+    useEffect(()=>{
+        if(signal){
+            handleSetInviteData()
+        }
+    },[signal])
 
-    const [appointmentData, setAppointmentData] = useState(props.appointmentData);
+    const handleSetInviteData = () =>{
+        setLoading(true)
+        const param = {event_id:event_id}
+        get("/api/event/invite_list",param)
+            .then(function (res){
+                console.log(res.data)
+                const data = res.data
+                let newData = []
+                data.forEach(value=>{
+                    if(value.status === 0){
+                        value.status = "pending"
+                    }
+                    if(value.status === 1){
+                        value.status = "accept"
+                    }
+                    if(value.status === 2){
+                        value.status = "Rejection"
+                    }
+                    if(value.user.firstName !== "" || value.user.lastName !== ""){
+                        value.name = value.user.firstName + " " + value.user.lastName
+                    }else{
+                        value.name = value.user.email
+                    }
+                    newData.push(value)
+                })
+                setInviteData(newData)
+                setLoading(false)
+            })
+    }
 
-    const onFieldChange = (nextAppointmentData) => {
-        setAppointmentData((prevAppointmentData) => ({
-            ...prevAppointmentData,
-            ...nextAppointmentData,
-        }));
-    };
-
-    const onCustomFieldChange = (nextValue) => {
-        onFieldChange({ customField: nextValue });
-    };
+    const handleRefresh = () =>{
+        handleSetInviteData()
+    }
 
     if(loading){
         return <CircularProgress style={{padding: '8px' }}></CircularProgress>
@@ -45,30 +70,26 @@ function CustomAppointmentForm(props) {
                 <th style={{ textAlign: 'left', padding: '8px', fontWeight: 'normal' }}>Name/Email</th>
                 <th style={{ textAlign: 'center', padding: '8px', fontWeight: 'normal' }}>Status</th>
                 <th style={{ textAlign: 'right', padding: '8px', fontWeight: 'normal' }}>Operation</th>
+                <IconButton onClick={handleRefresh} >
+                    <Refresh />
+                </IconButton>
             </tr>
             </thead>
             <tbody>
-            <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
-                <td style={{ padding: '8px' }}>Room A</td>
-                <td style={{ textAlign: 'center',padding: '8px' }}>Room A</td>
-                <td style={{ textAlign: 'right', padding: '8px' }}>
-                    <button>
-                        <Delete />
-                    </button>
-                </td>
-            </tr>
-            <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
-                <td style={{ padding: '8px' }}>Room B</td>
-                <td style={{ textAlign: 'center', padding: '8px' }}>
-                    <input type="checkbox" />
-                </td>
-            </tr>
-            <tr>
-                <td style={{ padding: '8px' }}>Room C</td>
-                <td style={{ textAlign: 'center', padding: '8px' }}>
-                    <input type="checkbox"  />
-                </td>
-            </tr>
+            {
+                invitedata.map((value)=>{
+                    return (
+                    <tr style={{ borderBottom: '1px solid #E5E5E5' }}>
+                        <td style={{ padding: '8px' }}>{value.name}</td>
+                        <td style={{ textAlign: 'center',padding: '8px' }}>{value.status}</td>
+                        <td style={{ textAlign: 'right', padding: '8px' }}>
+                            <button>
+                                <Delete />
+                            </button>
+                        </td>
+                    </tr>)
+                })
+            }
             </tbody>
         </table>
     );

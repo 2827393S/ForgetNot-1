@@ -29,18 +29,23 @@ import { eventLabels } from './Globals.js';
 import Button from "@mui/material/Button";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import CustomAppointmentForm from "./CustomAppointmentForm";
+import {useRef} from "react";
 
 
-const CustomButton = ({invite_email,event_id}) => {
+const CustomButton = ({invite_email,event_id,onClick}) => {
+
+
+
     const onExecute = () => {
         if(invite_email===""||invite_email===null){
             alert("input_email")
         }else{
             const param = {email:invite_email,event_id:event_id}
-            post("/api/event/get_vistor_list/",param)
+            post("/api/event/invite/",param)
                 .then(function (res){
                     console.log(res)
                     alert("invite success")
+                    onClick()
                 })
         }
     }
@@ -52,7 +57,7 @@ const CustomButton = ({invite_email,event_id}) => {
 const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
 
   const [invite_email,setInviteEmail] = React.useState("");
-
+    const [signal, setSignal] = React.useState(false);
 
  return (
   <AppointmentForm.BasicLayout
@@ -71,10 +76,10 @@ const BasicLayout = ({ onFieldChange, appointmentData, ...restProps }) => {
                       style={{ marginRight: '16px' }} // add some margin between the editor and button
                         type={"email"}/>
                   <AppointmentForm.CommandButton command="Invite +" />
-                  <CustomButton command="customAction" invite_email={invite_email} event_id={appointmentData.id}/>
+                  <CustomButton command="customAction" invite_email={invite_email} event_id={appointmentData.id} onClick={()=>{setSignal(true)}}  />
               </div>):(<div></div>)}
       {appointmentData.id?
-          (<CustomAppointmentForm/>):(<div></div>)}
+          (<CustomAppointmentForm event_id={appointmentData.id} signal={signal}  />):(<div></div>)}
     </AppointmentForm.BasicLayout>
 );
 };
