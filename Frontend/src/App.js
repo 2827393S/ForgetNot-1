@@ -1,7 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-//import { BrowserRouter } from 'react-router-dom';
 import { HashRouter } from 'react-router-dom';
 
 
@@ -13,7 +11,6 @@ import Contact from './js/Contact.js';
 import Profile from './js/Profile.js';
 import Guest from './js/Guest.js';
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8000/"
 
 
 const App = () => {

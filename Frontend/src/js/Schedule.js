@@ -3,7 +3,6 @@ import Paper from '@mui/material/Paper';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Delete } from '@mui/icons-material';
 import {EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
 import {
     AppointmentForm,

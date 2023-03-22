@@ -8,8 +8,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,7 +15,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Input, InputAdornment} from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import EmailVerification from './EmailVerification';
@@ -27,13 +24,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import axios from "axios"
 
-import {get,post} from '../utils/requests'
-import {root} from '../index.js';
-import SignIn from '../js/SignIn.js';
-import {appName} from '../js/Globals.js';
-import Schedule from '../js/Schedule.js';
+
+import {post} from '../utils/requests'
+
+import {appName} from './Globals';
 import './../css/signup.css';
 
 
