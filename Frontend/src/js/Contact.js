@@ -16,7 +16,7 @@ import {get,post} from '../utils/requests';
 import '../css/contact.css';
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath= '/assets/images/background.jpg';
+var logoPath= 'assets/images/background.jpg';
 
 const theme = createTheme();
 
