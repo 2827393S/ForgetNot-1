@@ -105,7 +105,7 @@ const Guest = (props) => {
   
   const handleHomeClick = () => {
 	window.history.replaceState(null, null, "/"); //Clear history
-    navigate('/forgetNot');
+    navigate('/');
   };
 
   const handleConfirmClick = () => {

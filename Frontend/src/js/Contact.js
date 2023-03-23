@@ -142,7 +142,7 @@ function ContactUsPage() {
           </Box>
 
           <Typography component="p" variant="body1" align="center" fontFamily="Baskerville" >
-            <Link className="contactlink" onClick={() => navigate('/forgetNot', false)}>Back to Home</Link>
+            <Link className="contactlink" onClick={() => navigate('/', false)}>Back to Home</Link>
           </Typography>
         </Box>
       </Box>

@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 
 import Home from './js/Home.js';
@@ -15,12 +15,11 @@ import Guest from './js/Guest.js';
 const App = () => {
  return (
     <>
-	  <HashRouter>
+	  <BrowserRouter>
 
        <Routes>
 	      <Route path="/" element={<Landing />} />
 
-	      <Route path="/forgetNot" element={<Landing />} />
 		  <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/home" element={<Home />} />
@@ -28,7 +27,7 @@ const App = () => {
 	<Route path="/profile" element={<Profile />} />
 	<Route path="/guest" element={<Guest />} />
        </Routes>
-	     </HashRouter>
+	     </BrowserRouter>
 
 
     </>
