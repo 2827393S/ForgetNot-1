@@ -1,15 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-//import { HashRouter } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
 
-import './index.css';
-import App from './App.js';
-
-import reportWebVitals from './reportWebVitals';
-import Globals from './js/Globals.js';
-import Landing from './js/Landing.js';
-//import Contact from './js/Contact.js';
 
 export const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
