@@ -5,7 +5,7 @@ import qs, {stringify} from 'qs'
 axios.defaults.withCredentials = true
 axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8"
 axios.defaults.timeout = 100000
-axios.defaults.baseURL = "https://35.189.83.153:8000/"
+axios.defaults.baseURL = "https://forgetnot.uk/"
 
 /**
  * get method - > get requests
