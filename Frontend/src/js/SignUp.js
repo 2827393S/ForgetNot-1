@@ -127,7 +127,7 @@ export default function SignUp() {
         <CssBaseline />
 		
         <Box className="signupbox">
-		<img src={publicPath+logoPath} />
+		<img src={logoPath} />
 
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
