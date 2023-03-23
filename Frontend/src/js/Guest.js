@@ -90,13 +90,15 @@ const Guest = (props) => {
             .then(function (res){
                 const data = res.data
                 let newData = {}
+                console.log(data)
                 newData['firstName'] = data.user.firstName
                 newData['lastName'] = data.user.lastName
-                newData['startDate'] = data.event.startDate
-                newData['endDate'] = data.event.endDate
-                newData['title'] = data.event.title
-                newData['notes'] = data.event.notes
-                newData['status'] = data.status
+                newData['startDate'] = data.ref.event.startDate
+                newData['endDate'] = data.ref.event.endDate
+                newData['title'] = data.ref.event.title
+                newData['notes'] = data.ref.event.notes
+                newData['status'] = data.ref.status
+                console.log(newData)
                 setData(newData)
             })
     }, [changePage]);
