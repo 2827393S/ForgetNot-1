@@ -17,6 +17,7 @@ import {
     TodayButton,
     Toolbar,
     WeekView,
+    AllDayPanel
 } from '@devexpress/dx-react-scheduler-material-ui';
 
 
@@ -207,6 +208,7 @@ export default class Schedule extends React.PureComponent {
                     value['startDate'] = new Date((value['startTime']))
                     value['endDate'] = new Date(value['endTime'])
                     value['label_id'] = value['labelId']
+
                     delete value['startTime'];
                     delete value['endTime'];
                     delete value['labelId']
@@ -222,30 +224,34 @@ export default class Schedule extends React.PureComponent {
     commitChanges({ added, changed, deleted }) {
 	
 			let {data} = this.state;
-			let {label_id} = this.props;
-			let oldData = data;
-			
-			
+
 
 			if(added){
-				if(added['label_id']== undefined)
+				if(added['label_id']=== undefined)
 				{
 					alert("Please select a label !");
 					return;
 				}
 				
-				if(added['title'] == undefined)
+				if(added['title'] === undefined)
 				{
 					alert("Please fill title !");
 					return;
 				}
-				
+
 				let that = this
 				data = [...data, { ...added }];
 				let pos = data.length;
 				added['startDate'] = Date.parse(added['startDate']);
 				added['endDate'] = Date.parse(added['endDate']);
-				
+
+
+                if (added['startDate'] >= added['endDate']){
+                    alert("Start time must be before end time")
+                    return
+                }
+
+
 				/*if(added['allDay']===true)
 					{
 						var startDatee= new Date(added['startDate']);
@@ -274,7 +280,11 @@ export default class Schedule extends React.PureComponent {
 						let c = { ...appointment, ...changed[appointment.id] }
 						c['startDate'] = Date.parse(c['startDate']);
 						c['endDate'] = Date.parse(c['endDate']);
-						
+                        if (c['startDate'] >= c['endDate']){
+                            alert("Start time must be before end time")
+                            newData.push(appointment)
+                            return
+                        }
 						/*if(c['allDay']===true)
 						{
 							var startDatee= new Date(c['startDate']);
@@ -335,6 +345,7 @@ export default class Schedule extends React.PureComponent {
             <EditingState onCommitChanges={this.commitChanges} />
             <IntegratedEditing />
 
+
             {/* <--- Daily view --->  */}
             <DayView startDayHour={0} endDayHour={24}/>
 		  
@@ -356,6 +367,7 @@ export default class Schedule extends React.PureComponent {
 
             {/* <--- Appointment form popup for creation and edit --->  */}
             <Appointments/>
+                <AllDayPanel/>
 
             <AppointmentTooltip showOpenButton showDeleteButton/>
             <ConfirmationDialog />
