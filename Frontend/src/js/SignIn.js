@@ -25,7 +25,7 @@ import './../css/signin.css';
 
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath="assets/images/loginBg.JPG";
+var logoPath="assets/images/loginBg.jpg";
 
 
 

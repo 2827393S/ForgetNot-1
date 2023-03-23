@@ -18,12 +18,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {get,post} from '../utils/requests'
 import Home from '../js/Home.js';
 import {root} from '../index.js';
-import {appName} from '../js/Globals.js';
+import {appName} from './Globals';
 import '../css/landing.css';
 
 
 var publicPath=process.env.PUBLIC_URL;
-var logoPath="assets/images/loginBg.JPG";
+var logoPath="assets/images/loginBg.jpg";
 
 
 /* Copyright label */
