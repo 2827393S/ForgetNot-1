@@ -2,6 +2,7 @@
 
 This is the front end developed for the forgetNot web application
 
+Deployed URL: https://forgetnot.uk/
 Demo video link: https://www.dropbox.com/s/m3omfiormfintga/ForgetNotDemo.MP4?dl=0
 
 
